@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro de estudante · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<section class="estreito">
+  <h1>Cadastro de estudante</h1>
+  <p class="lead">É gratuito. Pedimos só o necessário para agendar suas monitorias.</p>
+  {% if erro %}<p class="alerta" role="alert">{{ erro }}</p>{% endif %}
+  <form method="post" action="/cadastro/estudante" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <label for="nome">Seu nome (ou como quer ser chamado)</label>
+    <input id="nome" name="nome" required maxlength="120" autocomplete="given-name" value="{{ form.nome or '' }}">
+
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" required autocomplete="email" value="{{ form.email or '' }}">
+
+    <label for="senha">Senha (mínimo 8 caracteres)</label>
+    <input id="senha" name="senha" type="password" required minlength="8" autocomplete="new-password">
+
+    <label for="escola_id">Sua escola</label>
+    <select id="escola_id" name="escola_id" required>
+      {% for e in escolas %}<option value="{{ e.id }}" {% if form.escola_id == e.id %}selected{% endif %}>{{ e.nome }} ({{ e.bairro }})</option>{% endfor %}
+    </select>
+
+    <label for="ano_escolar">Ano escolar</label>
+    <select id="ano_escolar" name="ano_escolar" required>
+      {% for a in anos %}<option {% if form.ano_escolar == a %}selected{% endif %}>{{ a }}</option>{% endfor %}
+    </select>
+
+    <label for="bairro">Bairro onde mora <span class="opcional">(opcional)</span></label>
+    <input id="bairro" name="bairro" maxlength="120" value="{{ form.bairro or '' }}" aria-describedby="bairro-ajuda">
+    <p id="bairro-ajuda" class="ajuda">Usamos só para saber em quais regiões o reforço está chegando. Nunca mostramos seu endereço.</p>
+
+    <div class="check">
+      <input id="consentimento" name="consentimento" type="checkbox">
+      <label for="consentimento">Meu responsável sabe e concorda com o meu cadastro (obrigatório para menores de 18 anos). Li a <a href="/privacidade">política de privacidade</a>.</label>
+    </div>
+
+    <button class="botao" type="submit">Criar conta e ver monitorias</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block titulo %}Monitoria agendada · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<section class="estreito confirmacao" role="status">
+  <p class="selo" aria-hidden="true">✓</p>
+  <h1>Monitoria agendada!</h1>
+  <dl class="detalhes">
+    <dt>Matéria</dt><dd>{{ ag.horario.materia }}</dd>
+    <dt>Quando</dt><dd>{{ ag.horario.inicio | data_amigavel }} ({{ ag.horario.duracao_min }} min)</dd>
+    <dt>Monitor(a)</dt><dd>{{ ag.horario.voluntario.nome }}</dd>
+    <dt>Como</dt><dd>{{ ag.horario.modalidade | capitalize }}{% if ag.horario.local_ou_link %} · {{ ag.horario.local_ou_link }}{% endif %}</dd>
+    {% if ag.duvida %}<dt>Sua dúvida</dt><dd>{{ ag.duvida }}</dd>{% endif %}
+  </dl>
+  <p>O monitor já vê o seu agendamento e a sua dúvida.</p>
+  <div class="acoes">
+    <a class="botao" href="/minhas-monitorias">Ver minhas monitorias</a>
+    <a class="botao botao-sec" href="/monitorias">Agendar outra</a>
+  </div>
+</section>
+{% endblock %}

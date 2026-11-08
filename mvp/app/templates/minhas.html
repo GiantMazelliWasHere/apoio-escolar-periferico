@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}Minhas monitorias · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Minhas monitorias</h1>
+
+<h2>Próximas</h2>
+{% if not proximas %}
+  <p class="cartao">Nenhuma monitoria agendada. <a href="/monitorias">Encontre um horário</a>.</p>
+{% endif %}
+<ul class="lista-horarios">
+  {% for a in proximas %}
+  <li class="cartao horario">
+    <div>
+      <p class="horario-materia">{{ a.horario.materia }} <span class="tag">{{ STATUS_LABEL[a.status] }}</span></p>
+      <p class="horario-quando">{{ a.horario.inicio | data_amigavel }} · {{ a.horario.duracao_min }} min · {{ a.horario.modalidade }}</p>
+      <p class="horario-quem">Monitor(a): {{ a.horario.voluntario.nome }}</p>
+      {% if a.horario.local_ou_link %}<p>{{ a.horario.local_ou_link }}</p>{% endif %}
+    </div>
+    <form method="post" action="/agendamentos/{{ a.id }}/cancelar">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button class="botao botao-sec" type="submit">Cancelar</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+
+{% if historico %}
+<h2>Histórico</h2>
+<table class="tabela">
+  <caption class="sr">Monitorias anteriores ou canceladas</caption>
+  <thead><tr><th scope="col">Matéria</th><th scope="col">Quando</th><th scope="col">Situação</th></tr></thead>
+  <tbody>
+    {% for a in historico %}
+    <tr><td>{{ a.horario.materia }}</td><td>{{ a.horario.inicio | data_amigavel }}</td><td>{{ STATUS_LABEL[a.status] }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block titulo %}Meus horários · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+{% if bemvindo %}<p class="sucesso" role="status">Bem-vindo(a)! Crie seu primeiro horário de monitoria abaixo.</p>{% endif %}
+<h1>Olá, {{ usuario.nome.split(' ')[0] }}</h1>
+
+<section aria-labelledby="proximos">
+  <h2 id="proximos">Próximos horários</h2>
+  {% if not futuros %}<p class="cartao">Você ainda não tem horários futuros.</p>{% endif %}
+  <ul class="lista-horarios">
+    {% for h in futuros %}
+    <li class="cartao">
+      <p class="horario-materia">{{ h.materia }}</p>
+      <p class="horario-quando">{{ h.inicio | data_amigavel }} · {{ h.duracao_min }} min · {{ h.modalidade }} · {{ h.vagas_ocupadas }}/{{ h.vagas }} vagas</p>
+      {% set ativos = h.agendamentos | rejectattr('status', 'equalto', 'cancelado') | list %}
+      {% if ativos %}
+      <ul class="alunos">
+        {% for a in ativos %}
+        <li>
+          <span><strong>{{ a.estudante.nome }}</strong> · {{ a.estudante.ano_escolar }}{% if a.duvida %} · Dúvida: “{{ a.duvida }}”{% endif %}</span>
+          {% if a.status == 'agendado' and h.inicio > limite_presenca %}
+          <span class="tag">Presença liberada 1 h antes</span>
+          {% elif a.status == 'agendado' %}
+          <form method="post" action="/agendamentos/{{ a.id }}/presenca" class="presenca">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="botao botao-pq" name="status" value="realizado" type="submit">Realizada</button>
+            <button class="botao botao-sec botao-pq" name="status" value="faltou" type="submit">Faltou</button>
+          </form>
+          {% else %}
+          <span class="tag">{{ STATUS_LABEL[a.status] }}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="ajuda">Ninguém agendou ainda.</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% if passados %}
+<section aria-labelledby="passados">
+  <h2 id="passados">Horários anteriores</h2>
+  <ul class="lista-horarios">
+    {% for h in passados %}
+    <li class="cartao">
+      <p class="horario-materia">{{ h.materia }} · {{ h.inicio | data_amigavel }}</p>
+      {% for a in h.agendamentos if a.status != 'cancelado' %}
+      <div class="alunos-linha">
+        <span>{{ a.estudante.nome }}</span>
+        {% if a.status == 'agendado' %}
+        <form method="post" action="/agendamentos/{{ a.id }}/presenca" class="presenca">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button class="botao botao-pq" name="status" value="realizado" type="submit">Realizada</button>
+          <button class="botao botao-sec botao-pq" name="status" value="faltou" type="submit">Faltou</button>
+        </form>
+        {% else %}<span class="tag">{{ STATUS_LABEL[a.status] }}</span>{% endif %}
+      </div>
+      {% endfor %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section aria-labelledby="novo" class="cartao">
+  <h2 id="novo">Oferecer novo horário</h2>
+  <form method="post" action="/voluntario/horarios" class="form grade">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div><label for="materia">Matéria</label>
+      <select id="materia" name="materia">{% for m in materias %}<option>{{ m }}</option>{% endfor %}</select></div>
+    <div><label for="data">Data</label><input id="data" name="data" type="date" min="{{ hoje }}" required></div>
+    <div><label for="hora">Hora</label><input id="hora" name="hora" type="time" required></div>
+    <div><label for="duracao_min">Duração (min)</label><input id="duracao_min" name="duracao_min" type="number" min="15" max="180" step="15" value="60"></div>
+    <div><label for="modalidade">Modalidade</label>
+      <select id="modalidade" name="modalidade"><option value="online">Online</option><option value="presencial">Presencial</option></select></div>
+    <div><label for="vagas">Vagas</label><input id="vagas" name="vagas" type="number" min="1" max="10" value="3"></div>
+    <div class="largo"><label for="local_ou_link">Link da chamada ou local</label><input id="local_ou_link" name="local_ou_link" maxlength="300" placeholder="Ex.: link do Meet ou sala da escola"></div>
+    <div class="largo"><button class="botao" type="submit">Publicar horário</button></div>
+  </form>
+</section>
+{% endblock %}

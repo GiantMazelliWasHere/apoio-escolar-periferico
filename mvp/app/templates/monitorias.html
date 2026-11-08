@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block titulo %}Monitorias · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+{% if bemvindo %}<p class="sucesso" role="status">Conta criada! Agora escolha uma matéria e agende sua primeira monitoria.</p>{% endif %}
+<h1>Encontrar monitoria</h1>
+
+<form method="get" action="/monitorias" class="filtro" role="search">
+  <label for="materia">Matéria</label>
+  <select id="materia" name="materia">
+    <option value="">Todas as matérias</option>
+    {% for m in materias %}<option {% if m == materia %}selected{% endif %}>{{ m }}</option>{% endfor %}
+  </select>
+  <button class="botao" type="submit">Buscar</button>
+</form>
+
+<p class="resumo" aria-live="polite">{{ horarios|length }} horário{{ '' if horarios|length == 1 else 's' }} disponíve{{ 'l' if horarios|length == 1 else 'is' }}{% if materia %} em {{ materia }}{% endif %}.</p>
+
+{% if not horarios %}
+  <p class="cartao">Ainda não há horários livres{% if materia %} de {{ materia }}{% endif %}. Tente outra matéria ou volte amanhã.</p>
+{% endif %}
+
+<ul class="lista-horarios">
+  {% for h in horarios %}
+  <li class="cartao horario">
+    <div>
+      <p class="horario-materia">{{ h.materia }}</p>
+      <p class="horario-quando">{{ h.inicio | data_amigavel }} · {{ h.duracao_min }} min · {{ h.modalidade }}</p>
+      <p class="horario-quem">Monitor(a): {{ h.voluntario.nome }}</p>
+      <p class="horario-vagas">{{ h.vagas_livres }} vaga{{ '' if h.vagas_livres == 1 else 's' }}</p>
+    </div>
+    {% if h.id in ja_agendados %}
+      <p class="tag">Você já agendou</p>
+    {% elif usuario and usuario.papel == 'estudante' %}
+      <form method="post" action="/monitorias/{{ h.id }}/agendar" class="form-agendar">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label for="duvida-{{ h.id }}">Qual é a sua dúvida? <span class="opcional">(opcional)</span></label>
+        <input id="duvida-{{ h.id }}" name="duvida" maxlength="500" placeholder="Ex.: equação do 1º grau">
+        <button class="botao" type="submit">Agendar</button>
+      </form>
+    {% elif not usuario %}
+      <a class="botao botao-sec" href="/entrar?proximo=/monitorias">Entre para agendar</a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

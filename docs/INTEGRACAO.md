@@ -1,0 +1,77 @@
+# Integração entre as disciplinas
+
+Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **núcleo do MVP** fica em [`mvp/`](../mvp/) e é o ponto onde tudo se encaixa. Cada disciplina entrega o seu componente na própria pasta e conversa com o núcleo pelos **contratos abaixo**: API, banco ou arquivo, nunca prints colados lado a lado (slide 21).
+
+## Estrutura do repositório
+
+| Pasta | Disciplina | Status |
+|---|---|---|
+| `mvp/` | Núcleo (front + API + banco) | ✅ fluxo central funcionando localmente, com testes |
+| `dados/` | Big Data Architecture & Data Integration | ⬜ aguardando entrega |
+| `ia/` | Generative AI for Engineering | ⬜ enunciado TBD no PDF |
+| `visao/` | Applied Computer Vision | ⬜ aguardando entrega |
+| `rpa/` | Robotic Process Automation | ⬜ aguardando entrega |
+| `.github/workflows/` + Azure | Secure DevOps Tools & Cloud Computing | 🟡 CI pronto; deploy em modelo |
+| `maker/` | Project-Based Maker Lab | ⬜ aguardando entrega |
+| `docs/business/` | BI & Startup Development | ✅ |
+
+## Contratos já disponíveis no núcleo
+
+Documentação interativa da API: `/api/docs` (Swagger, gerado pelo FastAPI).
+
+Integrações máquina-a-máquina usam o cabeçalho **`X-API-Key`**, com o valor da variável de ambiente `INTEGRATION_API_KEY`. A chave nunca vai para o código (slide 21).
+
+### Dados → núcleo: priorização territorial
+`PUT /api/v1/escolas/prioridade` (exige `X-API-Key`)
+
+```json
+[
+  {"codigo_inep": "35000000", "territorio_prioritario": true, "indice_prioridade": 0.87},
+  {"escola_id": 2, "territorio_prioritario": false, "indice_prioridade": 0.31}
+]
+```
+Resposta: `{"atualizadas": 2}`. A escola passa a ter `fonte_prioridade = "pipeline"`.
+**Sugestão para a DAG do Airflow:** ingerir IDEB/Censo Escolar (INEP) + IBGE → calcular o índice → chamar este endpoint como última tarefa.
+Para conferir: `GET /api/v1/escolas`.
+
+> Hoje as escolas do seed são **fictícias**. Quando o pipeline chegar, vale trocá-las por escolas reais do território (nome + código INEP), que são dados públicos.
+
+### Núcleo → RPA: presenças para o relatório de impacto
+`GET /api/v1/agendamentos.csv` (exige `X-API-Key`)
+
+Colunas: `agendamento_id, estudante_pseudo, escola, territorio_prioritario, materia, inicio, duracao_min, status, voluntario_pseudo`.
+Sem nomes nem e-mails: os identificadores são pseudônimos (hash). O robô UiPath pode baixar o CSV (HTTP Request), consolidar presenças, montar o relatório do patrocinador e enviá-lo por e-mail.
+
+`GET /api/v1/impacto` (público, agregado e anônimo): os mesmos indicadores do painel `/impacto`, em JSON.
+
+## Contratos a criar quando as entregas chegarem
+
+| Componente | Ponto de encaixe sugerido | O que o núcleo precisa |
+|---|---|---|
+| **Visão** (extração de endereço) | Tela de cadastro: botão "enviar foto do comprovante" → serviço de Visão → campos preenchidos para o estudante **confirmar** | Endpoint do serviço (ex.: `POST /extrair-endereco` recebendo a imagem e devolvendo `{logradouro, numero, bairro, cep, cidade, confianca}`). Hoje o cadastro pede só o bairro, de forma opcional |
+| **IA Generativa** (tutor) | Nova tela "Tirar dúvida", ligada a partir da confirmação do agendamento | Endpoint do modelo + regras de escopo; o tutor deve sugerir levar a dúvida ao monitor humano |
+| **Maker Lab** | QR code na peça fabricada | Só a URL pública do MVP |
+
+## Executar o núcleo localmente
+
+```bash
+cd mvp
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements-dev.txt
+.venv/Scripts/python -m pytest -q
+.venv/Scripts/python -m uvicorn app.main:app --reload
+```
+Abrir http://localhost:8000. No Linux/macOS, use `.venv/bin/python`.
+
+## Publicar no Azure (disciplina de DevOps)
+
+1. Criar um App Service Linux com Python 3.12.
+2. Em **Configuração > Configurações de aplicativo**:
+   - `APP_ENV=production`
+   - `SECRET_KEY=<valor longo e aleatório>`
+   - `INTEGRATION_API_KEY=<outro valor aleatório>`
+   - `DATABASE_URL=sqlite:////home/data/apoio.db` (o `/home` é persistente no App Service; para produção real, usar PostgreSQL)
+   - `SCM_DO_BUILD_DURING_DEPLOYMENT=true` (instala o `requirements.txt` no deploy)
+3. **Comando de inicialização:** `sh startup.sh`
+4. No GitHub: secret `AZURE_WEBAPP_PUBLISH_PROFILE` e variável `AZURE_WEBAPP_NAME`. O workflow [`deploy-azure.yml`](../.github/workflows/deploy-azure.yml) publica depois que o CI passa.
+5. Application Insights + alerta sobre `/health` (exigência de monitoramento do slide 40).

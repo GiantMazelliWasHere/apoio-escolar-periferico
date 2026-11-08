@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+*.db
+.pytest_cache/
+.env
+
+# Material oficial da FIAP (não publicar)
+Desafio-FIAP-GS-CitizenTech_*.pdf

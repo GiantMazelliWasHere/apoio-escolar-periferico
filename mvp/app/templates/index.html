@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<section class="hero">
+  <h1>Reforço escolar gratuito, com monitor de verdade.</h1>
+  <p class="lead">Para estudantes de escolas públicas da periferia. Escolha a matéria, agende no seu horário e tire suas dúvidas com um voluntário.</p>
+  <div class="acoes">
+    {% if usuario and usuario.papel == 'estudante' %}
+      <a class="botao" href="/monitorias">Encontrar monitoria</a>
+    {% elif usuario and usuario.papel == 'voluntario' %}
+      <a class="botao" href="/voluntario">Ver meus horários</a>
+    {% else %}
+      <a class="botao" href="/cadastro/estudante">Sou estudante</a>
+      <a class="botao botao-sec" href="/cadastro/voluntario">Quero ser voluntário</a>
+    {% endif %}
+  </div>
+</section>
+
+<section aria-labelledby="como">
+  <h2 id="como">Como funciona</h2>
+  <ol class="passos">
+    <li><strong>Cadastre-se</strong> em um minuto, com o consentimento do seu responsável.</li>
+    <li><strong>Escolha a matéria</strong> e veja os horários livres dos monitores.</li>
+    <li><strong>Agende</strong> e conte qual é a sua dúvida.</li>
+    <li><strong>Aprenda</strong> com uma pessoa real, sem pagar nada.</li>
+  </ol>
+</section>
+
+<section aria-labelledby="materias">
+  <h2 id="materias">Matérias</h2>
+  <ul class="chips">
+    {% for m in materias %}<li><a class="chip" href="/monitorias?materia={{ m | urlencode }}">{{ m }}</a></li>{% endfor %}
+  </ul>
+</section>
+
+<section class="cartao destaque" aria-labelledby="quem-paga">
+  <h2 id="quem-paga">Quem paga?</h2>
+  <p>O estudante nunca paga. Empresas patrocinam núcleos escolares e acompanham o <a href="/impacto">impacto em tempo real</a>.</p>
+</section>
+{% endblock %}

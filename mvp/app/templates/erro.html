@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block titulo %}Ops · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<section class="estreito">
+  <h1>Ops!</h1>
+  <p class="alerta" role="alert">{{ mensagem }}</p>
+  <p><a class="botao" href="/monitorias">Voltar para as monitorias</a></p>
+</section>
+{% endblock %}

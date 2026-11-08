@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Apoio Escolar Periférico{% endblock %}</title>
+  <meta name="description" content="Reforço escolar gratuito com monitores voluntários para estudantes de escolas públicas da periferia.">
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  {% if demo %}
+  <div class="faixa-demo" role="note">Ambiente de demonstração: escolas e pessoas cadastradas no início são <strong>fictícias</strong>.</div>
+  {% endif %}
+  <header class="topo">
+    <div class="topo-in">
+      <a class="marca" href="/"><span class="marca-icone" aria-hidden="true">✦</span> Apoio Escolar <span>Periférico</span></a>
+      <nav aria-label="Principal">
+        <ul>
+          <li><a href="/monitorias">Monitorias</a></li>
+          {% if usuario and usuario.papel == 'estudante' %}<li><a href="/minhas-monitorias">Minhas monitorias</a></li>{% endif %}
+          {% if usuario and usuario.papel == 'voluntario' %}<li><a href="/voluntario">Meus horários</a></li>{% endif %}
+          <li><a href="/impacto">Impacto</a></li>
+          {% if usuario %}
+          <li>
+            <form method="post" action="/sair" class="inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button type="submit" class="link">Sair ({{ usuario.nome.split(' ')[0] }})</button>
+            </form>
+          </li>
+          {% else %}
+          <li><a href="/entrar" class="botao botao-sec botao-pq">Entrar</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="conteudo" class="conteudo">
+    {% block conteudo %}{% endblock %}
+  </main>
+  <footer class="rodape">
+    <p>Apoio Escolar Periférico · CitizenTech FIAP GS 2026.2 · ODS 4 e ODS 10</p>
+    <p><a href="/privacidade">Privacidade e dados (LGPD)</a> · <a href="/api/docs">API</a></p>
+  </footer>
+</body>
+</html>
