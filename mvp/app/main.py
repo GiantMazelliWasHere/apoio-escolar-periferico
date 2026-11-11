@@ -13,17 +13,19 @@ from fastapi import Depends, FastAPI, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 from starlette.middleware.sessions import SessionMiddleware
 
+from .assistente import FAQ, MAX_PERGUNTA, NOME_ASSISTENTE, Assistente, LimiteExcedido, criar_chamada_openrouter
 from .config import Settings
 from .db import Base, get_db, make_sessionmaker
 from .kpis import calcular_impacto
 from .models import ANOS_ESCOLARES, MATERIAS, Agendamento, Escola, Horario, Usuario
 from .security import (
     LoginNecessario,
+    csrf_header,
     csrf_protect,
     csrf_token,
     entrar_na_sessao,
@@ -66,11 +68,27 @@ class PrioridadeEscola(BaseModel):
     indice_prioridade: float | None = None
 
 
+class PerguntaAssistente(BaseModel):
+    pergunta: str = Field(max_length=MAX_PERGUNTA)
+
+    @field_validator("pergunta")
+    @classmethod
+    def _nao_vazia(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("Escreva a sua dúvida.")
+        return v
+
+
 def create_app(database_url: str | None = None, seed: bool | None = None) -> FastAPI:
     settings = Settings()
     app = FastAPI(title="Apoio Escolar Periférico — MVP", docs_url="/api/docs", redoc_url=None)
     app.state.settings = settings
     app.state.SessionLocal = make_sessionmaker(database_url or settings.database_url)
+
+    app.state.assistente = Assistente(
+        criar_chamada_openrouter(settings.openrouter_api_key, settings.genai_model) if settings.openrouter_api_key else None
+    )
 
     engine = app.state.SessionLocal.kw["bind"]
     Base.metadata.create_all(engine)
@@ -117,6 +135,10 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     @app.get("/privacidade", response_class=HTMLResponse)
     def privacidade(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
         return render(request, "privacidade.html", usuario)
+
+    @app.get("/ajuda", response_class=HTMLResponse)
+    def ajuda(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
+        return render(request, "ajuda.html", usuario, faq=FAQ, assistente=NOME_ASSISTENTE, ia_ativa=request.app.state.assistente.ativo, max_pergunta=MAX_PERGUNTA)
 
     # ---------- Autenticação ----------
 
@@ -356,6 +378,19 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         return render(request, "impacto.html", usuario, k=calcular_impacto(db))
 
     # ---------- API de integração ----------
+
+    @app.post("/api/v1/assistente", dependencies=[Depends(csrf_header)])
+    def api_assistente(dados: PerguntaAssistente, request: Request):
+        """Assistente de IA Generativa (AI Bits): dúvidas sobre como usar a plataforma.
+
+        Só o texto da pergunta vai ao modelo. Se o modelo falhar, devolve `fonte: "fallback"`.
+        """
+        assistente: Assistente = request.app.state.assistente
+        try:
+            assistente.registrar_uso(request.client.host if request.client else "desconhecido")
+        except LimiteExcedido:
+            raise HTTPException(429, "Muitas perguntas em pouco tempo. Espere um minuto e tente de novo.")
+        return assistente.responder(dados.pergunta)
 
     @app.get("/api/v1/impacto")
     def api_impacto(db: Session = Depends(get_db)):
