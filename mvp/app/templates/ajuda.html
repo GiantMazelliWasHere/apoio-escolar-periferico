@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block titulo %}Ajuda · Apoio Escolar Periférico{% endblock %}
+{% block cabeca %}<meta name="csrf-token" content="{{ csrf_token }}">{% endblock %}
+{% block conteudo %}
+<section class="estreito texto">
+  <h1>Ajuda</h1>
+  <p class="lead">Dúvidas sobre como usar o site? Pergunte à {{ assistente }} ou veja as perguntas frequentes.</p>
+
+  <section class="cartao chat" aria-labelledby="chat-titulo" id="chat" data-ia="{{ '1' if ia_ativa else '0' }}">
+    <h2 id="chat-titulo" class="chat-titulo">
+      <img src="{{ url_for('static', path='ai-bits.png') }}" alt="" width="36" height="36">
+      {{ assistente }} <span class="tag">assistente automática</span>
+    </h2>
+    <p class="ajuda">A {{ assistente }} é uma inteligência artificial e pode errar. Ela ajuda a usar o site; quem ensina a matéria é o monitor.
+      <strong>Não escreva dados pessoais</strong> (senha, documento, endereço, telefone): a sua pergunta é enviada a um serviço externo de IA. <a href="/privacidade">Saiba mais</a>.</p>
+
+    <div id="chat-mensagens" class="chat-mensagens" role="log" aria-live="polite" aria-label="Conversa com a {{ assistente }}"></div>
+
+    <noscript><p class="alerta">O chat precisa de JavaScript. As perguntas frequentes abaixo funcionam sem ele.</p></noscript>
+    {% if not ia_ativa %}<p class="ajuda" role="note">A assistente está desligada neste ambiente. Use as perguntas frequentes abaixo.</p>{% endif %}
+
+    <form id="chat-form" class="chat-form" hidden>
+      <label for="pergunta">Sua dúvida sobre o site</label>
+      <div class="chat-linha">
+        <input id="pergunta" name="pergunta" type="text" maxlength="{{ max_pergunta }}" autocomplete="off" required placeholder="Ex.: como agendo uma monitoria?">
+        <button class="botao" type="submit" id="chat-enviar">Enviar</button>
+      </div>
+      <ul class="chips" aria-label="Sugestões de pergunta">
+        <li><button type="button" class="chip chip-botao" data-pergunta="Como agendo uma monitoria de Matemática?">Agendar monitoria</button></li>
+        <li><button type="button" class="chip chip-botao" data-pergunta="Preciso pagar alguma coisa?">É de graça?</button></li>
+        <li><button type="button" class="chip chip-botao" data-pergunta="Como me cadastro como voluntário?">Quero ser voluntário</button></li>
+      </ul>
+    </form>
+  </section>
+
+  <section aria-labelledby="faq-titulo" id="faq">
+    <h2 id="faq-titulo">Perguntas frequentes</h2>
+    {% for pergunta, resposta in faq %}
+    <details class="cartao">
+      <summary>{{ pergunta }}</summary>
+      <p>{{ resposta }}</p>
+    </details>
+    {% endfor %}
+    <p>Não achou? <a href="/monitorias">Agende uma monitoria</a> e fale com um monitor de verdade.</p>
+  </section>
+</section>
+<script src="{{ url_for('static', path='ajuda.js') }}" defer></script>
+{% endblock %}

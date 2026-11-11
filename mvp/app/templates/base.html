@@ -6,6 +6,7 @@
   <title>{% block titulo %}Apoio Escolar Periférico{% endblock %}</title>
   <meta name="description" content="Reforço escolar gratuito com monitores voluntários para estudantes de escolas públicas da periferia.">
   <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+  {% block cabeca %}{% endblock %}
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -21,6 +22,7 @@
           {% if usuario and usuario.papel == 'estudante' %}<li><a href="/minhas-monitorias">Minhas monitorias</a></li>{% endif %}
           {% if usuario and usuario.papel == 'voluntario' %}<li><a href="/voluntario">Meus horários</a></li>{% endif %}
           <li><a href="/impacto">Impacto</a></li>
+          <li><a href="/ajuda">Ajuda</a></li>
           {% if usuario %}
           <li>
             <form method="post" action="/sair" class="inline">

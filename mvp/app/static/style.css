@@ -162,3 +162,18 @@ input:focus, select:focus { border-color: var(--brand); }
 
 .rodape { border-top: 1px solid var(--line); text-align: center; color: var(--muted); font-size: .85rem; padding: 1.5rem 1rem; }
 .rodape p { margin: .25rem 0; }
+
+/* Tela "Ajuda": chat com a assistente */
+.chat-titulo { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 0; }
+.chat-titulo img { border-radius: 8px; }
+.chat-mensagens { display: flex; flex-direction: column; gap: .6rem; margin: .75rem 0; }
+.balao { max-width: 92%; padding: .6rem .85rem; border-radius: var(--radius); border: 1px solid var(--line); overflow-wrap: anywhere; }
+.balao p { margin: .2rem 0; }
+.balao-voce { align-self: flex-end; background: var(--brand-soft); border-color: transparent; }
+.balao-ia { align-self: flex-start; background: var(--bg); }
+.balao .botao { margin-top: .5rem; }
+.chat-form label { font-weight: 600; display: block; margin-bottom: .35rem; }
+.chat-linha { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chat-linha input { flex: 1 1 200px; width: auto; }
+.chip-botao { border: 0; font: inherit; font-weight: 600; cursor: pointer; min-height: 36px; }
+details.cartao summary { font-weight: 700; cursor: pointer; }

@@ -43,6 +43,14 @@ async def csrf_protect(request: Request) -> None:
         raise HTTPException(status_code=403, detail="Formulário expirado. Recarregue a página e tente de novo.")
 
 
+def csrf_header(request: Request) -> None:
+    """CSRF para chamadas JSON feitas pelo próprio site (token no cabeçalho X-CSRF-Token)."""
+    enviado = request.headers.get("X-CSRF-Token", "")
+    esperado = request.session.get("csrf", "")
+    if not esperado or not hmac.compare_digest(enviado, esperado):
+        raise HTTPException(status_code=403, detail="Sessão expirada. Recarregue a página e tente de novo.")
+
+
 def usuario_atual(request: Request, db: Session = Depends(get_db)) -> Usuario | None:
     uid = request.session.get("uid")
     if uid is None:
