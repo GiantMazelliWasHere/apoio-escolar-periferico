@@ -10,6 +10,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .db import Base
 
+# Turnos do filtro de monitorias: (rótulo, hora inicial inclusiva, hora final exclusiva).
+TURNOS = {
+    "manha": ("Manhã (antes das 12h)", 0, 12),
+    "tarde": ("Tarde (12h às 18h)", 12, 18),
+    "noite": ("Noite (a partir das 18h)", 18, 24),
+}
+
 MATERIAS = [
     "Matemática",
     "Português",

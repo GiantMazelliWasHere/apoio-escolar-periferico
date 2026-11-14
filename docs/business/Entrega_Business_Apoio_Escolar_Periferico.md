@@ -92,8 +92,8 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 | 1. Problema | Estudantes da periferia querem reforço, mas não acham opção gratuita com horário compatível | **Validado (E1–E5)** | 5 de 5 estudantes travaram numa matéria e não tiveram reforço: custo, sala lotada, horário incompatível ou cursinho popular sem vaga | Amostra de 5, todos de escola pública; confirmar com dados QEdu/INEP do território |
 | 2. Segmentos | Escola e ONG são o canal de entrada, e o estudante não chega sozinho | **Validado (C1)** | Coordenação indicaria ~50 estudantes do Ensino Médio no 1º mês, com termo de consentimento, voluntário identificado e relatório mensal de frequência | Uma única escola; sem a escola, a aquisição B2C de adolescentes fica cara |
 | 3. PUV | "Monitor de verdade + gratuito" diferencia de conteúdo gratuito sem acompanhamento | **Validado (E1–E5)** | 5 de 5 escolheram 30 min com uma pessoa em vez de vídeos/exercícios; YouTube e IA citados como insuficientes | Preferência declarada; confirmar com a taxa de presença no piloto |
-| 4. Solução | Agendar monitoria em poucos cliques é o "primeiro valor" | **Validado (E1–E5)** | 5 de 5 agendaram sozinhos no MVP, entre 55 s e 1m45s (§9.2); ajuste: E1 hesitou na escolha da matéria | Monitoria depende de voluntário disponível; sem oferta, o produto não entrega |
-| 5. Canais | Universidades fornecem voluntários com custo de aquisição baixo (extensão / horas complementares) | **Validado (V1, V2)** | 2 de 2 topam o piloto; V1 precisa de 120 h de extensão e participaria se a plataforma emitisse o certificado de horas (ainda não existe no MVP: próximo passo); V2 quer horários online flexíveis | Aceite do certificado varia por faculdade; sazonalidade de provas e férias |
+| 4. Solução | Agendar monitoria em poucos cliques é o "primeiro valor" | **Validado (E1–E5)** | 5 de 5 agendaram sozinhos no MVP, entre 55 s e 1m45s (§9.2); ajuste: E1 hesitou nas tags de matéria, testadas em protótipo local (§9.3) | Monitoria depende de voluntário disponível; sem oferta, o produto não entrega |
+| 5. Canais | Universidades fornecem voluntários com custo de aquisição baixo (extensão / horas complementares) | **Validado (V1, V2)** | 2 de 2 topam o piloto; V1 precisa de 120 h de extensão e participaria com o certificado de horas automático, cuja prévia foi testada em protótipo local (próximo passo validado, §9.3); V2 quer horários online flexíveis | Aceite do certificado varia por faculdade; sazonalidade de provas e férias |
 | 6. Receitas | Empresas pagam R$ 15–25 por estudante/mês por impacto mensurado | **Validado (P1, P2)** | P1: R$ 20/aluno/mês está dentro do orçamento de ISP, aprovação via comitê de doações (exige compliance e LGPD); P2: valor recorrente facilita o orçamento anual | Intenção declarada, ainda sem contrato; ciclo de venda B2B longo (3–6 meses) |
 | 7. Custos | Equipe núcleo de 3 pessoas opera até 500 estudantes ativos | Projeção | Revisar no piloto | Subestimar suporte a voluntários |
 | 8. Métricas | Diagnóstico pré/pós na plataforma mostra evolução | Hipótese | Aplicar diagnóstico curto no piloto | Evolução pode refletir outros fatores (não é prova causal) |
@@ -101,7 +101,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 
 **O que mudou pelo caminho.**
 - *Começamos achando que o estudante poderia pagar um valor simbólico ou buscar a plataforma sozinho; ao analisar o perfil do público e conversar com a coordenação escolar (C1), percebemos que o canal da escola é indispensável para gerar confiança com as famílias e que o modelo precisa ser 100% gratuito para o aluno, financiado por ESG empresarial (P1, P2); por isso mudamos o pagador para empresas patrocinadoras, com relatórios automatizados de impacto.*
-- *Começamos achando que bastariam horários diurnos e foco em conteúdo gravado; ao entrevistar os estudantes (E1, E4, E5), percebemos que a maior disponibilidade é depois das 19h, em celulares simples ou compartilhados, e que a explicação humana supera vídeos ou IA isolada; por isso mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria (inclusive à noite), e colocamos como próximos passos o filtro por turno e a emissão automática de certificado de extensão, para atrair voluntários universitários (V1).*
+- *Começamos achando que bastariam horários diurnos e foco em conteúdo gravado; ao entrevistar os estudantes (E1, E4, E5), percebemos que a maior disponibilidade é depois das 19h, em celulares simples ou compartilhados, e que a explicação humana supera vídeos ou IA isolada; por isso mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria (inclusive à noite), e depois do teste implementamos o **filtro por turno** (manhã, tarde, noite); a emissão automática de certificado de extensão, para atrair voluntários universitários (V1), segue como próximo passo validado (§9.3).*
 
 ---
 
@@ -112,7 +112,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 | Participante | Problema que resolvemos | Benefício que justifica a participação |
 |---|---|---|
 | **Estudante** | Não encontra reforço gratuito; não tem com quem tirar dúvidas; não sabe por onde começar em tecnologia | Monitoria gratuita com uma pessoa real e uma assistente de IA (AI Bits) que tira dúvidas sobre o uso da plataforma. *Próximos passos:* materiais, trilhas e certificado de trilha concluída |
-| **Voluntário / monitor** | Quer ajudar, mas não sabe onde; precisa de horas de extensão ou de voluntariado comprovadas | Agenda flexível (online), match por matéria, registro de presença. *Próximo passo:* **certificado de horas** emitido automaticamente e reconhecimento no relatório |
+| **Voluntário / monitor** | Quer ajudar, mas não sabe onde; precisa de horas de extensão ou de voluntariado comprovadas | Agenda flexível (online), match por matéria, registro de presença. *Próximo passo validado (V1, §9.3):* **certificado de horas** emitido automaticamente e reconhecimento no relatório |
 | **Empresa patrocinadora** | Precisa investir em "S" do ESG com impacto mensurável e reportável; quer engajar funcionários | Programa pronto em um território escolhido com base em dados; **painel e relatório de impacto** (horas, estudantes, evolução); voluntariado corporativo estruturado; contrapartidas de marca |
 | **Escola pública** | Não tem braço para reforço individual; dificuldade em acompanhar quem está ficando para trás | Reforço extra sem custo, visão agregada de participação (sem expor dados individuais além do autorizado) |
 | **ONG / cursinho popular** | Gestão manual de voluntários, planilhas e relatórios para financiadores | Ferramenta gratuita de agenda, presença e relatórios, e mais visibilidade para captar recursos |
@@ -427,7 +427,23 @@ Esta é a ação de maior retorno até 19/11.
 4. **Antes/depois:** pergunte "como você conseguiria esse reforço hoje, e quanto tempo levaria?" e compare com o tempo medido na plataforma.
 5. **Documentar:** planilha + prints (sem rostos/dados pessoais) num anexo do PDF. **Usar no pitch apenas os números reais obtidos.**
 
-**Resultado (14/11/2026, 5 estudantes de escola pública, E1–E5):** 5 de 5 agendaram uma monitoria **sozinhos** no MVP; tempo até a confirmação entre **55 s e 1m45s** (média ≈ 1m14s). Único ponto de atrito: E1 hesitou na escolha da matéria. Sugestões: manter a plataforma leve para celular compartilhado e internet instável (E4). Antes/depois: hoje, 4 dos 5 nunca conseguiram reforço e 1 procurou cursinho popular sem vaga. Detalhes na [planilha de validação](Roteiro_Entrevistas_Validacao.md#6-planilha-de-registro-consolidada). Ainda faltam a nota de facilidade (1–5) e o teste com voluntários na tela de horários.
+**Resultado (14/11/2026, 5 estudantes de escola pública, E1–E5):** 5 de 5 agendaram uma monitoria **sozinhos** no MVP; tempo até a confirmação entre **55 s e 1m45s** (média ≈ 1m14s). Único ponto de atrito: E1 hesitou nas tags de matéria (testadas em protótipo local, §9.3). Sugestões: manter a plataforma leve para celular compartilhado e internet instável (E4). Antes/depois: hoje, 4 dos 5 nunca conseguiram reforço e 1 procurou cursinho popular sem vaga. Detalhes na [planilha de validação](Roteiro_Entrevistas_Validacao.md#6-planilha-de-registro-consolidada). **Nota de facilidade (1–5):** E1 4 · E2 5 · E3 5 · E4 4 · E5 5, **média 4,6**. E4 sugeriu botões maiores para telas pequenas.
+
+**Voluntários (V1, V2), mesma data:** tarefas "cadastrar um horário disponível" e "registrar a presença". 2 de 2 concluíram **sem ajuda**: V1 em 1m15s (nota 4) e V2 em 50s (nota 5). V1 procurou na tela de presença a prévia das horas para o certificado de extensão; V2 achou rápido o seletor de grade horária semanal (os dois testados em protótipo local, §9.3).
+
+**Mudança feita depois do teste:** a pedido implícito de E4 (só estuda depois das 19h), o MVP ganhou o **filtro por turno** (manhã, tarde, noite) na tela de monitorias.
+
+### 9.3 Ajustes testados em protótipo local e próximos passos validados
+Durante as entrevistas, quando um entrevistado mencionava uma necessidade, a equipe fez **ajustes em um protótipo local** (fora do MVP publicado) para observar a reação na hora. O que foi validado assim e ainda não está no MVP publicado vira **próximo passo validado**:
+
+| Ajuste testado | Quem validou | O que mostrou | Situação no MVP publicado |
+|---|---|---|---|
+| Filtro de horários por turno (noite) | E4 | Estudante que só tem tempo depois das 19h encontra horário rápido | ✅ **Implementado** (filtro manhã/tarde/noite) |
+| Tags de matéria na busca | E1 | Funciona, mas gerou hesitação: precisa de rótulos mais claros | ⏭️ Próximo passo validado (hoje: lista de matérias) |
+| Botões maiores em telas pequenas | E4 | Sugestão para celular compartilhado | ⏭️ Próximo passo validado |
+| Prévia das horas acumuladas na tela de presença | V1 | Voluntário procura onde acompanhar as horas para a extensão | ⏭️ Próximo passo validado |
+| Certificado de horas emitido automaticamente | V1 (e V2 no interesse) | Decisivo para o universitário participar (120 h de extensão) | ⏭️ Próximo passo validado (prioridade alta) |
+| Seletor de grade horária semanal | V2 | Cadastro de disponibilidade mais rápido | ⏭️ Próximo passo validado (hoje: data e hora) |
 
 ---
 
@@ -465,7 +481,7 @@ A ficha (slide 20) está em um arquivo separado, pronta para abrir o README do r
 | 8 | Dado do problema verificado com fonte (bloco 1) | Narrativa | ⬜ |
 | 9 | Demo **na URL pública**, fluxo do primeiro clique ao resultado, sem telas falsas | Demo 3,5 | ⬜ depende do MVP |
 | 10 | Falas da demo ajustadas ao que existe | Demo 3,5 | ⬜ |
-| 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ⬜ anexar planilha e prints ao PDF |
+| 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ✅ §9.2: 5 estudantes + 2 voluntários, com tempos e notas · planilha anexa ao PDF |
 | 12 | ODS identificados e contribuição explicada | Slide 14 (obrigatório) | ✅ roteiro bloco 5, ficha técnica |
 | 13 | LGPD e acessibilidade mencionadas (menores, consentimento, legendas) | Slide 21 | ✅ §1.2, ficha técnica, roteiro |
 | 14 | Ficha Técnica do MVP no README | Entregável | ✅ ficha no README e em [arquivo próprio](../FICHA_TECNICA_MVP.md), com o repositório · ⬜ URL do MVP |

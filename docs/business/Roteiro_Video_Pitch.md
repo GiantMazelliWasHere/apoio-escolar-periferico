@@ -35,10 +35,14 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 - 0:00: imagem real de rua ou escola de periferia (foto própria ou banco de imagens livre).
 - 0:15: mapa do pipeline de Dados, com escolas coloridas por IDEB [só se existir].
 - 0:30: um número grande em tela [PREENCHER com dado verificado].
+- 0:38: a fala de E4 em texto, com a legenda "Estudante de escola pública, entrevista de 14/11/2026".
 
 > "Pense numa estudante de quinze anos, numa escola pública da periferia. Ela ficou com dúvida em matemática na aula de hoje. Em casa, ninguém consegue ajudar. Aula particular custa mais do que a família pode pagar. E o cursinho comunitário mais perto está com a lista de espera cheia.
 >
 > Ela não é exceção. [PREENCHER: dado verificado. Ex.: proporção de alunos do 9º ano com aprendizagem adequada em matemática no território. Fonte: QEdu/INEP.]
+>
+> Uma das estudantes que entrevistamos resumiu assim: "De dia eu ajudo em casa e estudo; só tenho tempo livre depois das 19h."
+> [Se o bloco passar de 45 s, deixem a fala de E4 só em texto na tela e cortem esta frase falada.]
 >
 > Esse atraso vira reprovação, desânimo e, muitas vezes, abandono. E fecha portas para o trabalho e para a tecnologia.
 >
@@ -84,7 +88,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 > **[2:00 — Território e Dados]** "Com o endereço, a plataforma reconhece que ela estuda num território prioritário, definido pelo nosso pipeline de dados públicos do INEP."
 > [Só se o pipeline de Dados alimentar o MVP.]
 >
-> **[2:15 — Monitoria: valor principal]** "Ela procura 'matemática', vê os monitores disponíveis nesta semana e agenda para quinta, às dezoito horas. Pronto: confirmação na tela."
+> **[2:15 — Monitoria: valor principal]** "Ela escolhe 'matemática' e o turno da noite, vê os monitores disponíveis nesta semana e agenda para quinta, às dezenove horas. Pronto: confirmação na tela."
 >
 > **[2:35 — Assistente de IA]** "Ficou com dúvida sobre como remarcar? Ela pergunta ao assistente: 'como cancelo minha monitoria?'. Ele explica o passo a passo. E quando a dúvida é de matéria, ele indica agendar com um monitor."
 > [Ajustar ao que a disciplina de IA Generativa entregar.]
@@ -159,7 +163,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 
 | Bloco | Quem | Início–fim | Duração | Palavras (≈) |
 |---|---|---|---|---|
-| Problema e cidadão | Edson | 0:00–0:45 | 45 s | ~105 (com o dado) |
+| Problema e cidadão | Edson | 0:00–0:45 | 45 s | ~125 (com o dado e a fala de E4) |
 | Solução e proposta de valor | Jó | 0:45–1:30 | 45 s | ~105 |
 | Demonstração do MVP | Miguel | 1:30–3:00 | 90 s | ~160 (+ pausas de navegação) |
 | Modelo de negócio | Eduardo | 3:00–4:00 | 60 s | ~145 |

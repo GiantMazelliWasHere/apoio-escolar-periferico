@@ -7,3 +7,6 @@ __pycache__/
 
 # Material oficial da FIAP (não publicar)
 Desafio-FIAP-GS-CitizenTech_*.pdf
+
+# HTML intermediário do PDF de Business (gerado por docs/business/pdf/gerar_pdf.py)
+docs/business/pdf/*.html
