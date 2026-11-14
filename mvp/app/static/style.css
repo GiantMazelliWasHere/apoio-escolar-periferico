@@ -85,6 +85,12 @@ code { font-size: .9em; background: var(--brand-soft); padding: .05em .35em; bor
 .botao:hover { filter: brightness(1.08); }
 .botao-sec { background: transparent; color: var(--brand); }
 .botao-pq { min-height: 36px; padding: .3rem .9rem; font-size: .9rem; }
+/* Celular (pedido de E4 no teste): alvos de toque maiores */
+@media (max-width: 560px) {
+  .botao { min-height: 52px; padding: .75rem 1.4rem; font-size: 1.05rem; }
+  .botao-pq { min-height: 48px; padding: .55rem 1.1rem; font-size: 1rem; }
+  .filtro .botao, .form-agendar .botao { width: 100%; }
+}
 .link { background: none; border: 0; color: var(--brand); font: inherit; font-weight: 600; cursor: pointer; padding: 0; }
 .link:hover { text-decoration: underline; }
 .inline { display: inline; }
@@ -119,6 +125,14 @@ input:focus, select:focus { border-color: var(--brand); }
 
 .filtro { display: flex; flex-wrap: wrap; gap: .5rem; align-items: end; }
 .filtro .campo { flex: 1 1 200px; display: flex; flex-direction: column; gap: .25rem; }
+.tags-materia { flex: 1 1 100%; border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.tags-materia legend { font-weight: 600; margin-bottom: .4rem; padding: 0; }
+.tag-opcao { position: relative; cursor: pointer; }
+.tag-opcao input { position: absolute; opacity: 0; width: 1px; height: 1px; min-height: 0; }
+.tag-opcao span { display: inline-flex; align-items: center; min-height: 44px; padding: .45rem 1rem; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); font-weight: 600; }
+.tag-opcao input:checked + span { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.tag-opcao input:checked + span::before { content: "✓ "; white-space: pre; }
+.tag-opcao input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
 .filtro label { font-weight: 600; }
 .filtro select { width: 100%; }
 .resumo { color: var(--muted); }
@@ -178,3 +192,24 @@ input:focus, select:focus { border-color: var(--brand); }
 .chat-linha input { flex: 1 1 200px; width: auto; }
 .chip-botao { border: 0; font: inherit; font-weight: 600; cursor: pointer; min-height: 36px; }
 details.cartao summary { font-weight: 700; cursor: pointer; }
+
+/* Horas e certificado do voluntário (pedido de V1) */
+.horas-total { font-size: 2rem; font-weight: 800; margin: .25rem 0; color: var(--brand); }
+.horas-vol .botao { margin-top: .75rem; }
+.certificado { background: var(--surface); border: 3px double var(--brand); border-radius: var(--radius); padding: 1.5rem; text-align: center; }
+.certificado .tabela { text-align: left; margin: 1rem 0; }
+.cert-marca { font-weight: 800; color: var(--brand); margin: 0; }
+.cert-texto { max-width: 52ch; margin: .5rem auto; }
+
+/* Grade semanal do voluntário (pedido de V2) */
+.grade-semanal { border: 1px solid var(--line); border-radius: 8px; padding: .5rem .9rem .9rem; }
+.grade-semanal legend { font-weight: 600; padding: 0 .3rem; }
+.dias { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+.dias .tag-opcao span { min-height: 44px; min-width: 3.4rem; justify-content: center; text-transform: capitalize; }
+
+@media print {
+  .topo, .rodape, .faixa-demo, .pular, .nao-imprimir { display: none !important; }
+  body { background: #fff; color: #000; }
+  .certificado { border-color: #0b6e4f; }
+}
+.certificado .tabela td:nth-child(3), .certificado .tabela th:nth-child(3) { display: table-cell; }

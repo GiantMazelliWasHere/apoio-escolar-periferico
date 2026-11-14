@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titulo %}Certificado de horas · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<p class="nao-imprimir"><a href="/voluntario">← Voltar para meus horários</a></p>
+{% if not realizadas %}
+  <h1>Certificado de horas</h1>
+  <p class="cartao">Você ainda não tem horas registradas. O certificado aparece aqui assim que você marcar a presença de um estudante como “Realizada”.</p>
+{% else %}
+<article class="certificado" aria-labelledby="cert-titulo">
+  <p class="cert-marca">✦ Apoio Escolar Periférico</p>
+  <h1 id="cert-titulo">Certificado de horas de monitoria voluntária</h1>
+  <p class="cert-texto">Certificamos que <strong>{{ usuario.nome }}</strong>{% if usuario.formacao %} ({{ usuario.formacao }}){% endif %} atuou como monitor(a) voluntário(a) de reforço escolar gratuito para estudantes de escolas públicas, somando</p>
+  <p class="horas-total">{{ minutos | horas_minutos }}</p>
+  <p class="cert-texto">em {{ realizadas | length }} monitoria{{ '' if realizadas | length == 1 else 's' }} com presença confirmada, de {{ realizadas[0].inicio.strftime('%d/%m/%Y') }} a {{ realizadas[-1].inicio.strftime('%d/%m/%Y') }}.</p>
+  <table class="tabela">
+    <thead><tr><th scope="col">Data</th><th scope="col">Matéria</th><th scope="col">Duração</th></tr></thead>
+    <tbody>
+      {% for h in realizadas %}<tr><td>{{ h.inicio.strftime('%d/%m/%Y %H:%M') }}</td><td>{{ h.materia }}</td><td>{{ h.duracao_min | horas_minutos if h.duracao_min >= 60 else h.duracao_min ~ ' min' }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  <p class="ajuda">Emitido em {{ emitido_em.strftime('%d/%m/%Y') }}. Horas calculadas a partir das presenças registradas na plataforma (Lei 9.608/1998, serviço voluntário). A aceitação como atividade complementar ou de extensão depende de cada instituição de ensino.</p>
+</article>
+<p class="nao-imprimir"><button class="botao" type="button" id="imprimir">Imprimir ou salvar em PDF</button></p>
+<script src="{{ url_for('static', path='certificado.js') }}" defer></script>
+{% endif %}
+{% endblock %}

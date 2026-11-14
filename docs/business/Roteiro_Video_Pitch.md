@@ -13,18 +13,18 @@
 
 ## Elenco
 
-A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A distribuição abaixo é uma **sugestão**: troquem à vontade, mas mantenham os tempos.
+A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Distribuição definida pelo time: todos os 5 integrantes falam.
 
-| Bloco | Tempo | Duração | Quem fala (sugestão) | RM |
+| Bloco | Tempo | Duração | Quem fala | RM |
 |---|---|---|---|---|
 | 1. Problema e cidadão | 0:00–0:45 | 45 s | Edson Leonardo | 553737 |
 | 2. Solução e proposta de valor | 0:45–1:30 | 45 s | Jó Sales | 552679 |
-| 3. Demonstração do MVP | 1:30–3:00 | 90 s | Miguel Garcez de Carvalho | 553768 |
+| 3. Demonstração do MVP | 1:30–3:00 | 90 s | Eduardo Mazelli | 553236 |
 | 4. Modelo de negócio e Lean Canvas | 3:00–4:00 | 60 s | Eduardo Mazelli | 553236 |
-| 5. Impacto e ODS | 4:00–4:30 | 30 s | Vinicius Souza e Silva | 552781 |
+| 5. Impacto e ODS | 4:00–4:30 | 30 s | Miguel Garcez de Carvalho | 553768 |
 | 6. Time e próximos passos | 4:30–5:00 | 30 s | Vinicius Souza e Silva | 552781 |
 
-*Critério da sugestão:* Eduardo é o responsável por Business, então fica com o bloco 4. **A demo (bloco 3) deve ficar com quem conhece melhor o front do MVP**: troquem se não for o Miguel.
+*Critério:* Eduardo grava a demo (bloco 3) e apresenta o modelo de negócio (bloco 4), por ser o responsável por Business; Miguel passa para o bloco 5 para que todos os integrantes falem.
 
 ---
 
@@ -74,7 +74,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 ---
 
 ## Bloco 3 · Demonstração do MVP · 1:30–3:00
-**Fala:** Miguel Garcez de Carvalho (ou quem conhece melhor o front)
+**Fala:** Eduardo Mazelli
 **Objetivo:** mostrar o fluxo central **funcionando de verdade na URL pública**, do primeiro clique ao resultado.
 **Na tela:** gravação de tela **contínua** (sem cortes no meio do fluxo), barra de endereço visível com a URL pública e cursor destacado. Rosto de quem fala num canto (opcional).
 
@@ -130,7 +130,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 ---
 
 ## Bloco 5 · Impacto e ODS · 4:00–4:30
-**Fala:** Vinicius Souza e Silva
+**Fala:** Miguel Garcez de Carvalho
 **Objetivo:** mostrar os indicadores e como o impacto escala.
 **Na tela:** ícones do ODS 4 e do ODS 10; 3 cards de indicador (monitorias, horas de reforço, evolução pré/pós) com o rótulo **"metas do piloto"**. Se houver, o resultado real do teste de usabilidade.
 
@@ -165,9 +165,9 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 |---|---|---|---|---|
 | Problema e cidadão | Edson | 0:00–0:45 | 45 s | ~125 (com o dado e a fala de E4) |
 | Solução e proposta de valor | Jó | 0:45–1:30 | 45 s | ~105 |
-| Demonstração do MVP | Miguel | 1:30–3:00 | 90 s | ~160 (+ pausas de navegação) |
+| Demonstração do MVP | Eduardo | 1:30–3:00 | 90 s | ~160 (+ pausas de navegação) |
 | Modelo de negócio | Eduardo | 3:00–4:00 | 60 s | ~145 |
-| Impacto e ODS | Vinicius | 4:00–4:30 | 30 s | ~70 |
+| Impacto e ODS | Miguel | 4:00–4:30 | 30 s | ~70 |
 | Time e próximos passos | Vinicius | 4:30–5:00 | 30 s | ~70 |
 | **Total** | **5 integrantes** | | **5:00** | |
 
@@ -182,7 +182,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 | 0:45–1:30 | Jó em câmera + diagrama de 3 ícones | Câmera + gráfico | No máximo 1 slide |
 | 1:30–3:00 | **Gravação de tela contínua** da URL pública | Tela | Barra de endereço visível; nada de mockup |
 | 3:00–4:00 | Eduardo + Lean Canvas e tabela de planos | Câmera + gráfico | Destacar 3 números: preço, equilíbrio, custo por estudante |
-| 4:00–4:30 | Vinicius + ODS + cards de indicador | Câmera + gráfico | Rotular metas como metas |
+| 4:00–4:30 | Miguel + ODS + cards de indicador | Câmera + gráfico | Rotular metas como metas |
 | 4:30–5:00 | Time junto + tela final com links | Câmera + tela | Frase final olhando para a câmera |
 
 ### Como não virar "só slides"

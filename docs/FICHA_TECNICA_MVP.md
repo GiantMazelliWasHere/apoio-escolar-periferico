@@ -54,7 +54,7 @@
 
 | Componente | Disciplina (professor) | O que entra no MVP | Como conversa com o resto | Status |
 |---|---|---|---|---|
-| **Núcleo do MVP** (front + API + banco) | Sem disciplina própria: é o produto que todas usam | Cadastro, busca e agendamento de monitorias, painéis do estudante e do voluntário, painel de impacto público. Pasta [`mvp/`](../mvp/): FastAPI + Jinja + SQLAlchemy (SQLite/PostgreSQL), 21 testes automatizados | API REST (`/api/docs`) + banco de dados; contratos em [INTEGRACAO.md](INTEGRACAO.md) | ✅ local · ⬜ no ar |
+| **Núcleo do MVP** (front + API + banco) | Sem disciplina própria: é o produto que todas usam | Cadastro, busca e agendamento de monitorias, painéis do estudante e do voluntário, painel de impacto público. Pasta [`mvp/`](../mvp/): FastAPI + Jinja + SQLAlchemy (SQLite/PostgreSQL), 27 testes automatizados | API REST (`/api/docs`) + banco de dados; contratos em [INTEGRACAO.md](INTEGRACAO.md) | ✅ local · ⬜ no ar |
 | **Dados** | Big Data Architecture & Data Integration (Ana Machado) | DAG no Airflow que ingere IDEB/Censo Escolar/IBGE e gera a tabela de prioridade territorial | Grava no banco do MVP; o painel de impacto lê essa tabela | 🟡 |
 | **Inteligência** | Generative AI for Engineering (Reinaldo Ramos) | Assistente que tira dúvidas sobre a plataforma (cadastro, agendamento, privacidade, erros comuns), via OpenRouter, com resposta em JSON e tratamento de falhas; dúvida de matéria é encaminhada ao monitor humano | Tela "Ajuda" do front chama `POST /api/v1/assistente`; entrega da disciplina em [`ia/`](../ia/), código integrado em [`mvp/app/assistente.py`](../mvp/app/assistente.py) | 🟡 integrado e testado com modelo simulado · ⬜ validar com a chave real |
 | **Visão** | Applied Computer Vision (Wilians Souza) | Extração do endereço de fotos de contas (3 empresas, ex.: Enel, Sabesp, Claro), com confirmação do usuário | Serviço chamado no cadastro; o endereço confirmado vai para a API | 🟡 |
@@ -93,7 +93,7 @@ flowchart LR
 | Resiliente ao mundo real | Páginas leves para celular de entrada e conexão fraca; lembretes por SMS/WhatsApp | 🟡 |
 | IA responsável | A assistente tem escopo limitado ao uso da plataforma, não guarda a conversa e encaminha dúvidas de matéria ao monitor humano; endereço extraído sempre confirmado pelo usuário | 🟡 |
 | Integração real | Componentes conversam por API e banco, não por prints colados lado a lado | 🟡 |
-| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 21 testes) |
+| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 27 testes) |
 
 ---
 

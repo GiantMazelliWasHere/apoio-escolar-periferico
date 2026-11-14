@@ -2,7 +2,15 @@
 {% block titulo %}Meus horários · Apoio Escolar Periférico{% endblock %}
 {% block conteudo %}
 {% if bemvindo %}<p class="sucesso" role="status">Bem-vindo(a)! Crie seu primeiro horário de monitoria abaixo.</p>{% endif %}
+{% if criados %}<p class="sucesso" role="status">{{ criados }} horário{{ '' if criados == 1 else 's' }} publicado{{ '' if criados == 1 else 's' }}.</p>{% endif %}
 <h1>Olá, {{ usuario.nome.split(' ')[0] }}</h1>
+
+<section aria-labelledby="horas" class="cartao destaque horas-vol">
+  <h2 id="horas">Suas horas de monitoria</h2>
+  <p class="horas-total">{{ minutos_realizados | horas_minutos }}</p>
+  <p class="ajuda">{{ realizadas }} monitoria{{ '' if realizadas == 1 else 's' }} realizada{{ '' if realizadas == 1 else 's' }}. Conta cada horário em que você marcou ao menos uma presença como “Realizada”.</p>
+  <a class="botao botao-sec" href="/voluntario/certificado">Ver certificado de horas</a>
+</section>
 
 <section aria-labelledby="proximos">
   <h2 id="proximos">Próximos horários</h2>
@@ -71,12 +79,21 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <div><label for="materia">Matéria</label>
       <select id="materia" name="materia">{% for m in materias %}<option>{{ m }}</option>{% endfor %}</select></div>
-    <div><label for="data">Data</label><input id="data" name="data" type="date" min="{{ hoje }}" required></div>
+    <div><label for="data">Data <span class="opcional">(ou início da grade)</span></label><input id="data" name="data" type="date" min="{{ hoje }}" required></div>
     <div><label for="hora">Hora</label><input id="hora" name="hora" type="time" required></div>
     <div><label for="duracao_min">Duração (min)</label><input id="duracao_min" name="duracao_min" type="number" min="15" max="180" step="15" value="60"></div>
     <div><label for="modalidade">Modalidade</label>
       <select id="modalidade" name="modalidade"><option value="online">Online</option><option value="presencial">Presencial</option></select></div>
     <div><label for="vagas">Vagas</label><input id="vagas" name="vagas" type="number" min="1" max="10" value="3"></div>
+    <fieldset class="largo grade-semanal">
+      <legend>Repetir toda semana <span class="opcional">(opcional)</span></legend>
+      <div class="dias">
+        {% for d in DIAS %}<label class="tag-opcao"><input type="checkbox" name="dias" value="{{ loop.index0 }}"><span>{{ d[:3] }}</span></label>{% endfor %}
+      </div>
+      <label for="semanas">Por quantas semanas</label>
+      <select id="semanas" name="semanas">{% for n in range(1, 9) %}<option value="{{ n }}">{{ n }} semana{{ '' if n == 1 else 's' }}</option>{% endfor %}</select>
+      <p class="ajuda">Sem dia marcado, publica só a data acima. Com dias marcados, publica um horário em cada dia, no mesmo horário, a partir da data.</p>
+    </fieldset>
     <div class="largo"><label for="local_ou_link">Link da chamada ou local</label><input id="local_ou_link" name="local_ou_link" maxlength="300" placeholder="Ex.: link do Meet ou sala da escola"></div>
     <div class="largo"><button class="botao" type="submit">Publicar horário</button></div>
   </form>
