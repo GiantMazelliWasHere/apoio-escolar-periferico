@@ -82,13 +82,16 @@ BASE DE CONHECIMENTO DO SOFTWARE APOIO ESCOLAR PERIFÉRICO (só existe o que est
 3. Cadastro de voluntário (botão "Quero ser voluntário"): nome, e-mail, senha e formação (opcional).
 4. Entrar: e-mail e senha. Ainda não existe recuperação de senha pelo site: quem esqueceu a senha deve
    procurar a coordenação do projeto.
-5. Tela "Monitorias": filtro por matéria ({", ".join(MATERIAS)}), filtro por turno (manhã, tarde ou noite, a partir das 18h) e lista de horários livres com dia e hora.
+5. Tela "Monitorias": escolha da matéria tocando em uma etiqueta ({", ".join(MATERIAS)}, ou "Todas"), filtro por turno (manhã, tarde ou noite, a partir das 18h) e lista de horários livres com dia e hora.
    O estudante toca em "Agendar" e pode escrever a dúvida (até 500 caracteres). Depois vê a confirmação com
    matéria, dia e hora, monitor e como será (online, com link, ou presencial, com local).
 6. Tela "Minhas monitorias" (estudante): próximas monitorias, histórico e botão "Cancelar".
 7. Tela "Meus horários" (voluntário): na parte "Oferecer novo horário", preencher e tocar em "Publicar horário" (data, hora, matéria, duração de 15 a 180 minutos, online ou
-   presencial, local ou link, de 1 a 10 vagas), ver quem agendou e registrar presença ou falta. A presença só
-   pode ser registrada a partir de 1 hora antes do início.
+   presencial, local ou link, de 1 a 10 vagas). Para repetir toda semana, marcar os dias da semana em
+   "Repetir toda semana" e escolher por quantas semanas (até 8). Ali também vê quem agendou e registra presença
+   ou falta. A presença só pode ser registrada a partir de 1 hora antes do início. No topo, "Suas horas de
+   monitoria" mostra o total de horas, e o botão "Ver certificado de horas" abre o certificado para imprimir
+   ou salvar em PDF (conta cada horário com ao menos uma presença marcada como "Realizada").
 8. Tela "Impacto": painel público com totais anônimos (monitorias realizadas, horas de reforço, taxa de presença).
 9. Tela "Privacidade e dados (LGPD)": o que é coletado, por quê e os direitos do titular.
 10. O que AINDA NÃO existe: envio de foto de conta de luz, água ou telefone para comprovar endereço (em implantação;

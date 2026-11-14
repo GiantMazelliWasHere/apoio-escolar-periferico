@@ -103,7 +103,7 @@
 
 **V1 — Universitário (Engenharia / Exatas)**
 - **Disponibilidade e motivação:** 2h/semana à noite; precisa de 120h de extensão para colar grau. Topa o piloto.
-- **Feedback do MVP:** cadastro de horários e registro de presença claros. O certificado automático com horas contabilizadas (prévia testada em protótipo local; próximo passo validado) é decisivo para ele participar.
+- **Feedback do MVP:** cadastro de horários e registro de presença claros. O certificado automático com horas contabilizadas (testado em protótipo local e já implementado no MVP) é decisivo para ele participar.
 - **Frase literal:** *"Eu quero muito dar aula e ajudar, mas na faculdade sou obrigado a entregar 120 horas de atividades extensionistas para colar grau. Se a plataforma já gerar o certificado certinho com o relatório de horas contabilizadas para eu entregar na secretaria, eu topo dar 2 horas por semana de monitoria de exatas."*
 
 **V2 — Profissional de TI (recém-formado)**
@@ -164,7 +164,7 @@
 | V1 | Cadastrar horário + registrar presença | Sim | 1m15s | 4 | Levou alguns segundos procurando a prévia das horas para o certificado (protótipo local) |
 | V2 | Cadastrar horário + registrar presença | Sim | 50s | 5 | Achou rápido o seletor de grade horária semanal (protótipo local) |
 
-> **Protótipo local:** quando um entrevistado mencionava uma necessidade, a equipe ajustou um protótipo local (fora do MVP publicado) para observar a reação na hora. O filtro por turno já foi levado ao MVP; os demais ajustes são **próximos passos validados** (§9.3 da entrega de Business).
+> **Protótipo local:** quando um entrevistado mencionava uma necessidade, a equipe ajustou um protótipo local (fora do MVP publicado) para observar a reação na hora. Depois do teste, todos esses ajustes foram levados ao MVP: filtro por turno, tags de matéria, botões maiores, horas acumuladas, certificado de horas e grade semanal (§9.3 da entrega de Business).
 
 ---
 
@@ -190,6 +190,6 @@ Critérios definidos **antes** das entrevistas; o resultado está na última col
 
 > *"Começamos achando que **o estudante poderia pagar um valor simbólico ou buscar a plataforma sozinho**; ao **analisar o perfil do público e validar com a coordenação escolar (C1)**, percebemos **que o canal institucional da escola é indispensável para gerar confiança com as famílias e que o modelo precisa ser 100% gratuito para o aluno, financiado via ESG empresarial (P1, P2)**; por isso mudamos **o pagador para empresas patrocinadoras com relatórios automatizados de impacto**."*
 
-> *"Começamos achando que **bastaria disponibilizar horários diurnos e foco em conteúdo gravado**; ao **entrevistar os estudantes (E1, E4, E5)**, percebemos **que a maior disponibilidade ocorre após as 19h, em celulares simples/compartilhados, e que a interação humana supera vídeos ou IA isolada**; por isso **mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria, e, depois do teste, implementamos o filtro por turno; a emissão automática de certificado de extensão para atrair voluntários universitários (V1) segue como próximo passo validado**."*
+> *"Começamos achando que **bastaria disponibilizar horários diurnos e foco em conteúdo gravado**; ao **entrevistar os estudantes (E1, E4, E5)**, percebemos **que a maior disponibilidade ocorre após as 19h, em celulares simples/compartilhados, e que a interação humana supera vídeos ou IA isolada**; por isso **mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria, e, depois do teste, levamos ao MVP o filtro por turno, as tags de matéria, botões maiores e, para atrair voluntários universitários (V1, V2), as horas acumuladas, o certificado de horas e a grade semanal**."*
 
 A planilha do §6 e a tabela de tempos e notas entram como anexo do PDF. A frase literal escolhida para o pitch é a de **E4** (bloco 1).

@@ -5,13 +5,11 @@
 <h1>Encontrar monitoria</h1>
 
 <form method="get" action="/monitorias" class="filtro" role="search">
-  <div class="campo">
-    <label for="materia">Matéria</label>
-    <select id="materia" name="materia">
-      <option value="">Todas as matérias</option>
-      {% for m in materias %}<option {% if m == materia %}selected{% endif %}>{{ m }}</option>{% endfor %}
-    </select>
-  </div>
+  <fieldset class="tags-materia">
+    <legend>Escolha a matéria <span class="opcional">(toque em uma)</span></legend>
+    <label class="tag-opcao"><input type="radio" name="materia" value="" {% if not materia %}checked{% endif %}><span>Todas</span></label>
+    {% for m in materias %}<label class="tag-opcao"><input type="radio" name="materia" value="{{ m }}" {% if m == materia %}checked{% endif %}><span>{{ m }}</span></label>{% endfor %}
+  </fieldset>
   <div class="campo">
     <label for="turno">Turno</label>
     <select id="turno" name="turno">

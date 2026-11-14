@@ -49,7 +49,23 @@ def data_amigavel(d: datetime) -> str:
     return f"{DIAS[d.weekday()]}, {d:%d/%m} às {d:%H:%M}"
 
 
+def horas_minutos(total_min: int) -> str:
+    h, m = divmod(int(total_min), 60)
+    return f"{h} h {m} min" if m else f"{h} h"
+
+
+def monitorias_realizadas(horarios) -> list[Horario]:
+    """Sessões que contam horas para o voluntário: horários passados com ao menos uma presença confirmada.
+    Uma sessão com vários estudantes conta uma vez (é o tempo do voluntário)."""
+    return [h for h in horarios if any(a.status == "realizado" for a in h.agendamentos)]
+
+
+MAX_HORARIOS_POR_ENVIO = 40
+
+
 templates.env.filters["data_amigavel"] = data_amigavel
+templates.env.filters["horas_minutos"] = horas_minutos
+templates.env.globals["DIAS"] = DIAS
 templates.env.globals["STATUS_LABEL"] = STATUS_LABEL
 
 
@@ -310,7 +326,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     # ---------- Voluntário ----------
 
     @app.get("/voluntario", response_class=HTMLResponse)
-    def painel_voluntario(request: Request, bemvindo: int = 0, db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("voluntario"))):
+    def painel_voluntario(request: Request, bemvindo: int = 0, criados: int = 0, db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("voluntario"))):
         horarios = db.scalars(
             select(Horario)
             .options(selectinload(Horario.agendamentos).selectinload(Agendamento.estudante).selectinload(Usuario.escola))
@@ -318,10 +334,14 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
             .order_by(Horario.inicio)
         ).all()
         agora = datetime.now()
+        realizadas = monitorias_realizadas(horarios)
         return render(
             request,
             "voluntario.html",
             usuario,
+            realizadas=len(realizadas),
+            minutos_realizados=sum(h.duracao_min for h in realizadas),
+            criados=max(0, criados),
             futuros=[h for h in horarios if h.inicio > agora],
             passados=[h for h in horarios if h.inicio <= agora][-20:],
             materias=MATERIAS,
@@ -339,30 +359,68 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         modalidade: str = Form("online"),
         local_ou_link: str = Form(""),
         vagas: int = Form(1),
+        dias: list[int] = Form([]),
+        semanas: int = Form(1),
         db: Session = Depends(get_db),
         usuario: Usuario = Depends(exigir_papel("voluntario")),
     ):
+        """Cria um horário único (sem dias marcados) ou uma grade semanal:
+        os dias da semana marcados, a partir da data informada, por N semanas."""
         try:
-            inicio = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
+            primeiro = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
         except ValueError:
             raise HTTPException(400, "Data ou hora inválida.")
-        if inicio <= datetime.now():
-            raise HTTPException(400, "Escolha uma data e hora no futuro.")
         if materia not in MATERIAS or modalidade not in ("online", "presencial"):
             raise HTTPException(400, "Matéria ou modalidade inválida.")
-        db.add(
-            Horario(
-                voluntario_id=usuario.id,
-                materia=materia,
-                inicio=inicio,
-                duracao_min=max(15, min(duracao_min, 180)),
-                modalidade=modalidade,
-                local_ou_link=local_ou_link.strip()[:300],
-                vagas=max(1, min(vagas, 10)),
+        if any(d not in range(7) for d in dias):
+            raise HTTPException(400, "Dia da semana inválido.")
+        agora = datetime.now()
+        if dias:
+            semanas = max(1, min(semanas, 8))
+            inicios = [
+                primeiro + timedelta(days=(d - primeiro.weekday()) % 7 + 7 * s)
+                for s in range(semanas)
+                for d in sorted(set(dias))
+            ]
+            inicios = [i for i in inicios if i > agora][:MAX_HORARIOS_POR_ENVIO]
+            if not inicios:
+                raise HTTPException(400, "Escolha uma data e hora no futuro.")
+        else:
+            if primeiro <= agora:
+                raise HTTPException(400, "Escolha uma data e hora no futuro.")
+            inicios = [primeiro]
+        for inicio in inicios:
+            db.add(
+                Horario(
+                    voluntario_id=usuario.id,
+                    materia=materia,
+                    inicio=inicio,
+                    duracao_min=max(15, min(duracao_min, 180)),
+                    modalidade=modalidade,
+                    local_ou_link=local_ou_link.strip()[:300],
+                    vagas=max(1, min(vagas, 10)),
+                )
             )
-        )
         db.commit()
-        return redirect("/voluntario")
+        return redirect(f"/voluntario?criados={len(inicios)}")
+
+    @app.get("/voluntario/certificado", response_class=HTMLResponse)
+    def certificado(request: Request, db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("voluntario"))):
+        horarios = db.scalars(
+            select(Horario)
+            .options(selectinload(Horario.agendamentos))
+            .where(Horario.voluntario_id == usuario.id, Horario.inicio <= datetime.now())
+            .order_by(Horario.inicio)
+        ).all()
+        realizadas = monitorias_realizadas(horarios)
+        return render(
+            request,
+            "certificado.html",
+            usuario,
+            realizadas=realizadas,
+            minutos=sum(h.duracao_min for h in realizadas),
+            emitido_em=datetime.now(),
+        )
 
     @app.post("/agendamentos/{ag_id}/presenca", dependencies=[Depends(csrf_protect)])
     def presenca(ag_id: int, status: str = Form(...), db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("voluntario"))):

@@ -54,7 +54,7 @@
 
 | Componente | Disciplina (professor) | O que entra no MVP | Como conversa com o resto | Status |
 |---|---|---|---|---|
-| **Núcleo do MVP** (front + API + banco) | Sem disciplina própria: é o produto que todas usam | Cadastro, busca e agendamento de monitorias, painéis do estudante e do voluntário, painel de impacto público. Pasta [`mvp/`](../mvp/): FastAPI + Jinja + SQLAlchemy (SQLite/PostgreSQL), 21 testes automatizados | API REST (`/api/docs`) + banco de dados; contratos em [INTEGRACAO.md](INTEGRACAO.md) | ✅ local · ⬜ no ar |
+| **Núcleo do MVP** (front + API + banco) | Sem disciplina própria: é o produto que todas usam | Cadastro, busca e agendamento de monitorias, painéis do estudante e do voluntário, painel de impacto público. Pasta [`mvp/`](../mvp/): FastAPI + Jinja + SQLAlchemy (SQLite/PostgreSQL), 27 testes automatizados | API REST (`/api/docs`) + banco de dados; contratos em [INTEGRACAO.md](INTEGRACAO.md) | ✅ local · ⬜ no ar |
 | **Dados** | Big Data Architecture & Data Integration (Ana Machado) | DAG no Airflow que ingere IDEB/Censo Escolar/IBGE e gera a tabela de prioridade territorial | Grava no banco do MVP; o painel de impacto lê essa tabela | 🟡 |
 | **Inteligência** | Generative AI for Engineering (Reinaldo Ramos) | Assistente que tira dúvidas sobre a plataforma (cadastro, agendamento, privacidade, erros comuns), via OpenRouter, com resposta em JSON e tratamento de falhas; dúvida de matéria é encaminhada ao monitor humano | Tela "Ajuda" do front chama `POST /api/v1/assistente`; entrega da disciplina em [`ia/`](../ia/), código integrado em [`mvp/app/assistente.py`](../mvp/app/assistente.py) | 🟡 integrado e testado com modelo simulado · ⬜ validar com a chave real |
 | **Visão** | Applied Computer Vision (Wilians Souza) | Extração do endereço de fotos de contas (3 empresas, ex.: Enel, Sabesp, Claro), com confirmação do usuário | Serviço chamado no cadastro; o endereço confirmado vai para a API | 🟡 |
@@ -89,11 +89,24 @@ flowchart LR
 | Princípio | Como o MVP atende | Status |
 |---|---|---|
 | Segurança e LGPD by design | Credenciais em variáveis de ambiente/Key Vault; dados mínimos do estudante; consentimento do responsável para menores (LGPD art. 14); aviso claro do que é coletado e por quê | 🟡 |
-| Acessível de verdade | Contraste adequado, leitor de tela, navegação por teclado, linguagem simples | 🟡 |
+| Acessível de verdade | Contraste acima do WCAG AA em todas as combinações (tabela abaixo), modo escuro automático, link "Pular para o conteúdo", rótulos e regiões ARIA, foco visível para navegação por teclado, alvos de toque de 44 a 52 px no celular, linguagem simples | ✅ |
 | Resiliente ao mundo real | Páginas leves para celular de entrada e conexão fraca; lembretes por SMS/WhatsApp | 🟡 |
 | IA responsável | A assistente tem escopo limitado ao uso da plataforma, não guarda a conversa e encaminha dúvidas de matéria ao monitor humano; endereço extraído sempre confirmado pelo usuário | 🟡 |
 | Integração real | Componentes conversam por API e banco, não por prints colados lado a lado | 🟡 |
-| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 21 testes) |
+| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 27 testes) |
+
+### Contraste da paleta do MVP (WCAG 2.1, mínimo AA = 4,5:1 para texto normal)
+
+| Combinação | Cores | Contraste |
+|---|---|---|
+| Texto principal / fundo claro | `#1c1b19` sobre `#fbfaf7` | 16,5:1 |
+| Texto secundário / fundo claro | `#5a5750` sobre `#fbfaf7` | 6,9:1 |
+| Botão (texto / verde da marca) | `#ffffff` sobre `#0b6e4f` | 6,3:1 |
+| Texto principal / fundo escuro | `#f1efe9` sobre `#141412` | 16,0:1 |
+| Texto secundário / fundo escuro | `#b6b2a8` sobre `#141412` | 8,7:1 |
+| Botão no modo escuro | `#0b1f17` sobre `#4fc79a` | 8,2:1 |
+
+Fundo off-white e texto quase preto (sem preto ou branco puros) reduzem o brilho excessivo; o modo escuro usa fundo grafite em vez de preto absoluto. Cores semânticas: verde para ação e sucesso, vermelho para erro.
 
 ---
 
