@@ -208,3 +208,18 @@ def test_senha_guardada_com_hash(app, client):
     with app.state.SessionLocal() as db:
         u = db.query(Usuario).filter_by(email="hash@exemplo.org").one()
         assert "senha-forte-123" not in u.senha_hash
+
+
+def test_filtro_por_turno_mostra_so_horarios_da_noite(app, client):
+    with app.state.SessionLocal() as db:
+        futuros = db.query(Horario).filter(Horario.inicio > datetime.now()).all()
+        noite = sum(1 for h in futuros if h.inicio.hour >= 18 and h.vagas_livres > 0)
+        dia = sum(1 for h in futuros if h.inicio.hour < 18 and h.vagas_livres > 0)
+    assert noite and dia, "o seed precisa ter horários de dia e de noite"
+    html = client.get("/monitorias?turno=noite").text
+    horas = [int(hh) for hh in re.findall(r"às (\d{2}):\d{2}", html)]
+    assert horas and all(hh >= 18 for hh in horas)
+    assert 'value="noite" selected' in html
+    # turno inválido é ignorado (mostra todos)
+    todas = client.get("/monitorias?turno=madrugada").text
+    assert any(int(hh) < 18 for hh in re.findall(r"às (\d{2}):\d{2}", todas))

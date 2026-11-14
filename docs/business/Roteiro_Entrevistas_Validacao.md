@@ -60,7 +60,7 @@
 - **E1:** *"Matemática financeira tá me matando, mas na escola a sala tem 40 alunos e o professor não consegue parar pra explicar só pra mim. Vídeo no YouTube às vezes ajuda, mas se eu travo numa conta, o vídeo não responde minha dúvida. Eu prefiro mil vezes alguém explicando online se for de graça."* — celular próprio com dados móveis limitados; prefere horários à noite.
 - **E2:** *"Minha mãe não tem condição de pagar cursinho nem aula particular. Quando eu fico com dúvida em ciências, tento procurar no chat ou no Google, mas às vezes a explicação é muito difícil de entender."* — entrevista com autorização verbal da mãe (LGPD); achou a tela limpa e fácil no celular.
 - **E3:** *"O que pega pra mim é redação para o ENEM. Eu escrevo, mas não sei exatamente o que tá errado na estrutura. Se tivesse um estudante universitário corrigindo e me explicando por vídeo, eu usaria toda semana."* — elogiou a visualização dos horários livres do monitor e pediu o link assim que estiver no ar.
-- **E4:** *"De dia eu ajudo em casa e estudo; só tenho tempo livre depois das 19h. Achei legal que no site dá pra filtrar o horário que o monitor tá livre à noite."* — celular compartilhado da família e internet instável; sugeriu manter a plataforma leve. *Obs.: o MVP lista dia e hora de cada monitoria, mas ainda não tem filtro por turno; a fala foi registrada como pedido de melhoria.*
+- **E4:** *"De dia eu ajudo em casa e estudo; só tenho tempo livre depois das 19h. Achei legal que no site dá pra filtrar o horário que o monitor tá livre à noite."* — celular compartilhado da família e internet instável; sugeriu manter a plataforma leve. *Obs.: na data do teste, o MVP listava dia e hora de cada monitoria, sem filtro por turno; o filtro (manhã, tarde, noite) foi implementado depois, a partir desta fala.*
 - **E5:** *"A IA do chat dá umas respostas muito engessadas. Conversar com um universitário que já passou por isso é bem melhor porque ele explica do jeito dele."* — disse que indicaria para os colegas da turma.
 
 ---
@@ -143,13 +143,26 @@
 | E1 | A | 14/11/2026 | Equipe GS | 1, 3, 4 | Querem reforço, preferem humano e agendam no MVP | "…na escola a sala tem 40 alunos e o professor não consegue parar pra explicar só pra mim… Eu prefiro mil vezes alguém explicando online se for de graça." | Confirma | Agendou sozinho em 1m45s, com hesitação na escolha da matéria; celular próprio com dados móveis; prefere noite. |
 | E2 | A | 14/11/2026 | Equipe GS | 1, 3, 4 | Dificuldade em ciências e barreira de custo | "Minha mãe não tem condição de pagar cursinho nem aula particular…" | Confirma | Agendou em 1m00s; menor de idade com autorização verbal da mãe (LGPD). |
 | E3 | A | 14/11/2026 | Equipe GS | 1, 3, 4 | Necessidade de feedback personalizado e usabilidade | "Se tivesse um estudante universitário corrigindo e me explicando por vídeo, eu usaria toda semana." | Confirma | Agendou em 55s; procurou cursinho popular e não teve vaga; pediu o link. |
-| E4 | A | 14/11/2026 | Equipe GS | 1, 3, 4 | Barreira de horário e acesso pelo celular | "…só tenho tempo livre depois das 19h. Achei legal que no site dá pra filtrar o horário que o monitor tá livre à noite." | Confirma | Agendou em 1m20s; celular compartilhado; pediu site leve. O MVP não tem filtro por turno (só lista dia e hora): melhoria registrada. |
+| E4 | A | 14/11/2026 | Equipe GS | 1, 3, 4 | Barreira de horário e acesso pelo celular | "…só tenho tempo livre depois das 19h. Achei legal que no site dá pra filtrar o horário que o monitor tá livre à noite." | Confirma | Agendou em 1m20s; celular compartilhado; pediu site leve. Na data do teste, o MVP só listava dia e hora; o filtro por turno foi implementado depois, a partir desta fala. |
 | E5 | A | 14/11/2026 | Equipe GS | 1, 3, 4 | Preferência por monitor real em vez de IA isolada | "A IA do chat dá umas respostas muito engessadas…" | Confirma | Agendou em 1m10s; indicaria para a turma. |
 | C1 | B | 14/11/2026 | Equipe GS | 2 | Escola é porta de entrada e indica estudantes | "…eu indico facilmente uns 50 alunos do Ensino Médio no primeiro mês." | Confirma | Condiciona a termo LGPD e voluntário identificado; linha de base ~78% de aprovação; pede relatório mensal. |
 | V1 | C | 14/11/2026 | Equipe GS | 5 | Universitário participa por horas de extensão | "Se a plataforma já gerar o certificado certinho… eu topo dar 2 horas por semana de monitoria de exatas." | Confirma | Precisa de 120h de extensão; topou o piloto. |
 | V2 | C | 14/11/2026 | Equipe GS | 5 | Profissional participa pela flexibilidade online | "Poder abrir 1 ou 2 horários online na minha semana direto pelo app é perfeito." | Confirma | Desistiria com escala presencial fixa; topou o piloto. |
 | P1 | D | 14/11/2026 | Equipe GS | 6, 9 | Empresa paga R$ 15–25/estudante/mês e valoriza relatório | "…na faixa de R$ 20 por aluno/mês, com painel automatizado… está totalmente dentro do nosso orçamento de ISP." | Confirma | Aprovação via comitê de doações; exige compliance e LGPD. |
 | P2 | D | 14/11/2026 | Equipe GS | 6, 9 | Dados territoriais (IDEB/IBGE) e painel diferenciam | "Ter um relatório pronto evita que a gente gaste semanas tabulando planilha de ONG." | Confirma | Valor recorrente facilita a previsão orçamentária anual. |
+
+### Teste de usabilidade: tempos e notas (14/11/2026)
+
+| Código | Tarefa | Concluiu sem ajuda? | Tempo | Nota de facilidade (1–5) | Observação |
+|---|---|---|---|---|---|
+| E1 | Agendar monitoria | Sim | 1m45s | 4 | Hesitou na escolha da matéria antes de achar Matemática |
+| E2 | Agendar monitoria | Sim | 1m00s | 5 | Tela limpa mesmo em celular básico |
+| E3 | Agendar monitoria | Sim | 55s | 5 | Destacou a clareza dos horários livres do monitor |
+| E4 | Agendar monitoria | Sim | 1m20s | 4 | Achou os horários da noite; sugeriu botões maiores em telas pequenas |
+| E5 | Agendar monitoria | Sim | 1m10s | 5 | Fluxo direto, sem dúvidas |
+| **Estudantes** | | **5 de 5** | **média ≈ 1m14s** | **média 4,6** | |
+| V1 | Cadastrar horário + registrar presença | Sim | 1m15s | 4 | Procurou na tela de presença uma prévia das horas para o certificado (ainda não existe no MVP) |
+| V2 | Cadastrar horário + registrar presença | Sim | 50s | 5 | Achou rápido cadastrar o horário |
 
 ---
 
@@ -175,6 +188,6 @@ Critérios definidos **antes** das entrevistas; o resultado está na última col
 
 > *"Começamos achando que **o estudante poderia pagar um valor simbólico ou buscar a plataforma sozinho**; ao **analisar o perfil do público e validar com a coordenação escolar (C1)**, percebemos **que o canal institucional da escola é indispensável para gerar confiança com as famílias e que o modelo precisa ser 100% gratuito para o aluno, financiado via ESG empresarial (P1, P2)**; por isso mudamos **o pagador para empresas patrocinadoras com relatórios automatizados de impacto**."*
 
-> *"Começamos achando que **bastaria disponibilizar horários diurnos e foco em conteúdo gravado**; ao **entrevistar os estudantes (E1, E4, E5)**, percebemos **que a maior disponibilidade ocorre após as 19h, em celulares simples/compartilhados, e que a interação humana supera vídeos ou IA isolada**; por isso **mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria, e colocamos como próximos passos o filtro por turno e a emissão automática de certificado de extensão para atrair voluntários universitários (V1)**."*
+> *"Começamos achando que **bastaria disponibilizar horários diurnos e foco em conteúdo gravado**; ao **entrevistar os estudantes (E1, E4, E5)**, percebemos **que a maior disponibilidade ocorre após as 19h, em celulares simples/compartilhados, e que a interação humana supera vídeos ou IA isolada**; por isso **mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria, e, depois do teste, implementamos o filtro por turno; a emissão automática de certificado de extensão para atrair voluntários universitários (V1) segue como próximo passo**."*
 
-Próximo passo: a planilha do §6 entra como anexo do PDF, e **uma** frase literal forte vai para o bloco 1 ou 4 do pitch (sugestão: E1 ou E4).
+A planilha do §6 e a tabela de tempos e notas entram como anexo do PDF. A frase literal escolhida para o pitch é a de **E4** (bloco 1).

@@ -5,18 +5,27 @@
 <h1>Encontrar monitoria</h1>
 
 <form method="get" action="/monitorias" class="filtro" role="search">
-  <label for="materia">Matéria</label>
-  <select id="materia" name="materia">
-    <option value="">Todas as matérias</option>
-    {% for m in materias %}<option {% if m == materia %}selected{% endif %}>{{ m }}</option>{% endfor %}
-  </select>
+  <div class="campo">
+    <label for="materia">Matéria</label>
+    <select id="materia" name="materia">
+      <option value="">Todas as matérias</option>
+      {% for m in materias %}<option {% if m == materia %}selected{% endif %}>{{ m }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="campo">
+    <label for="turno">Turno</label>
+    <select id="turno" name="turno">
+      <option value="">Qualquer horário</option>
+      {% for chave, (rotulo, _, _) in turnos.items() %}<option value="{{ chave }}" {% if chave == turno %}selected{% endif %}>{{ rotulo }}</option>{% endfor %}
+    </select>
+  </div>
   <button class="botao" type="submit">Buscar</button>
 </form>
 
-<p class="resumo" aria-live="polite">{{ horarios|length }} horário{{ '' if horarios|length == 1 else 's' }} disponíve{{ 'l' if horarios|length == 1 else 'is' }}{% if materia %} em {{ materia }}{% endif %}.</p>
+<p class="resumo" aria-live="polite">{{ horarios|length }} horário{{ '' if horarios|length == 1 else 's' }} disponíve{{ 'l' if horarios|length == 1 else 'is' }}{% if materia %} em {{ materia }}{% endif %}{% if turno %} · {{ turnos[turno][0] }}{% endif %}.</p>
 
 {% if not horarios %}
-  <p class="cartao">Ainda não há horários livres{% if materia %} de {{ materia }}{% endif %}. Tente outra matéria ou volte amanhã.</p>
+  <p class="cartao">Ainda não há horários livres{% if materia %} de {{ materia }}{% endif %}{% if turno %} neste turno{% endif %}. Tente outra matéria{% if turno %} ou outro turno{% endif %}, ou volte amanhã.</p>
 {% endif %}
 
 <ul class="lista-horarios">

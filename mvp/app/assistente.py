@@ -82,7 +82,7 @@ BASE DE CONHECIMENTO DO SOFTWARE APOIO ESCOLAR PERIFÉRICO (só existe o que est
 3. Cadastro de voluntário (botão "Quero ser voluntário"): nome, e-mail, senha e formação (opcional).
 4. Entrar: e-mail e senha. Ainda não existe recuperação de senha pelo site: quem esqueceu a senha deve
    procurar a coordenação do projeto.
-5. Tela "Monitorias": filtro por matéria ({", ".join(MATERIAS)}) e lista de horários livres.
+5. Tela "Monitorias": filtro por matéria ({", ".join(MATERIAS)}), filtro por turno (manhã, tarde ou noite, a partir das 18h) e lista de horários livres com dia e hora.
    O estudante toca em "Agendar" e pode escrever a dúvida (até 500 caracteres). Depois vê a confirmação com
    matéria, dia e hora, monitor e como será (online, com link, ou presencial, com local).
 6. Tela "Minhas monitorias" (estudante): próximas monitorias, histórico e botão "Cancelar".

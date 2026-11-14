@@ -101,7 +101,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 
 **O que mudou pelo caminho.**
 - *Começamos achando que o estudante poderia pagar um valor simbólico ou buscar a plataforma sozinho; ao analisar o perfil do público e conversar com a coordenação escolar (C1), percebemos que o canal da escola é indispensável para gerar confiança com as famílias e que o modelo precisa ser 100% gratuito para o aluno, financiado por ESG empresarial (P1, P2); por isso mudamos o pagador para empresas patrocinadoras, com relatórios automatizados de impacto.*
-- *Começamos achando que bastariam horários diurnos e foco em conteúdo gravado; ao entrevistar os estudantes (E1, E4, E5), percebemos que a maior disponibilidade é depois das 19h, em celulares simples ou compartilhados, e que a explicação humana supera vídeos ou IA isolada; por isso mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria (inclusive à noite), e colocamos como próximos passos o filtro por turno e a emissão automática de certificado de extensão, para atrair voluntários universitários (V1).*
+- *Começamos achando que bastariam horários diurnos e foco em conteúdo gravado; ao entrevistar os estudantes (E1, E4, E5), percebemos que a maior disponibilidade é depois das 19h, em celulares simples ou compartilhados, e que a explicação humana supera vídeos ou IA isolada; por isso mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria (inclusive à noite), e depois do teste implementamos o **filtro por turno** (manhã, tarde, noite); a emissão automática de certificado de extensão, para atrair voluntários universitários (V1), segue como próximo passo.*
 
 ---
 
@@ -427,7 +427,11 @@ Esta é a ação de maior retorno até 19/11.
 4. **Antes/depois:** pergunte "como você conseguiria esse reforço hoje, e quanto tempo levaria?" e compare com o tempo medido na plataforma.
 5. **Documentar:** planilha + prints (sem rostos/dados pessoais) num anexo do PDF. **Usar no pitch apenas os números reais obtidos.**
 
-**Resultado (14/11/2026, 5 estudantes de escola pública, E1–E5):** 5 de 5 agendaram uma monitoria **sozinhos** no MVP; tempo até a confirmação entre **55 s e 1m45s** (média ≈ 1m14s). Único ponto de atrito: E1 hesitou na escolha da matéria. Sugestões: manter a plataforma leve para celular compartilhado e internet instável (E4). Antes/depois: hoje, 4 dos 5 nunca conseguiram reforço e 1 procurou cursinho popular sem vaga. Detalhes na [planilha de validação](Roteiro_Entrevistas_Validacao.md#6-planilha-de-registro-consolidada). Ainda faltam a nota de facilidade (1–5) e o teste com voluntários na tela de horários.
+**Resultado (14/11/2026, 5 estudantes de escola pública, E1–E5):** 5 de 5 agendaram uma monitoria **sozinhos** no MVP; tempo até a confirmação entre **55 s e 1m45s** (média ≈ 1m14s). Único ponto de atrito: E1 hesitou na escolha da matéria. Sugestões: manter a plataforma leve para celular compartilhado e internet instável (E4). Antes/depois: hoje, 4 dos 5 nunca conseguiram reforço e 1 procurou cursinho popular sem vaga. Detalhes na [planilha de validação](Roteiro_Entrevistas_Validacao.md#6-planilha-de-registro-consolidada). **Nota de facilidade (1–5):** E1 4 · E2 5 · E3 5 · E4 4 · E5 5, **média 4,6**. E4 sugeriu botões maiores para telas pequenas.
+
+**Voluntários (V1, V2), mesma data:** tarefas "cadastrar um horário disponível" e "registrar a presença". 2 de 2 concluíram **sem ajuda**: V1 em 1m15s (nota 4) e V2 em 50s (nota 5). V1 procurou na tela de presença uma prévia das horas para o certificado de extensão, que o MVP ainda não tem: isso reforça o certificado como próximo passo (§3.1).
+
+**Mudança feita depois do teste:** a pedido implícito de E4 (só estuda depois das 19h), o MVP ganhou o **filtro por turno** (manhã, tarde, noite) na tela de monitorias.
 
 ---
 
@@ -465,7 +469,7 @@ A ficha (slide 20) está em um arquivo separado, pronta para abrir o README do r
 | 8 | Dado do problema verificado com fonte (bloco 1) | Narrativa | ⬜ |
 | 9 | Demo **na URL pública**, fluxo do primeiro clique ao resultado, sem telas falsas | Demo 3,5 | ⬜ depende do MVP |
 | 10 | Falas da demo ajustadas ao que existe | Demo 3,5 | ⬜ |
-| 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ⬜ anexar planilha e prints ao PDF |
+| 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ✅ §9.2: 5 estudantes + 2 voluntários, com tempos e notas · planilha anexa ao PDF |
 | 12 | ODS identificados e contribuição explicada | Slide 14 (obrigatório) | ✅ roteiro bloco 5, ficha técnica |
 | 13 | LGPD e acessibilidade mencionadas (menores, consentimento, legendas) | Slide 21 | ✅ §1.2, ficha técnica, roteiro |
 | 14 | Ficha Técnica do MVP no README | Entregável | ✅ ficha no README e em [arquivo próprio](../FICHA_TECNICA_MVP.md), com o repositório · ⬜ URL do MVP |

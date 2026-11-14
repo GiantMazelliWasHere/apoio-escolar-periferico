@@ -26,7 +26,7 @@ Edson Leonardo (RM 553737) · Eduardo Mazelli (RM 553236) · Jó Sales (RM 55267
 ## O que o MVP faz hoje
 Fluxo central, do primeiro clique ao resultado:
 1. O estudante se cadastra (com o consentimento do responsável, LGPD art. 14).
-2. Busca monitorias por matéria e vê os horários livres dos voluntários.
+2. Busca monitorias por matéria e por turno (manhã, tarde, noite) e vê os horários livres dos voluntários.
 3. Agenda e escreve a dúvida; recebe a confirmação.
 4. O voluntário vê quem agendou e registra a presença.
 5. O **painel de impacto** (`/impacto`) atualiza os indicadores na hora.

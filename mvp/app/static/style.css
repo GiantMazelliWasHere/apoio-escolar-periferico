@@ -118,8 +118,9 @@ input:focus, select:focus { border-color: var(--brand); }
 .sucesso { background: var(--ok-bg); color: var(--ok); padding: .75rem 1rem; border-radius: 8px; font-weight: 600; }
 
 .filtro { display: flex; flex-wrap: wrap; gap: .5rem; align-items: end; }
-.filtro label { width: 100%; font-weight: 600; }
-.filtro select { flex: 1 1 220px; width: auto; }
+.filtro .campo { flex: 1 1 200px; display: flex; flex-direction: column; gap: .25rem; }
+.filtro label { font-weight: 600; }
+.filtro select { width: 100%; }
 .resumo { color: var(--muted); }
 
 .lista-horarios { list-style: none; padding: 0; margin: 0; }

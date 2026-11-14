@@ -22,7 +22,7 @@ from .assistente import FAQ, MAX_PERGUNTA, NOME_ASSISTENTE, Assistente, LimiteEx
 from .config import Settings
 from .db import Base, get_db, make_sessionmaker
 from .kpis import calcular_impacto
-from .models import ANOS_ESCOLARES, MATERIAS, Agendamento, Escola, Horario, Usuario
+from .models import ANOS_ESCOLARES, MATERIAS, TURNOS, Agendamento, Escola, Horario, Usuario
 from .security import (
     LoginNecessario,
     csrf_header,
@@ -237,7 +237,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     # ---------- Estudante ----------
 
     @app.get("/monitorias", response_class=HTMLResponse)
-    def monitorias(request: Request, materia: str = "", bemvindo: int = 0, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
+    def monitorias(request: Request, materia: str = "", turno: str = "", bemvindo: int = 0, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
         q = (
             select(Horario)
             .options(selectinload(Horario.agendamentos), selectinload(Horario.voluntario))
@@ -246,13 +246,19 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         )
         if materia in MATERIAS:
             q = q.where(Horario.materia == materia)
-        horarios = [h for h in db.scalars(q).all() if h.vagas_livres > 0][:30]
+        if turno not in TURNOS:
+            turno = ""
+        horarios = [h for h in db.scalars(q).all() if h.vagas_livres > 0]
+        if turno:
+            _, hora_ini, hora_fim = TURNOS[turno]
+            horarios = [h for h in horarios if hora_ini <= h.inicio.hour < hora_fim]
+        horarios = horarios[:30]
         ja_agendados = set()
         if usuario and usuario.papel == "estudante":
             ja_agendados = set(
                 db.scalars(select(Agendamento.horario_id).where(Agendamento.estudante_id == usuario.id, Agendamento.status != "cancelado")).all()
             )
-        return render(request, "monitorias.html", usuario, horarios=horarios, materias=MATERIAS, materia=materia, bemvindo=bemvindo, ja_agendados=ja_agendados)
+        return render(request, "monitorias.html", usuario, horarios=horarios, materias=MATERIAS, materia=materia, turnos=TURNOS, turno=turno, bemvindo=bemvindo, ja_agendados=ja_agendados)
 
     @app.post("/monitorias/{horario_id}/agendar", dependencies=[Depends(csrf_protect)])
     def agendar(
