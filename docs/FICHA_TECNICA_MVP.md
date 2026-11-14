@@ -31,7 +31,7 @@
 | **Arquitetura: componentes** | Ver a tabela "Componentes por disciplina" abaixo e o diagrama. | 🟡 |
 | **Fontes de dados** | Públicas: INEP (IDEB, Censo Escolar, SAEB) e IBGE (dados socioeconômicos por território). Operacionais: cadastros, agendamentos e presenças gerados pelo próprio MVP. Simulados: estudantes, voluntários e monitorias **sintéticos**, com geração documentada (sem dados pessoais reais). Visão: documentos sintéticos de contas de consumo com gabarito. | 🟡 |
 | **Modelos de IA utilizados** | Visão Computacional: detecção do documento, correção de perspectiva, pré-processamento e OCR para extrair o endereço. IA Generativa: assistente da plataforma, com LLM via API (OpenRouter, modelo configurável), prompt com o contexto da documentação do MVP e saída estruturada em JSON. Modelo padrão: `google/gemini-2.5-flash` (configurável por `GENAI_MODEL_NAME`). | 🟡 Visão · 🟡 GenAI (integrado; falta validar com a chave real) |
-| **URL do MVP e repositório** | MVP: [PREENCHER — URL pública no Azure App Service, com HTTPS]. Repositório principal: [PREENCHER]. | ⬜ |
+| **URL do MVP e repositório** | MVP: [PREENCHER — URL pública no Azure App Service, com HTTPS]. Repositório principal: https://github.com/GiantMazelliWasHere/apoio-escolar-periferico. | ⬜ |
 | **Indicadores de impacto** | Monitorias realizadas · horas de reforço entregues · taxa de presença · evolução no diagnóstico pré/pós · % de estudantes em territórios vulneráveis · estudantes ativos mensais · custo por estudante ativo. *Metas sugeridas, não resultados alcançados.* | ✅ definidos |
 | **ODS conectados** | **ODS 4: Educação de Qualidade** (meta 4.1: ensino fundamental e médio de qualidade; meta 4.4: competências digitais para o trabalho). **ODS 10: Redução das Desigualdades** (meta 10.2: inclusão social e econômica de todos), porque o reforço chega aos territórios mais vulneráveis. | ✅ |
 
@@ -43,7 +43,7 @@
 |---|---|
 | 1. Quem é o cidadão beneficiado? | Estudante de escola pública em comunidade periférica |
 | 2. Qual problema será resolvido? | Falta de acesso a reforço escolar gratuito, com acompanhamento e no horário do estudante |
-| 3. Como a solução funcionará? | Plataforma web: cadastro → busca de monitoria por matéria → agendamento com voluntário → materiais, trilhas e tutor de IA → relatório de impacto ao patrocinador |
+| 3. Como a solução funcionará? | Plataforma web: cadastro → busca de monitoria por matéria → agendamento com voluntário → assistente de IA para dúvidas de uso → presença registrada → painel de impacto ao patrocinador |
 | 4. Quais tecnologias serão empregadas? | Pipeline de dados (Airflow), Visão Computacional (OCR), IA Generativa, RPA (UiPath), Azure (App Service, GitHub Actions, Application Insights), peça fabricada (Maker Lab) |
 | 5. Quem participará do ecossistema? | Estudantes, voluntários (universitários, profissionais, voluntariado corporativo), escolas, ONGs, empresas patrocinadoras, fundos e editais |
 | 6. Como o impacto poderá ser medido e ampliado? | Indicadores acima, reportados em painel e relatório; expansão por núcleo escolar, replicando o modelo em novos territórios |
@@ -73,7 +73,7 @@ flowchart LR
     FE --> API[API do MVP<br/>Azure App Service]
     API --> DB[(Banco de dados)]
     API --> CV[Serviço de Visão<br/>OCR de endereço]
-    API --> IA[Tutor IA Generativa]
+    API --> IA[Assistente AI Bits<br/>IA Generativa]
     AF[Airflow<br/>pipeline INEP/IBGE] --> DB
     RPA[Robô UiPath<br/>relatório de impacto] --> DB
     RPA -->|e-mail/PDF| P
@@ -91,9 +91,9 @@ flowchart LR
 | Segurança e LGPD by design | Credenciais em variáveis de ambiente/Key Vault; dados mínimos do estudante; consentimento do responsável para menores (LGPD art. 14); aviso claro do que é coletado e por quê | 🟡 |
 | Acessível de verdade | Contraste adequado, leitor de tela, navegação por teclado, linguagem simples | 🟡 |
 | Resiliente ao mundo real | Páginas leves para celular de entrada e conexão fraca; lembretes por SMS/WhatsApp | 🟡 |
-| IA responsável | Tutor explica o raciocínio, tem escopo limitado e encaminha ao monitor humano; endereço extraído sempre confirmado pelo usuário | 🟡 |
+| IA responsável | A assistente tem escopo limitado ao uso da plataforma, não guarda a conversa e encaminha dúvidas de matéria ao monitor humano; endereço extraído sempre confirmado pelo usuário | 🟡 |
 | Integração real | Componentes conversam por API e banco, não por prints colados lado a lado | 🟡 |
-| Reprodutível | README, requirements e instruções para rodar e testar | ⬜ |
+| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 21 testes) |
 
 ---
 
@@ -101,6 +101,6 @@ flowchart LR
 | Item | Link |
 |---|---|
 | MVP (URL pública) | [PREENCHER] |
-| Repositório principal | [PREENCHER] |
+| Repositório principal | https://github.com/GiantMazelliWasHere/apoio-escolar-periferico |
 | Vídeo-pitch | [PREENCHER] |
 | Projeto no MakerWorld | [PREENCHER] |

@@ -2,7 +2,7 @@
 **Global Solution FIAP 2026.2 · CitizenTech · 4ESPR**
 **Disciplina:** Business Intelligence & Startup Development — Prof. Henio Luiz Scheidt
 **Equipe:** Edson Leonardo (RM 553737) · Eduardo Mazelli (RM 553236) · Jó Sales (RM 552679) · Miguel Garcez de Carvalho (RM 553768) · Vinicius Souza e Silva (RM 552781)
-**Prazo:** 19/11/2026, 23h55 — um envio por equipe
+**Prazo:** 19/11/2026, 23h55 · envio da entrega de Business no portal: Eduardo Mazelli
 
 > **Como ler este documento.** Cada afirmação está marcada como:
 > - **[FATO]**: consta do PDF oficial da GS ou é uma regra pública verificável.
@@ -51,7 +51,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 | # | Risco | Impacto na rubrica | Ação recomendada até 19/11 |
 |---|---|---|---|
 | R1 | Validação é **qualitativa e pequena** (10 entrevistas em 14/11/2026, [roteiro e planilha](Roteiro_Entrevistas_Validacao.md)); não é prova estatística | Lean Canvas (2,0) e Valor evidenciado (3,5) | Apresentar como "validação qualitativa inicial", anexar a planilha ao PDF e citar só os números obtidos (§9.2) |
-| R2 | O MVP ainda não está no repositório; não sei quais funcionalidades existem | Demo (3,5) | Congelar o **fluxo central** (§9.1) e cortar do pitch tudo o que não estiver no ar |
+| R2 | O MVP está no repositório (fluxo central com 21 testes automatizados), mas **ainda não está em URL pública** | Demo (3,5) | Publicar no Azure, congelar o **fluxo central** (§9.1) e cortar do pitch tudo o que não estiver no ar |
 | R3 | Lado da oferta: sem voluntários, não há monitoria | Modelo de negócio | Tratar o voluntário como segundo usuário, com valor próprio (certificado de horas, extensão universitária) |
 | R4 | Receita depende de patrocínio, que não é garantido | "A conta fecha" (2,5) | Mostrar ponto de equilíbrio, capital de ponte do ano 1 e **editais fora da receita-base** (§5) |
 | R5 | Dados de menores de idade (LGPD art. 14) | Princípios de engenharia (slide 21) | Consentimento do responsável, minimização, nada de nota escolar sem convênio com a escola |
@@ -79,7 +79,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 
 | **1. Problema** | **4. Solução** | **3. Proposta Única de Valor** | **9. Vantagem Injusta** | **2. Segmentos** |
 |---|---|---|---|---|
-| (a) Estudante da periferia não tem acesso a reforço escolar acessível perto de casa ou online. (b) Quando o reforço existe (cursinho popular, ONG, monitor), ele não é encontrado, está lotado ou não tem horário compatível. (c) Faltam orientação e trilhas para entrar em tecnologia e no mercado de trabalho. | Plataforma gratuita para o estudante: (1) cadastro simples com leitura do comprovante de endereço; (2) busca e agendamento de **monitorias voluntárias** por matéria; (3) materiais e **trilhas** de inclusão digital/produtiva; (4) **assistente de IA** que tira dúvidas sobre o uso da plataforma e encaminha dúvidas de matéria a um monitor; (5) **painel de impacto** para patrocinadores. | **Reforço escolar gratuito, com monitor de verdade, para quem estuda na periferia — e impacto social comprovado para quem financia.** | Dados de **priorização territorial** (IDEB/INEP + IBGE) que mostram ao patrocinador onde o dinheiro rende mais; rede de voluntários e escolas que cresce com o uso (efeito de rede de dois lados); relatório de impacto automatizado. *Honestidade:* na fase atual, nada disso é uma barreira forte; é uma vantagem a ser construída. | **Beneficiários:** estudantes de escola pública em territórios com IDEB abaixo da média do município. **Usuários de oferta:** universitários e profissionais voluntários. **Clientes:** empresas médias e grandes com programas ESG/ISP. **Early adopters:** 1 escola + 1 ONG/cursinho popular + 1 patrocinador-âncora no território piloto. |
+| (a) Estudante da periferia não tem acesso a reforço escolar acessível perto de casa ou online. (b) Quando o reforço existe (cursinho popular, ONG, monitor), ele não é encontrado, está lotado ou não tem horário compatível. (c) Faltam orientação e trilhas para entrar em tecnologia e no mercado de trabalho. | Plataforma gratuita para o estudante: (1) cadastro simples com leitura do comprovante de endereço *[planejado: Visão]*; (2) busca e agendamento de **monitorias voluntárias** por matéria; (3) materiais e **trilhas** de inclusão digital/produtiva *[planejado]*; (4) **assistente de IA** que tira dúvidas sobre o uso da plataforma e encaminha dúvidas de matéria a um monitor; (5) **painel de impacto** para patrocinadores. *No MVP hoje: (2), (4) e (5).* | **Reforço escolar gratuito, com monitor de verdade, para quem estuda na periferia — e impacto social comprovado para quem financia.** | Dados de **priorização territorial** (IDEB/INEP + IBGE) que mostram ao patrocinador onde o dinheiro rende mais; rede de voluntários e escolas que cresce com o uso (efeito de rede de dois lados); relatório de impacto automatizado. *Honestidade:* na fase atual, nada disso é uma barreira forte; é uma vantagem a ser construída. | **Beneficiários:** estudantes de escola pública em territórios com IDEB abaixo da média do município. **Usuários de oferta:** universitários e profissionais voluntários. **Clientes:** empresas médias e grandes com programas ESG/ISP. **Early adopters:** 1 escola + 1 ONG/cursinho popular + 1 patrocinador-âncora no território piloto. |
 | **Alternativas atuais:** aula particular (paga), cursinhos populares (vagas limitadas), conteúdo gratuito online sem acompanhamento, recuperação da própria escola. | **8. Métricas-Chave** | | **5. Canais** | |
 | | Estudantes ativos/mês (EAM), monitorias realizadas, horas de reforço, taxa de presença, evolução pré/pós em diagnósticos, voluntários ativos, custo por estudante ativo, receita recorrente contratada (MRR) e renovação de patrocínios. | | **Estudantes:** escola (coordenação), ONGs, grêmios, WhatsApp. **Voluntários:** universidades (extensão), FIAP, programas de voluntariado corporativo. **Patrocinadores:** venda consultiva B2B, comitês ESG, institutos empresariais, eventos de impacto. **Fomento:** editais e conselhos (CMDCA). | |
 | **7. Estrutura de Custos** | | | **6. Fontes de Receita** | |
@@ -92,8 +92,8 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 | 1. Problema | Estudantes da periferia querem reforço, mas não acham opção gratuita com horário compatível | **Validado (E1–E5)** | 5 de 5 estudantes travaram numa matéria e não tiveram reforço: custo, sala lotada, horário incompatível ou cursinho popular sem vaga | Amostra de 5, todos de escola pública; confirmar com dados QEdu/INEP do território |
 | 2. Segmentos | Escola e ONG são o canal de entrada, e o estudante não chega sozinho | **Validado (C1)** | Coordenação indicaria ~50 estudantes do Ensino Médio no 1º mês, com termo de consentimento, voluntário identificado e relatório mensal de frequência | Uma única escola; sem a escola, a aquisição B2C de adolescentes fica cara |
 | 3. PUV | "Monitor de verdade + gratuito" diferencia de conteúdo gratuito sem acompanhamento | **Validado (E1–E5)** | 5 de 5 escolheram 30 min com uma pessoa em vez de vídeos/exercícios; YouTube e IA citados como insuficientes | Preferência declarada; confirmar com a taxa de presença no piloto |
-| 4. Solução | Agendar monitoria em poucos cliques é o "primeiro valor" | **Validado (E1–E5)** | 5 de 5 agendaram sozinhos no MVP, entre 55 s e 1m45s (§9.2); ajuste: E1 hesitou nas tags de matéria | Monitoria depende de voluntário disponível; sem oferta, o produto não entrega |
-| 5. Canais | Universidades fornecem voluntários com custo de aquisição baixo (extensão / horas complementares) | **Validado (V1, V2)** | 2 de 2 topam o piloto; V1 precisa de 120 h de extensão e usaria o certificado automático; V2 quer horários online flexíveis | Aceite do certificado varia por faculdade; sazonalidade de provas e férias |
+| 4. Solução | Agendar monitoria em poucos cliques é o "primeiro valor" | **Validado (E1–E5)** | 5 de 5 agendaram sozinhos no MVP, entre 55 s e 1m45s (§9.2); ajuste: E1 hesitou na escolha da matéria | Monitoria depende de voluntário disponível; sem oferta, o produto não entrega |
+| 5. Canais | Universidades fornecem voluntários com custo de aquisição baixo (extensão / horas complementares) | **Validado (V1, V2)** | 2 de 2 topam o piloto; V1 precisa de 120 h de extensão e participaria se a plataforma emitisse o certificado de horas (ainda não existe no MVP: próximo passo); V2 quer horários online flexíveis | Aceite do certificado varia por faculdade; sazonalidade de provas e férias |
 | 6. Receitas | Empresas pagam R$ 15–25 por estudante/mês por impacto mensurado | **Validado (P1, P2)** | P1: R$ 20/aluno/mês está dentro do orçamento de ISP, aprovação via comitê de doações (exige compliance e LGPD); P2: valor recorrente facilita o orçamento anual | Intenção declarada, ainda sem contrato; ciclo de venda B2B longo (3–6 meses) |
 | 7. Custos | Equipe núcleo de 3 pessoas opera até 500 estudantes ativos | Projeção | Revisar no piloto | Subestimar suporte a voluntários |
 | 8. Métricas | Diagnóstico pré/pós na plataforma mostra evolução | Hipótese | Aplicar diagnóstico curto no piloto | Evolução pode refletir outros fatores (não é prova causal) |
@@ -101,7 +101,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 
 **O que mudou pelo caminho.**
 - *Começamos achando que o estudante poderia pagar um valor simbólico ou buscar a plataforma sozinho; ao analisar o perfil do público e conversar com a coordenação escolar (C1), percebemos que o canal da escola é indispensável para gerar confiança com as famílias e que o modelo precisa ser 100% gratuito para o aluno, financiado por ESG empresarial (P1, P2); por isso mudamos o pagador para empresas patrocinadoras, com relatórios automatizados de impacto.*
-- *Começamos achando que bastariam horários diurnos e foco em conteúdo gravado; ao entrevistar os estudantes (E1, E4, E5), percebemos que a maior disponibilidade é depois das 19h, em celulares simples ou compartilhados, e que a explicação humana supera vídeos ou IA isolada; por isso priorizamos no MVP o agendamento rápido mobile-first com filtro de horários noturnos e a emissão automática de certificado de extensão para atrair voluntários universitários (V1).*
+- *Começamos achando que bastariam horários diurnos e foco em conteúdo gravado; ao entrevistar os estudantes (E1, E4, E5), percebemos que a maior disponibilidade é depois das 19h, em celulares simples ou compartilhados, e que a explicação humana supera vídeos ou IA isolada; por isso mantivemos no MVP o agendamento rápido e leve para celular, que já mostra dia e hora de cada monitoria (inclusive à noite), e colocamos como próximos passos o filtro por turno e a emissão automática de certificado de extensão, para atrair voluntários universitários (V1).*
 
 ---
 
@@ -111,8 +111,8 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 
 | Participante | Problema que resolvemos | Benefício que justifica a participação |
 |---|---|---|
-| **Estudante** | Não encontra reforço gratuito; não tem com quem tirar dúvidas; não sabe por onde começar em tecnologia | Monitoria gratuita com uma pessoa real, materiais e trilhas, tutor de IA entre as sessões, certificado de trilha concluída |
-| **Voluntário / monitor** | Quer ajudar, mas não sabe onde; precisa de horas de extensão ou de voluntariado comprovadas | Agenda flexível (online), match por matéria, **certificado de horas** emitido automaticamente, reconhecimento no relatório |
+| **Estudante** | Não encontra reforço gratuito; não tem com quem tirar dúvidas; não sabe por onde começar em tecnologia | Monitoria gratuita com uma pessoa real e uma assistente de IA (AI Bits) que tira dúvidas sobre o uso da plataforma. *Próximos passos:* materiais, trilhas e certificado de trilha concluída |
+| **Voluntário / monitor** | Quer ajudar, mas não sabe onde; precisa de horas de extensão ou de voluntariado comprovadas | Agenda flexível (online), match por matéria, registro de presença. *Próximo passo:* **certificado de horas** emitido automaticamente e reconhecimento no relatório |
 | **Empresa patrocinadora** | Precisa investir em "S" do ESG com impacto mensurável e reportável; quer engajar funcionários | Programa pronto em um território escolhido com base em dados; **painel e relatório de impacto** (horas, estudantes, evolução); voluntariado corporativo estruturado; contrapartidas de marca |
 | **Escola pública** | Não tem braço para reforço individual; dificuldade em acompanhar quem está ficando para trás | Reforço extra sem custo, visão agregada de participação (sem expor dados individuais além do autorizado) |
 | **ONG / cursinho popular** | Gestão manual de voluntários, planilhas e relatórios para financiadores | Ferramenta gratuita de agenda, presença e relatórios, e mais visibilidade para captar recursos |
@@ -240,7 +240,7 @@ O MVP roda com créditos de estudante na Azure e ferramentas gratuitas. O custo 
 
 | Item | Valor | Premissa |
 |---|---|---|
-| IA (tutor) por estudante ativo | R$ 1,50/mês | ~30 perguntas/mês com um modelo de baixo custo |
+| IA (assistente AI Bits) por estudante ativo | R$ 1,50/mês | ~30 perguntas/mês com um modelo de baixo custo |
 | Infra escalável por estudante ativo | R$ 0,50/mês | Armazenamento, banda, logs |
 | Comunicação (SMS/WhatsApp de lembretes) | R$ 1,00/mês | Lembrete de monitoria reduz faltas |
 | Apoio a voluntários (certificados, eventuais deslocamentos) | R$ 1,00/mês | |
@@ -313,7 +313,7 @@ Premissa: contratos assinados de forma linear ao longo de 12 meses. A receita ac
 |---|---|
 | Perder 1 contrato Território (−R$ 6.000) | Resultado vai para ≈ −R$ 3.620/mês (receita 24.000; 750 ativos) |
 | Ocupação cai de 75% para 60% | Receita igual (preço por plano), variável cai: resultado melhora um pouco, **mas o impacto entregue cai**, e a renovação fica em risco |
-| Custo de IA dobra (R$ 3/estudante) | −R$ 1.460/mês: tutor precisa de limite de uso |
+| Custo de IA dobra (R$ 3/estudante) | −R$ 1.460/mês: a assistente precisa de limite de uso (o MVP já limita a 8 perguntas/min por cliente e 300/h no total) |
 | Renovação de patrocínios < 70% | Sem novos contratos, a operação volta ao déficit no ano seguinte: **renovação é a métrica crítica** |
 
 ---
@@ -367,7 +367,7 @@ Diferenciais que devemos destacar: (1) território escolhido por dados públicos
 
 ### 7.2 Estratégia ESG
 - **Conexão:** o programa entra no pilar "S" (Social) e no investimento social privado da empresa; mapeia em ODS 4 e ODS 10.
-- **Relatório:** painel mensal + relatório trimestral com metodologia explícita (fórmulas da §6). O formato deve ser fácil de colar no relatório de sustentabilidade do patrocinador [HIPÓTESE: validar o formato com 1 área de ESG].
+- **Relatório:** painel mensal + relatório trimestral com metodologia explícita (fórmulas da §6). O formato deve ser fácil de colar no relatório de sustentabilidade do patrocinador. Nas entrevistas, P1 e P2 confirmaram que a mensuração e a tabulação do impacto são a maior dor hoje (§2.2, bloco 9); o **formato exato** do relatório ainda precisa ser validado com o primeiro patrocinador.
 - **Médio e longo prazo:** contratos de 12 meses com renovação; o segundo ano oferece expansão de território com base nos dados do primeiro.
 
 ### 7.3 Proposta comercial (estrutura de 1 página)
@@ -416,7 +416,7 @@ O roteiro completo, com falas, elenco, tempos, telas e transições, está em um
 A sequência de cenas, as dicas de gravação e o checklist de publicação estão no [roteiro](Roteiro_Video_Pitch.md#plano-de-gravação).
 
 ### 9.1 Fluxo central a congelar até a gravação
-1. Abrir URL pública → 2. cadastro → 3. busca de monitoria por matéria → 4. agendamento confirmado → 5. (opcional) tutor de IA → 6. relatório de impacto gerado.
+1. Abrir URL pública → 2. cadastro → 3. busca de monitoria por matéria → 4. agendamento confirmado → 5. assistente AI Bits na tela Ajuda (só com a chave do OpenRouter configurada) → 6. voluntário registra a presença e o painel `/impacto` atualiza (relatório do robô RPA só se ele for entregue).
 O **mínimo** para a nota de demo é 1→4 funcionando de verdade. Os passos 5 e 6 só entram se estiverem no ar.
 
 ### 9.2 Evidência de valor (rubrica: 3,5 pontos) — teste de usabilidade em 2 dias
@@ -427,7 +427,7 @@ Esta é a ação de maior retorno até 19/11.
 4. **Antes/depois:** pergunte "como você conseguiria esse reforço hoje, e quanto tempo levaria?" e compare com o tempo medido na plataforma.
 5. **Documentar:** planilha + prints (sem rostos/dados pessoais) num anexo do PDF. **Usar no pitch apenas os números reais obtidos.**
 
-**Resultado (14/11/2026, 5 estudantes de escola pública, E1–E5):** 5 de 5 agendaram uma monitoria **sozinhos** no MVP; tempo até a confirmação entre **55 s e 1m45s** (média ≈ 1m14s). Único ponto de atrito: E1 hesitou na escolha das tags de matéria. Sugestões: manter a plataforma leve para celular compartilhado e internet instável (E4). Antes/depois: hoje, 4 dos 5 nunca conseguiram reforço e 1 procurou cursinho popular sem vaga. Detalhes na [planilha de validação](Roteiro_Entrevistas_Validacao.md#6-planilha-de-registro-consolidada). Ainda faltam a nota de facilidade (1–5) e o teste com voluntários na tela de horários.
+**Resultado (14/11/2026, 5 estudantes de escola pública, E1–E5):** 5 de 5 agendaram uma monitoria **sozinhos** no MVP; tempo até a confirmação entre **55 s e 1m45s** (média ≈ 1m14s). Único ponto de atrito: E1 hesitou na escolha da matéria. Sugestões: manter a plataforma leve para celular compartilhado e internet instável (E4). Antes/depois: hoje, 4 dos 5 nunca conseguiram reforço e 1 procurou cursinho popular sem vaga. Detalhes na [planilha de validação](Roteiro_Entrevistas_Validacao.md#6-planilha-de-registro-consolidada). Ainda faltam a nota de facilidade (1–5) e o teste com voluntários na tela de horários.
 
 ---
 
@@ -468,7 +468,7 @@ A ficha (slide 20) está em um arquivo separado, pronta para abrir o README do r
 | 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ⬜ anexar planilha e prints ao PDF |
 | 12 | ODS identificados e contribuição explicada | Slide 14 (obrigatório) | ✅ roteiro bloco 5, ficha técnica |
 | 13 | LGPD e acessibilidade mencionadas (menores, consentimento, legendas) | Slide 21 | ✅ §1.2, ficha técnica, roteiro |
-| 14 | Ficha Técnica do MVP no README | Entregável | 🟡 [ficha criada](../FICHA_TECNICA_MVP.md) · ⬜ preencher URL/repo e colocar no README |
+| 14 | Ficha Técnica do MVP no README | Entregável | ✅ ficha no README e em [arquivo próprio](../FICHA_TECNICA_MVP.md), com o repositório · ⬜ URL do MVP |
 | 15 | **PDF único** com Lean Canvas + modelo + links clicáveis (vídeo, MVP, repo) | Formato | ⬜ |
 | 16 | Links públicos funcionando durante a correção (até 1 semana após 19/11) | Regras da GS | ⬜ |
 | 17 | Envio por **um** integrante no portal até 19/11, 23h55 | Regras da GS | ⬜ envio de Business: Eduardo Mazelli |
