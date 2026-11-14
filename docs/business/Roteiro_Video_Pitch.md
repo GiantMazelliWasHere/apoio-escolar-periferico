@@ -55,7 +55,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 
 > "A ponte é o Apoio Escolar Periférico: uma plataforma gratuita que conecta estudantes de escolas públicas a monitores voluntários de verdade, universitários e profissionais.
 >
-> O estudante se cadastra pelo celular, escolhe a matéria e agenda uma monitoria no horário dele. Entre uma aula e outra, tem materiais, trilhas de tecnologia e um tutor de inteligência artificial para tirar dúvidas.
+> O estudante se cadastra pelo celular, escolhe a matéria e agenda uma monitoria no horário dele. E, se travar no uso do site, uma assistente de inteligência artificial explica o passo a passo.
 >
 > O que muda? Reforço que antes custava caro passa a ser gratuito, perto e no tempo dele.
 >
@@ -63,7 +63,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 >
 > Agora o mais importante: mostrar funcionando."
 
-[Se o tutor de IA não estiver no MVP, cortem "e um tutor de inteligência artificial para tirar dúvidas".]
+[Se a assistente AI Bits não estiver respondendo na URL pública (chave do OpenRouter), cortem a frase "E, se travar no uso do site…".]
 
 **Transição:** "mostrar funcionando" → corte para a gravação de tela, já com a URL pública visível.
 
@@ -86,14 +86,14 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 >
 > **[2:15 — Monitoria: valor principal]** "Ela procura 'matemática', vê os monitores disponíveis nesta semana e agenda para quinta, às dezoito horas. Pronto: confirmação na tela."
 >
-> **[2:35 — Tutor de IA]** "Enquanto a quinta não chega, ela pergunta ao tutor: 'como resolver equação do primeiro grau?'. O tutor explica passo a passo e sugere levar a dúvida para o monitor."
+> **[2:35 — Assistente de IA]** "Ficou com dúvida sobre como remarcar? Ela pergunta ao assistente: 'como cancelo minha monitoria?'. Ele explica o passo a passo. E quando a dúvida é de matéria, ele indica agendar com um monitor."
 > [Ajustar ao que a disciplina de IA Generativa entregar.]
 >
 > **[2:45 — Automação e impacto]** "Do outro lado, nosso robô de automação registra a presença e monta o relatório de impacto do patrocinador, sem planilha manual."
 > [Mostrar o relatório gerado de verdade.]
 >
-> **[2:55]** "Do primeiro clique à monitoria agendada: menos de dois minutos."
-> [PREENCHER com o tempo medido no teste de usabilidade. Se não houver teste, cortem esta frase.]
+> **[2:55]** "Do primeiro clique à monitoria agendada: no nosso teste, pouco mais de um minuto."
+> [Dado real: 5 estudantes, entre 55 s e 1m45s, média ≈ 1m14s (§9.2 da entrega).]
 
 **Preparação para a demo mostrar o painel de impacto mudando ao vivo:** a presença só pode ser registrada a partir de 1 hora antes da monitoria. Isso é proposital, para não inflar os indicadores. Antes de gravar, um voluntário cria um horário que comece em cerca de 30 minutos; na gravação, a estudante agenda esse horário, o voluntário marca "Realizada" e o painel `/impacto` atualiza na hora.
 
@@ -134,9 +134,9 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 >
 > Contribuímos para o ODS 4, educação de qualidade, e para o ODS 10, redução das desigualdades, porque o reforço chega aos territórios que os dados apontam como mais vulneráveis.
 >
-> E o modelo escala por núcleo: cada escola nova replica a mesma estrutura."
+> No nosso teste com cinco estudantes de escola pública, os cinco agendaram sozinhos."
 
-[Se houver teste documentado, troquem a última frase por: "No nosso teste com X estudantes, Y conseguiram agendar sozinhos." Usem **somente** números reais.]
+[Número real do teste de usabilidade de 14/11/2026 (§9.2 da entrega). Se sobrar tempo, acrescentem: "E o modelo escala por núcleo: cada escola nova replica a mesma estrutura."]
 
 ---
 
@@ -212,6 +212,6 @@ Legendem o vídeo. A plataforma de vídeo pode gerar legendas automáticas, mas 
 - [ ] Nenhum número inventado; projeções e metas estão rotuladas como tal
 - [ ] Nenhum dado pessoal real aparece na tela
 - [ ] Legendas revisadas
-- [ ] Vídeo publicado com **link público** (YouTube "não listado" ou Drive com acesso "qualquer pessoa com o link")
+- [ ] Vídeo publicado no **YouTube como "não listado"** (link público, decisão do time)
 - [ ] Link testado numa janela anônima
 - [ ] Link colado no PDF único de Business
