@@ -89,11 +89,24 @@ flowchart LR
 | Princípio | Como o MVP atende | Status |
 |---|---|---|
 | Segurança e LGPD by design | Credenciais em variáveis de ambiente/Key Vault; dados mínimos do estudante; consentimento do responsável para menores (LGPD art. 14); aviso claro do que é coletado e por quê | 🟡 |
-| Acessível de verdade | Contraste adequado, leitor de tela, navegação por teclado, linguagem simples | 🟡 |
+| Acessível de verdade | Contraste acima do WCAG AA em todas as combinações (tabela abaixo), modo escuro automático, link "Pular para o conteúdo", rótulos e regiões ARIA, foco visível para navegação por teclado, alvos de toque de 44 a 52 px no celular, linguagem simples | ✅ |
 | Resiliente ao mundo real | Páginas leves para celular de entrada e conexão fraca; lembretes por SMS/WhatsApp | 🟡 |
 | IA responsável | A assistente tem escopo limitado ao uso da plataforma, não guarda a conversa e encaminha dúvidas de matéria ao monitor humano; endereço extraído sempre confirmado pelo usuário | 🟡 |
 | Integração real | Componentes conversam por API e banco, não por prints colados lado a lado | 🟡 |
 | Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 27 testes) |
+
+### Contraste da paleta do MVP (WCAG 2.1, mínimo AA = 4,5:1 para texto normal)
+
+| Combinação | Cores | Contraste |
+|---|---|---|
+| Texto principal / fundo claro | `#1c1b19` sobre `#fbfaf7` | 16,5:1 |
+| Texto secundário / fundo claro | `#5a5750` sobre `#fbfaf7` | 6,9:1 |
+| Botão (texto / verde da marca) | `#ffffff` sobre `#0b6e4f` | 6,3:1 |
+| Texto principal / fundo escuro | `#f1efe9` sobre `#141412` | 16,0:1 |
+| Texto secundário / fundo escuro | `#b6b2a8` sobre `#141412` | 8,7:1 |
+| Botão no modo escuro | `#0b1f17` sobre `#4fc79a` | 8,2:1 |
+
+Fundo off-white e texto quase preto (sem preto ou branco puros) reduzem o brilho excessivo; o modo escuro usa fundo grafite em vez de preto absoluto. Cores semânticas: verde para ação e sucesso, vermelho para erro.
 
 ---
 
