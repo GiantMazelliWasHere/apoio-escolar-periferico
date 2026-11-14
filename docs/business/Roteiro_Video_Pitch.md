@@ -86,7 +86,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). A 
 >
 > **[2:15 — Monitoria: valor principal]** "Ela procura 'matemática', vê os monitores disponíveis nesta semana e agenda para quinta, às dezoito horas. Pronto: confirmação na tela."
 >
-> **[2:35 — Tutor de IA]** "Enquanto a quinta não chega, ela pergunta ao tutor: 'como resolver equação do primeiro grau?'. O tutor explica passo a passo e sugere levar a dúvida para o monitor."
+> **[2:35 — Assistente de IA]** "Ficou com dúvida sobre como remarcar? Ela pergunta ao assistente: 'como cancelo minha monitoria?'. Ele explica o passo a passo. E quando a dúvida é de matéria, ele indica agendar com um monitor."
 > [Ajustar ao que a disciplina de IA Generativa entregar.]
 >
 > **[2:45 — Automação e impacto]** "Do outro lado, nosso robô de automação registra a presença e monta o relatório de impacto do patrocinador, sem planilha manual."
@@ -212,6 +212,6 @@ Legendem o vídeo. A plataforma de vídeo pode gerar legendas automáticas, mas 
 - [ ] Nenhum número inventado; projeções e metas estão rotuladas como tal
 - [ ] Nenhum dado pessoal real aparece na tela
 - [ ] Legendas revisadas
-- [ ] Vídeo publicado com **link público** (YouTube "não listado" ou Drive com acesso "qualquer pessoa com o link")
+- [ ] Vídeo publicado no **YouTube como "não listado"** (link público, decisão do time)
 - [ ] Link testado numa janela anônima
 - [ ] Link colado no PDF único de Business
