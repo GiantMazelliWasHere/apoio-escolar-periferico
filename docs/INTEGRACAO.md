@@ -52,7 +52,13 @@ Para conferir: `GET /api/v1/escolas` ou a tabela "Prioridade territorial das esc
   .venv/Scripts/python rodar_local.py
   ```
   Com o núcleo rodando, as 4 escolas periféricas passam a `fonte_prioridade = "pipeline"` (testado em 15/11/2026: `{"atualizadas": 4}`).
-- **Rodar no Airflow:** seguir o README de `dados/` (Linux, WSL ou Docker), copiando os dois arquivos de `dados/dags/` para a pasta de DAGs.
+- **Rodar no Airflow (Docker):** com o núcleo rodando na porta 8000 e a chave em `dados/.env` (`INTEGRATION_API_KEY=...`, fora do git):
+  ```bash
+  cd dados
+  docker compose up -d
+  ```
+  Abrir http://localhost:8080 (sem login: o acesso anônimo é admin, **só para uso local**, via [`webserver_config.py`](../dados/airflow/webserver_config.py)). A DAG aparece ativa; para rodar na hora: botão ▶ ou `docker compose exec airflow airflow dags trigger etl_apoio_escolar_periferico`. Testado em 15/11/2026 com Airflow 2.10.5: as 3 tarefas em `success` e `{'atualizadas': 4}` no núcleo. Para desligar: `docker compose down`. Sem Docker, seguir o README de `dados/` (Linux ou WSL).
+- **Evidências e PDF da disciplina:** os prints estão em [`dados/evidencias/`](../dados/evidencias/) e o diagrama em [`diagrama_pipeline.html`](../dados/evidencias/diagrama_pipeline.html). [`montar_pdf.py`](../dados/evidencias/montar_pdf.py) gera [`Entrega_BigData_ApoioEscolar_com_evidencias.pdf`](../dados/Entrega_BigData_ApoioEscolar_com_evidencias.pdf): o PDF do Jó com as duas caixas apontando para os anexos A (diagrama) e B (prints do Airflow e do `/impacto`). O PDF original fica intacto ao lado.
 - **README e PDF de `dados/`:** são a documentação da entrega como foi feita para a disciplina. O dicionário de dados do PDF (`dim_municipios_ibge`, `fact_escolas_vulnerabilidade`, nota de 1 a 10) é o modelo-alvo; o que roda hoje é a tabela da camada Trusted descrita no README (`cod_municipio`, `cod_escola`, `nome_escola`, `ideb_anos_finais`, `indice_prioridade`).
 
 ### Núcleo → RPA: presenças para o relatório de impacto
