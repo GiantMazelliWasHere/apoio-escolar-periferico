@@ -32,6 +32,8 @@ Fluxo central, do primeiro clique ao resultado:
 5. O **painel de impacto** (`/impacto`) atualiza os indicadores na hora.
 6. A tela **Ajuda** (`/ajuda`) tem perguntas frequentes e a assistente **AI Bits** (IA Generativa), que tira dúvidas sobre o uso do site e encaminha dúvidas de matéria ao monitor.
 
+7. O **pipeline de Dados** (Airflow, pasta [`dados/`](dados/)) calcula o Índice de Prioridade Educacional das escolas (IDEB e infraestrutura do INEP + malha do IBGE, simulados) e grava no núcleo pela API; o painel de impacto mostra o índice de cada escola e a origem.
+
 APIs de integração para Dados e RPA: ver [docs/INTEGRACAO.md](docs/INTEGRACAO.md).
 
 ## Rodar localmente

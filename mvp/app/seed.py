@@ -1,8 +1,10 @@
 """Dados SINTÉTICOS de demonstração.
 
 Escolas, pessoas e índices abaixo são fictícios: nenhum nome, e-mail ou número
-corresponde a uma pessoa ou escola real. O índice de prioridade será substituído
-pelo pipeline de Dados (INEP/IBGE) via PUT /api/v1/escolas/prioridade.
+corresponde a uma pessoa ou escola real. Os códigos INEP começam com 99 (UF
+inexistente) para nunca coincidirem com uma escola real; são os mesmos que o
+pipeline de Dados (dados/dags) usa para enviar a prioridade territorial via
+PUT /api/v1/escolas/prioridade.
 
 Não criamos histórico de monitorias passadas: o painel de impacto mostra apenas
 o que acontecer de verdade na plataforma (evita números que pareçam resultados).
@@ -21,12 +23,12 @@ from .models import Escola, Horario, Usuario
 from .security import hash_senha
 
 ESCOLAS = [
-    ("EE Exemplo Jardim das Flores", "Jardim das Flores", True, 0.82),
-    ("EE Exemplo Vila Esperança", "Vila Esperança", True, 0.77),
-    ("EE Exemplo Parque do Sol", "Parque do Sol", True, 0.71),
-    ("EE Exemplo Morro Azul", "Morro Azul", True, 0.68),
-    ("EE Exemplo Centro Novo", "Centro Novo", False, 0.35),
-    ("EE Exemplo Bela Vista", "Bela Vista", False, 0.29),
+    ("EE Exemplo Jardim das Flores", "Jardim das Flores", True, 0.82, "99000101"),
+    ("EE Exemplo Vila Esperança", "Vila Esperança", True, 0.77, "99000102"),
+    ("EE Exemplo Parque do Sol", "Parque do Sol", True, 0.71, "99000103"),
+    ("EE Exemplo Morro Azul", "Morro Azul", True, 0.68, "99000104"),
+    ("EE Exemplo Centro Novo", "Centro Novo", False, 0.35, "99000105"),
+    ("EE Exemplo Bela Vista", "Bela Vista", False, 0.29, "99000106"),
 ]
 
 VOLUNTARIOS = [
@@ -66,8 +68,8 @@ def _criar_horarios_futuros(db: Session, agora: datetime) -> None:
 def seed_demo(db: Session) -> None:
     agora = datetime.now()
     if db.scalar(select(Escola).limit(1)) is None:
-        for nome, bairro, prioritario, indice in ESCOLAS:
-            db.add(Escola(nome=nome, bairro=bairro, municipio="Município Exemplo", territorio_prioritario=prioritario, indice_prioridade=indice, fonte_prioridade="sintetico"))
+        for nome, bairro, prioritario, indice, inep in ESCOLAS:
+            db.add(Escola(nome=nome, bairro=bairro, municipio="Município Exemplo", territorio_prioritario=prioritario, indice_prioridade=indice, fonte_prioridade="sintetico", codigo_inep=inep))
         db.flush()
         primeira = db.scalar(select(Escola).order_by(Escola.id))
         db.add(Usuario(nome="Estudante Demo", email="estudante.demo@exemplo.org", senha_hash=hash_senha("estudante123"), papel="estudante", escola_id=primeira.id, ano_escolar="9º ano EF", bairro=primeira.bairro, consentimento_responsavel=True, consentimento_em=agora))
@@ -75,6 +77,11 @@ def seed_demo(db: Session) -> None:
         for nome, email, formacao, _ in VOLUNTARIOS:
             db.add(Usuario(nome=nome, email=email, senha_hash=hash_senha("voluntario123"), papel="voluntario", formacao=formacao))
         db.flush()
+
+    # Bancos criados antes da integração com o pipeline de Dados não têm o código INEP.
+    codigos = {nome: inep for nome, _, _, _, inep in ESCOLAS}
+    for escola in db.scalars(select(Escola).where(Escola.codigo_inep.is_(None))).all():
+        escola.codigo_inep = codigos.get(escola.nome)
 
     # Sempre garante horários futuros para a demo não "envelhecer".
     tem_futuro = db.scalar(select(Horario).where(Horario.inicio > agora + timedelta(days=2)).limit(1))

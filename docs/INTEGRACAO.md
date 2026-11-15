@@ -7,7 +7,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | Pasta | Disciplina | Responsável | Status |
 |---|---|---|---|
 | `mvp/` | Núcleo (front + API + banco) | Equipe | ✅ fluxo central funcionando localmente, com testes |
-| `dados/` | Big Data Architecture & Data Integration | Jó Sales | ⬜ aguardando entrega |
+| `dados/` | Big Data Architecture & Data Integration | Jó Sales | ✅ entrega copiada e integrada ao núcleo: a DAG grava a prioridade das escolas pela API e o painel `/impacto` mostra o resultado |
 | `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
 | `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)) e integrada ao cadastro do núcleo; testada com EasyOCR real |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | ⬜ aguardando entrega |
@@ -30,11 +30,30 @@ Integrações máquina-a-máquina usam o cabeçalho **`X-API-Key`**, com o valor
   {"escola_id": 2, "territorio_prioritario": false, "indice_prioridade": 0.31}
 ]
 ```
-Resposta: `{"atualizadas": 2}`. A escola passa a ter `fonte_prioridade = "pipeline"`.
-**Sugestão para a DAG do Airflow:** ingerir IDEB/Censo Escolar (INEP) + IBGE → calcular o índice → chamar este endpoint como última tarefa.
-Para conferir: `GET /api/v1/escolas`.
+Resposta: `{"atualizadas": 2}`. A escola passa a ter `fonte_prioridade = "pipeline"`. Código INEP desconhecido é ignorado (não conta em `atualizadas`).
+Para conferir: `GET /api/v1/escolas` ou a tabela "Prioridade territorial das escolas" em `/impacto`.
 
-> Hoje as escolas do seed são **fictícias**. Quando o pipeline chegar, vale trocá-las por escolas reais do território (nome + código INEP), que são dados públicos.
+- **Origem do código:** a pasta [`dados/`](../dados/) traz a entrega da disciplina (zip e PDF do Jó Sales). A DAG [`dag_etl_apoio_escolar.py`](../dados/dags/dag_etl_apoio_escolar.py) mantém as três tarefas da entrega (`extract_inep_ibge` → `transform_data` → `load_to_azure`), com CSVs Raw e Trusted entre elas. A lógica de cada etapa foi para [`etl_apoio_escolar.py`](../dados/dags/etl_apoio_escolar.py), para rodar e testar também sem o Airflow.
+- **Regras da entrega mantidas:** só escolas em região periférica entram na camada Trusted; Índice de Prioridade Educacional = (10 − IDEB anos finais) + 2 sem laboratório de informática + 2 sem internet.
+- **Mudanças da integração:**
+  - as escolas simuladas são as 6 do seed do MVP, com **código INEP fictício** `99000101` a `99000106` (prefixo 99 é uma UF inexistente, então nunca coincide com escola real). O seed grava esses códigos e completa bancos antigos;
+  - IDEB faltante é imputado pela **média das escolas do recorte** (a entrega usava zero, o que tornava a escola sem nota a mais prioritária de todas);
+  - a carga chama de verdade este endpoint. O índice vai **normalizado de 0 a 1** (índice ÷ 14, o máximo possível) e as escolas do recorte vão com `territorio_prioritario = true`; as de fora do recorte mantêm o valor que já tinham;
+  - `schedule` no lugar de `schedule_interval` e Airflow fixado em `<3` no `requirements.txt` (os comandos do README da entrega são do Airflow 2); a pasta temporária usa o diretório temporário do sistema (funciona também no Windows).
+- **Configuração da carga:** `MVP_API_URL` (ex.: `http://localhost:8000` ou a URL do App Service) e `INTEGRATION_API_KEY` (a mesma do núcleo), como variáveis de ambiente do Airflow. Sem `MVP_API_URL`, a carga é só simulada, como na entrega original; com a URL e sem a chave, a tarefa falha.
+- **Rodar sem Airflow** (Windows, ou para gravar a demo):
+  ```bash
+  cd dados
+  python -m venv .venv
+  .venv/Scripts/python -m pip install "pandas>=2.0.0" pytest
+  .venv/Scripts/python -m pytest -q
+  set MVP_API_URL=http://localhost:8000
+  set INTEGRATION_API_KEY=<mesma chave do mvp/.env>
+  .venv/Scripts/python rodar_local.py
+  ```
+  Com o núcleo rodando, as 4 escolas periféricas passam a `fonte_prioridade = "pipeline"` (testado em 15/11/2026: `{"atualizadas": 4}`).
+- **Rodar no Airflow:** seguir o README de `dados/` (Linux, WSL ou Docker), copiando os dois arquivos de `dados/dags/` para a pasta de DAGs.
+- **README e PDF de `dados/`:** são a documentação da entrega como foi feita para a disciplina. O dicionário de dados do PDF (`dim_municipios_ibge`, `fact_escolas_vulnerabilidade`, nota de 1 a 10) é o modelo-alvo; o que roda hoje é a tabela da camada Trusted descrita no README (`cod_municipio`, `cod_escola`, `nome_escola`, `ideb_anos_finais`, `indice_prioridade`).
 
 ### Núcleo → RPA: presenças para o relatório de impacto
 `GET /api/v1/agendamentos.csv` (exige `X-API-Key`)
