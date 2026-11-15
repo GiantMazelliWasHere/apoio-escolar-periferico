@@ -9,7 +9,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | `mvp/` | Núcleo (front + API + banco) | Equipe | ✅ fluxo central funcionando localmente, com testes |
 | `dados/` | Big Data Architecture & Data Integration | Jó Sales | ⬜ aguardando entrega |
 | `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
-| `visao/` | Applied Computer Vision | Edson Leonardo | ⬜ aguardando entrega |
+| `visao/` | Applied Computer Vision | Edson Leonardo | 🟡 entrega no repositório da disciplina ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)); falta copiar para `visao/` e integrar ao cadastro |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | ⬜ aguardando entrega |
 | `.github/workflows/` + Azure | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 CI pronto; deploy em modelo |
 | `maker/` | Project-Based Maker Lab | Vinicius Souza | ⬜ aguardando entrega |
