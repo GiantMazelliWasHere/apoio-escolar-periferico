@@ -175,6 +175,8 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 
 ## Plano de gravação
 
+**Montagem, legendas e publicação:** Eduardo Mazelli. Cada integrante grava a própria fala e envia o arquivo original para ele.
+
 ### Sequência de cenas
 | Tempo | Cena | Tipo | Dica |
 |---|---|---|---|
