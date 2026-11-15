@@ -83,7 +83,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 > **[1:30 — Acesso]** "Esta é a plataforma no ar, nesta URL pública. Vou entrar como a estudante que acabamos de conhecer."
 >
 > **[1:40 — Cadastro com Visão Computacional]** "No cadastro, ela tira uma foto do comprovante de endereço. O sistema identifica o documento, corrige a imagem e extrai o endereço. Ela só confere e confirma. Nenhum dado é salvo sem confirmação."
-> [Só se a integração da Visão estiver no MVP. Usem **documento sintético**, nunca uma conta real.]
+> [A Visão está integrada ao cadastro do MVP. Gravem num ambiente com o OCR instalado (`requirements-visao.txt`) e usem uma conta do **dataset sintético** (`visao/dataset_sintetico`), nunca uma conta real.]
 >
 > **[2:00 — Território e Dados]** "Com o endereço, a plataforma reconhece que ela estuda num território prioritário, definido pelo nosso pipeline de dados públicos do INEP."
 > [Só se o pipeline de Dados alimentar o MVP.]

@@ -9,7 +9,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | `mvp/` | Núcleo (front + API + banco) | Equipe | ✅ fluxo central funcionando localmente, com testes |
 | `dados/` | Big Data Architecture & Data Integration | Jó Sales | ⬜ aguardando entrega |
 | `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
-| `visao/` | Applied Computer Vision | Edson Leonardo | ⬜ aguardando entrega |
+| `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)) e integrada ao cadastro do núcleo; testada com EasyOCR real |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | ⬜ aguardando entrega |
 | `.github/workflows/` + Azure | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 CI pronto; deploy em modelo |
 | `maker/` | Project-Based Maker Lab | Vinicius Souza | ⬜ aguardando entrega |
@@ -68,11 +68,34 @@ Resposta:
 - **Privacidade:** só o texto da pergunta vai ao provedor; nada do cadastro é enviado e a conversa não é gravada. `acao` só aceita destinos de uma lista fixa do servidor.
 - **README de `ia/`:** é a documentação da entrega da disciplina, mantida pelo autor no repositório dele (`EdLeo0708/GAE`). Ele descreve a entrega como foi avaliada pelo professor de IA Generativa, por isso pode usar outro nome de produto e citar telas que o MVP integrado não tem. A referência do produto integrado é este repositório.
 
+### Front → núcleo → Visão Computacional: endereço pela foto da conta
+`POST /api/v1/visao/endereco` (chamado pela tela [`/cadastro/estudante`](../mvp/app/templates/cadastro_estudante.html); `multipart/form-data` com o campo `arquivo`; exige o cabeçalho `X-CSRF-Token` da sessão)
+
+Resposta:
+```json
+{
+  "logradouro": "Avenida Rua dos Palmares",
+  "numero": "141",
+  "bairro": "Grajau",
+  "cep": "07657-532",
+  "uf": "SP",
+  "empresa": "SABESP",
+  "empresa_nome": "Sabesp (água)",
+  "confianca": 1.0,
+  "fonte": "ocr"
+}
+```
+- **Origem do código:** a pasta [`visao/`](../visao/) é a cópia fiel do repositório da disciplina (`EdLeo0708/Applied-Computer-Vision`, commit `9cdac0e`). O núcleo usa [`mvp/app/visao.py`](../mvp/app/visao.py), com o mesmo pipeline: decodificação em memória (foto ou 1ª página do PDF), cantos do papel por Canny + aproximação poligonal, `cv2.warpPerspective`, recorte do cabeçalho e da região do endereço, EasyOCR e regras que separam o endereço do cliente do endereço da sede (CEPs e "Av. das Nações Unidas" ignorados). Mudanças em relação à entrega: o papel corrigido é ampliado para 2400 px de largura antes do OCR, o bairro é lido também pela linha abaixo do logradouro (formato das contas Sabesp e Claro) e o "Nº" mal lido pelo OCR ("NE692", "NI6O3") é tratado.
+- **Acerto medido com EasyOCR real** nas 15 contas sintéticas de `visao/dataset_sintetico` (5 por empresa): imagem plana: CEP 15/15, número 15/15, bairro 10/15; foto simulada (papel inclinado sobre fundo escuro): CEP 10/15, bairro 9/15. Os erros que sobram são letras trocadas pelo OCR, por isso a tela sempre pede para o estudante **conferir e corrigir**. Cerca de 11 s por conta num PC comum (CPU).
+- **O que é gravado:** nada nesta chamada. A foto fica só na memória do processo. No envio do cadastro, o estudante confirma e o núcleo grava **só bairro e CEP** (coluna `usuarios.cep`, adicionada automaticamente em bancos antigos).
+- **Instalação:** OpenCV, NumPy e pypdfium2 estão no `requirements.txt`. O OCR (EasyOCR + PyTorch CPU, ~1 GB) fica em [`mvp/requirements-visao.txt`](../mvp/requirements-visao.txt). Sem ele, `fonte` vem `"indisponivel"`, o botão da foto não aparece e o cadastro pede bairro e CEP digitados. O CI instala só o `requirements-dev.txt` e testa a Visão com OCR simulado.
+- **Falhas e limites:** arquivo de até 8 MB (`413`), só JPG, PNG, WebP ou PDF (`415`), arquivo ilegível (`422`), 6 leituras por minuto por cliente e 120 por hora no total (`429`). Se o OCR quebrar, a resposta vem com `"fonte": "erro"` e campos vazios; o erro fica só no log.
+- **README de `visao/`:** é a documentação da entrega como foi avaliada pelo professor de Visão Computacional (usa outro nome de produto e um hub web próprio em Flask). A referência do produto integrado é este repositório.
+
 ## Contratos a criar quando as entregas chegarem
 
 | Componente | Ponto de encaixe sugerido | O que o núcleo precisa |
 |---|---|---|
-| **Visão** (extração de endereço) | Tela de cadastro: botão "enviar foto do comprovante" → serviço de Visão → campos preenchidos para o estudante **confirmar** | Endpoint do serviço (ex.: `POST /extrair-endereco` recebendo a imagem e devolvendo `{logradouro, numero, bairro, cep, cidade, confianca}`). Hoje o cadastro pede só o bairro, de forma opcional |
 | **Maker Lab** | QR code na peça fabricada | Só a URL pública do MVP |
 
 ## Executar o núcleo localmente
@@ -94,6 +117,7 @@ Abrir http://localhost:8000. No Linux/macOS, use `.venv/bin/python`.
    - `SECRET_KEY=<valor longo e aleatório>`
    - `INTEGRATION_API_KEY=<outro valor aleatório>`
    - `OPENROUTER_API_KEY=<chave do OpenRouter>` (assistente da tela "Ajuda"; sem ela, só as perguntas frequentes)
+   - Leitura da foto da conta (opcional): o build instala só o `requirements.txt`, então o OCR fica desligado. Para ligar, publicar com o `requirements-visao.txt` e usar um plano com pelo menos 3,5 GB de RAM (B2 ou P1v3): o EasyOCR ocupa ~1 GB de RAM e o B1 tem 1,75 GB
    - `DATABASE_URL=sqlite:////home/data/apoio.db` (o `/home` é persistente no App Service; para produção real, usar PostgreSQL)
    - `SCM_DO_BUILD_DURING_DEPLOYMENT=true` (instala o `requirements.txt` no deploy)
 3. **Comando de inicialização:** `sh startup.sh`

@@ -1,0 +1,197 @@
+[
+  {
+    "file_name": "enel_01.png",
+    "company": "ENEL",
+    "ground_truth": {
+      "titular": "LUCAS PEREIRA",
+      "logradouro": "ESTRADA DO COPO",
+      "numero": "1895",
+      "bairro": "ITAQUERA",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "06685-434"
+    }
+  },
+  {
+    "file_name": "enel_02.png",
+    "company": "ENEL",
+    "ground_truth": {
+      "titular": "JULIANA LIMA",
+      "logradouro": "RUA BOA VISTA",
+      "numero": "2089",
+      "bairro": "CAPAO REDONDO",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "01929-465"
+    }
+  },
+  {
+    "file_name": "enel_03.png",
+    "company": "ENEL",
+    "ground_truth": {
+      "titular": "LUCAS PEREIRA",
+      "logradouro": "AVENIDA PRINCIPAL",
+      "numero": "3087",
+      "bairro": "CAPAO REDONDO",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "07189-712"
+    }
+  },
+  {
+    "file_name": "enel_04.png",
+    "company": "ENEL",
+    "ground_truth": {
+      "titular": "JOSE DOS SANTOS",
+      "logradouro": "RUA DAS FLORES",
+      "numero": "692",
+      "bairro": "BRASILANDIA",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "07825-441"
+    }
+  },
+  {
+    "file_name": "enel_05.png",
+    "company": "ENEL",
+    "ground_truth": {
+      "titular": "ANA PAULA SOUZA",
+      "logradouro": "AVENIDA PRINCIPAL",
+      "numero": "603",
+      "bairro": "ITAQUERA",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "09624-902"
+    }
+  },
+  {
+    "file_name": "sabesp_01.png",
+    "company": "SABESP",
+    "ground_truth": {
+      "titular": "MARIA DA SILVA",
+      "logradouro": "RUA BOA VISTA",
+      "numero": "738",
+      "bairro": "CIDADE TIRADENTES",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "06942-714"
+    }
+  },
+  {
+    "file_name": "sabesp_02.png",
+    "company": "SABESP",
+    "ground_truth": {
+      "titular": "LUCAS PEREIRA",
+      "logradouro": "RUA DOS PALMARES",
+      "numero": "141",
+      "bairro": "GRAJAU",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "07657-532"
+    }
+  },
+  {
+    "file_name": "sabesp_03.png",
+    "company": "SABESP",
+    "ground_truth": {
+      "titular": "ANA PAULA SOUZA",
+      "logradouro": "RUA BOA VISTA",
+      "numero": "1336",
+      "bairro": "ITAQUERA",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "06230-731"
+    }
+  },
+  {
+    "file_name": "sabesp_04.png",
+    "company": "SABESP",
+    "ground_truth": {
+      "titular": "MARIA DA SILVA",
+      "logradouro": "RUA DOS PALMARES",
+      "numero": "3227",
+      "bairro": "CAPAO REDONDO",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "04092-760"
+    }
+  },
+  {
+    "file_name": "sabesp_05.png",
+    "company": "SABESP",
+    "ground_truth": {
+      "titular": "JULIANA LIMA",
+      "logradouro": "RUA BOA VISTA",
+      "numero": "2379",
+      "bairro": "GRAJAU",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "04063-108"
+    }
+  },
+  {
+    "file_name": "claro_01.png",
+    "company": "CLARO",
+    "ground_truth": {
+      "titular": "MARIA DA SILVA",
+      "logradouro": "RUA BOA VISTA",
+      "numero": "3489",
+      "bairro": "GRAJAU",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "01535-303"
+    }
+  },
+  {
+    "file_name": "claro_02.png",
+    "company": "CLARO",
+    "ground_truth": {
+      "titular": "JOSE DOS SANTOS",
+      "logradouro": "RUA DOS PALMARES",
+      "numero": "763",
+      "bairro": "ITAQUERA",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "09221-411"
+    }
+  },
+  {
+    "file_name": "claro_03.png",
+    "company": "CLARO",
+    "ground_truth": {
+      "titular": "ANA PAULA SOUZA",
+      "logradouro": "RUA DOS PALMARES",
+      "numero": "68",
+      "bairro": "GRAJAU",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "07903-815"
+    }
+  },
+  {
+    "file_name": "claro_04.png",
+    "company": "CLARO",
+    "ground_truth": {
+      "titular": "MARIA DA SILVA",
+      "logradouro": "RUA BOA VISTA",
+      "numero": "1477",
+      "bairro": "GRAJAU",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "08396-159"
+    }
+  },
+  {
+    "file_name": "claro_05.png",
+    "company": "CLARO",
+    "ground_truth": {
+      "titular": "ANA PAULA SOUZA",
+      "logradouro": "AVENIDA PRINCIPAL",
+      "numero": "2720",
+      "bairro": "GRAJAU",
+      "cidade": "SÃO PAULO",
+      "uf": "SP",
+      "cep": "09854-312"
+    }
+  }
+]

@@ -53,8 +53,8 @@ FAQ = [
     (
         "Como faço o cadastro de estudante?",
         "Toque em \"Sou estudante\" na página inicial e informe nome (ou apelido), e-mail, senha com pelo menos "
-        "8 caracteres, escola e ano escolar. O bairro é opcional. Se você tem menos de 18 anos, o seu responsável "
-        "precisa saber e concordar.",
+        "8 caracteres, escola e ano escolar. Bairro e CEP são opcionais: dá para digitar ou preencher com a foto "
+        "de uma conta de luz, água ou telefone. Se você tem menos de 18 anos, o seu responsável precisa saber e concordar.",
     ),
     (
         "Como cancelo ou vejo o que já agendei?",
@@ -77,8 +77,13 @@ BASE DE CONHECIMENTO DO SOFTWARE APOIO ESCOLAR PERIFÉRICO (só existe o que est
 1. Objetivo: reforço escolar gratuito com monitores voluntários para estudantes de escolas públicas da periferia
    (Ensino Fundamental II e Ensino Médio). O estudante nunca paga; empresas patrocinam (ODS 4 e ODS 10).
 2. Cadastro de estudante (botão "Sou estudante"): nome ou apelido, e-mail, senha com pelo menos 8 caracteres,
-   escola (escolhida em uma lista), ano escolar e bairro (opcional). Menores de 18 anos precisam do consentimento
-   do responsável (caixa de consentimento). Não pedimos CPF, notas, fotos nem endereço completo.
+   escola (escolhida em uma lista), ano escolar e, opcionalmente, bairro e CEP. Menores de 18 anos precisam do
+   consentimento do responsável (caixa de consentimento). Não pedimos CPF nem notas, e não guardamos endereço completo.
+   Bairro e CEP podem ser digitados ou preenchidos pelo botão "Tirar foto ou escolher arquivo" (quando aparece na tela):
+   foto ou PDF de uma conta da Enel (luz), Sabesp (água) ou Claro (telefone/internet). O sistema lê o endereço, preenche
+   bairro e CEP e a pessoa confere e corrige antes de criar a conta. A foto não é guardada. Dicas se a leitura falhar:
+   foto de frente, com boa luz, sem reflexo, com o papel inteiro aparecendo, ou arquivo de até 8 MB (JPG, PNG, WebP ou PDF).
+   Se mesmo assim não ler, é só digitar bairro e CEP: o comprovante não é obrigatório.
 3. Cadastro de voluntário (botão "Quero ser voluntário"): nome, e-mail, senha e formação (opcional).
 4. Entrar: e-mail e senha. Ainda não existe recuperação de senha pelo site: quem esqueceu a senha deve
    procurar a coordenação do projeto.
@@ -94,8 +99,7 @@ BASE DE CONHECIMENTO DO SOFTWARE APOIO ESCOLAR PERIFÉRICO (só existe o que est
    ou salvar em PDF (conta cada horário com ao menos uma presença marcada como "Realizada").
 8. Tela "Impacto": painel público com totais anônimos (monitorias realizadas, horas de reforço, taxa de presença).
 9. Tela "Privacidade e dados (LGPD)": o que é coletado, por quê e os direitos do titular.
-10. O que AINDA NÃO existe: envio de foto de conta de luz, água ou telefone para comprovar endereço (em implantação;
-    hoje ninguém precisa enviar comprovante), trilhas de vídeo, aulas ao vivo dentro do site, aplicativo de celular
+10. O que AINDA NÃO existe: trilhas de vídeo, aulas ao vivo dentro do site, aplicativo de celular
     e recuperação de senha. Se perguntarem, diga com clareza que ainda não está disponível.
 """
 

@@ -1,7 +1,8 @@
 """Modelo de dados do núcleo do MVP.
 
 Dados pessoais minimizados (LGPD): do estudante guardamos só o necessário para
-agendar monitorias e medir impacto agregado. Nada de CPF, nota escolar ou foto.
+agendar monitorias e medir impacto agregado. Nada de CPF, nota escolar ou foto
+(a foto da conta usada pela Visão é lida em memória e descartada).
 """
 from datetime import datetime
 
@@ -73,6 +74,8 @@ class Usuario(Base):
     escola_id: Mapped[int | None] = mapped_column(ForeignKey("escolas.id"), nullable=True)
     ano_escolar: Mapped[str | None] = mapped_column(String(40), nullable=True)
     bairro: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    # CEP confirmado pelo estudante (digitado ou lido da conta pela Visão). O endereço completo nunca é gravado.
+    cep: Mapped[str | None] = mapped_column(String(9), nullable=True)
     consentimento_responsavel: Mapped[bool] = mapped_column(Boolean, default=False)
     consentimento_em: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.vscode/
+# Imagens temporárias de depuração
+resultado_*.png
+enel_real_*.png
+
+# Documentos pessoais reais do usuário (LGPD)
+enel-boleto.pdf
+*boleto*.pdf
+*fatura_real*.pdf
+
