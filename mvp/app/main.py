@@ -6,10 +6,11 @@ agendamento → voluntário registra presença → painel de impacto.
 import csv
 import hashlib
 import io
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, Form, HTTPException, Request
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -20,7 +21,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from .assistente import FAQ, MAX_PERGUNTA, NOME_ASSISTENTE, Assistente, LimiteExcedido, criar_chamada_openrouter
 from .config import Settings
-from .db import Base, get_db, make_sessionmaker
+from .db import Base, adicionar_colunas_novas, get_db, make_sessionmaker
 from .kpis import calcular_impacto
 from .models import ANOS_ESCOLARES, MATERIAS, TURNOS, Agendamento, Escola, Horario, Usuario
 from .security import (
@@ -36,6 +37,8 @@ from .security import (
     verificar_senha,
 )
 from .seed import seed_demo
+from .visao import MAX_BYTES, TIPOS_ACEITOS, ArquivoInvalido, LeitorEndereco, criar_ocr_easyocr
+from .visao import LimiteExcedido as LimiteVisao
 
 BASE_DIR = Path(__file__).parent
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
@@ -96,6 +99,16 @@ class PerguntaAssistente(BaseModel):
         return v
 
 
+def normalizar_cep(cep: str) -> str | None:
+    """"01234567", "01234-567" ou "01.234-567" → "01234-567". Vazio → None. Inválido → ValueError."""
+    digitos = re.sub(r"\D", "", cep or "")
+    if not digitos:
+        return None
+    if len(digitos) != 8:
+        raise ValueError(cep)
+    return f"{digitos[:5]}-{digitos[5:]}"
+
+
 def create_app(database_url: str | None = None, seed: bool | None = None) -> FastAPI:
     settings = Settings()
     app = FastAPI(title="Apoio Escolar Periférico — MVP", docs_url="/api/docs", redoc_url=None)
@@ -106,8 +119,11 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         criar_chamada_openrouter(settings.openrouter_api_key, settings.genai_model) if settings.openrouter_api_key else None
     )
 
+    app.state.visao = LeitorEndereco(criar_ocr_easyocr())
+
     engine = app.state.SessionLocal.kw["bind"]
     Base.metadata.create_all(engine)
+    adicionar_colunas_novas(engine)
     if settings.seed_demo if seed is None else seed:
         with app.state.SessionLocal() as db:
             seed_demo(db)
@@ -179,7 +195,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     @app.get("/cadastro/estudante", response_class=HTMLResponse)
     def cadastro_estudante_form(request: Request, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
         escolas = db.scalars(select(Escola).order_by(Escola.nome)).all()
-        return render(request, "cadastro_estudante.html", usuario, escolas=escolas, anos=ANOS_ESCOLARES, form={})
+        return render(request, "cadastro_estudante.html", usuario, escolas=escolas, anos=ANOS_ESCOLARES, form={}, visao_ativa=request.app.state.visao.ativo)
 
     @app.post("/cadastro/estudante", dependencies=[Depends(csrf_protect)])
     def cadastro_estudante(
@@ -190,12 +206,17 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         escola_id: int = Form(...),
         ano_escolar: str = Form(...),
         bairro: str = Form(""),
+        cep: str = Form(""),
         consentimento: str | None = Form(None),
         db: Session = Depends(get_db),
     ):
         email = email.strip().lower()
-        form = {"nome": nome, "email": email, "escola_id": escola_id, "ano_escolar": ano_escolar, "bairro": bairro}
+        form = {"nome": nome, "email": email, "escola_id": escola_id, "ano_escolar": ano_escolar, "bairro": bairro, "cep": cep}
         erro = None
+        try:
+            cep_ok = normalizar_cep(cep)
+        except ValueError:
+            cep_ok = None
         if not consentimento:
             erro = "Para menores de 18 anos, precisamos do consentimento do responsável. Marque a caixa de consentimento."
         elif len(senha) < 8:
@@ -204,9 +225,11 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
             erro = "Este e-mail já tem cadastro. Use \"Entrar\"."
         elif db.get(Escola, escola_id) is None or ano_escolar not in ANOS_ESCOLARES:
             erro = "Escolha a escola e o ano escolar da lista."
+        elif cep.strip() and cep_ok is None:
+            erro = "O CEP precisa ter 8 números (ex.: 08250-000). Se não souber, deixe em branco."
         if erro:
             escolas = db.scalars(select(Escola).order_by(Escola.nome)).all()
-            return render(request, "cadastro_estudante.html", None, status_code=400, erro=erro, escolas=escolas, anos=ANOS_ESCOLARES, form=form)
+            return render(request, "cadastro_estudante.html", None, status_code=400, erro=erro, escolas=escolas, anos=ANOS_ESCOLARES, form=form, visao_ativa=request.app.state.visao.ativo)
         u = Usuario(
             nome=nome.strip(),
             email=email,
@@ -214,7 +237,8 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
             papel="estudante",
             escola_id=escola_id,
             ano_escolar=ano_escolar,
-            bairro=bairro.strip() or None,
+            bairro=bairro.strip()[:120] or None,
+            cep=cep_ok,
             consentimento_responsavel=True,
             consentimento_em=datetime.now(),
         )
@@ -455,6 +479,30 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         except LimiteExcedido:
             raise HTTPException(429, "Muitas perguntas em pouco tempo. Espere um minuto e tente de novo.")
         return assistente.responder(dados.pergunta)
+
+    @app.post("/api/v1/visao/endereco", dependencies=[Depends(csrf_header)])
+    def api_visao_endereco(request: Request, arquivo: UploadFile = File(...)):
+        """Visão Computacional: lê o endereço na foto (ou PDF) de uma conta de Enel, Sabesp ou Claro.
+
+        Devolve os campos para o estudante **conferir** no cadastro; nada é gravado aqui.
+        A imagem fica só em memória. `fonte`: `ocr`, `indisponivel` (OCR não instalado) ou `erro`.
+        """
+        leitor: LeitorEndereco = request.app.state.visao
+        if (arquivo.content_type or "").lower() not in TIPOS_ACEITOS:
+            raise HTTPException(415, "Envie uma foto (JPG, PNG ou WebP) ou o PDF da conta.")
+        dados = arquivo.file.read(MAX_BYTES + 1)
+        if len(dados) > MAX_BYTES:
+            raise HTTPException(413, "Arquivo muito grande (máximo de 8 MB). Tire a foto de novo ou envie o PDF.")
+        try:
+            leitor.registrar_uso(request.client.host if request.client else "desconhecido")
+        except LimiteVisao:
+            raise HTTPException(429, "Muitas leituras em pouco tempo. Espere um minuto ou digite o bairro e o CEP.")
+        try:
+            return leitor.ler(dados)
+        except ArquivoInvalido as e:
+            raise HTTPException(422, str(e))
+        finally:
+            del dados
 
     @app.get("/api/v1/impacto")
     def api_impacto(db: Session = Depends(get_db)):

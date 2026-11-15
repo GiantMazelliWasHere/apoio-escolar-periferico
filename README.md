@@ -25,7 +25,7 @@ Edson Leonardo (RM 553737) · Eduardo Mazelli (RM 553236) · Jó Sales (RM 55267
 
 ## O que o MVP faz hoje
 Fluxo central, do primeiro clique ao resultado:
-1. O estudante se cadastra (com o consentimento do responsável, LGPD art. 14).
+1. O estudante se cadastra (com o consentimento do responsável, LGPD art. 14). Bairro e CEP podem ser preenchidos pela **foto de uma conta** de Enel, Sabesp ou Claro (Visão Computacional); o estudante confere antes de salvar.
 2. Busca monitorias tocando na etiqueta da matéria e escolhendo o turno (manhã, tarde, noite) e vê os horários livres dos voluntários.
 3. Agenda e escreve a dúvida; recebe a confirmação.
 4. O voluntário publica horários (avulsos ou em grade semanal), vê quem agendou, registra a presença, acompanha as horas acumuladas e emite o **certificado de horas**.
@@ -42,7 +42,7 @@ python -m venv .venv
 .venv/Scripts/python -m pytest -q
 .venv/Scripts/python -m uvicorn app.main:app --reload
 ```
-Abrir http://localhost:8000. Para a assistente responder, copie `mvp/.env.example` para `mvp/.env` e preencha `OPENROUTER_API_KEY`; sem a chave, a tela Ajuda mostra só as perguntas frequentes. As contas de demonstração aparecem na tela "Entrar" e em [`mvp/app/seed.py`](mvp/app/seed.py). Todas as pessoas e escolas do seed são **fictícias**.
+Abrir http://localhost:8000. Para a leitura da foto da conta no cadastro, instale também o OCR (opcional, ~1 GB por causa do PyTorch): `.venv/Scripts/python -m pip install -r requirements-visao.txt`; sem ele, o cadastro pede bairro e CEP digitados. Para a assistente responder, copie `mvp/.env.example` para `mvp/.env` e preencha `OPENROUTER_API_KEY`; sem a chave, a tela Ajuda mostra só as perguntas frequentes. As contas de demonstração aparecem na tela "Entrar" e em [`mvp/app/seed.py`](mvp/app/seed.py). Todas as pessoas e escolas do seed são **fictícias**.
 
 ## Documentos
 | Documento | Link |

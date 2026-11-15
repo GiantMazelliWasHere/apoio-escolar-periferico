@@ -51,7 +51,7 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 | # | Risco | Impacto na rubrica | Ação recomendada até 19/11 |
 |---|---|---|---|
 | R1 | Validação é **qualitativa e pequena** (10 entrevistas em 14/11/2026, [roteiro e planilha](Roteiro_Entrevistas_Validacao.md)); não é prova estatística | Lean Canvas (2,0) e Valor evidenciado (3,5) | Apresentar como "validação qualitativa inicial", anexar a planilha ao PDF e citar só os números obtidos (§9.2) |
-| R2 | O MVP está no repositório (fluxo central com 27 testes automatizados), mas **ainda não está em URL pública** | Demo (3,5) | Publicar no Azure, congelar o **fluxo central** (§9.1) e cortar do pitch tudo o que não estiver no ar |
+| R2 | O MVP está no repositório (fluxo central com 56 testes automatizados), mas **ainda não está em URL pública** | Demo (3,5) | Publicar no Azure, congelar o **fluxo central** (§9.1) e cortar do pitch tudo o que não estiver no ar |
 | R3 | Lado da oferta: sem voluntários, não há monitoria | Modelo de negócio | Tratar o voluntário como segundo usuário, com valor próprio (certificado de horas, extensão universitária) |
 | R4 | Receita depende de patrocínio, que não é garantido | "A conta fecha" (2,5) | Mostrar ponto de equilíbrio, capital de ponte do ano 1 e **editais fora da receita-base** (§5) |
 | R5 | Dados de menores de idade (LGPD art. 14) | Princípios de engenharia (slide 21) | Consentimento do responsável, minimização, nada de nota escolar sem convênio com a escola |

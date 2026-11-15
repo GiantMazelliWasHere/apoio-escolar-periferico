@@ -207,6 +207,17 @@ details.cartao summary { font-weight: 700; cursor: pointer; }
 .dias { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
 .dias .tag-opcao span { min-height: 44px; min-width: 3.4rem; justify-content: center; text-transform: capitalize; }
 
+/* Endereço no cadastro + leitura da conta pela Visão Computacional */
+.endereco { border: 1px solid var(--line); border-radius: 8px; padding: .5rem .9rem .9rem; margin: .9rem 0 0; display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.endereco legend { font-weight: 600; padding: 0 .3rem; }
+.visao { margin: .5rem 0 0; }
+.visao-titulo { margin: 0; }
+.form .visao-escolher { margin-top: .6rem; display: inline-flex; align-items: center; cursor: pointer; font-weight: 700; }
+#visao-arquivo:focus-visible + .visao-escolher, .visao-escolher:has(+ #visao-arquivo:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.visao-resultado { border-top: 1px solid var(--line); margin-top: .6rem; padding-top: .4rem; }
+.visao-lido { margin: .25rem 0; overflow-wrap: anywhere; }
+.campo-lido { border-color: var(--brand); background: var(--brand-soft); }
+
 @media print {
   .topo, .rodape, .faixa-demo, .pular, .nao-imprimir { display: none !important; }
   body { background: #fff; color: #000; }

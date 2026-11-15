@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduConecta Periferia | Validação de Residência</title>
+  
+  <!-- Favicons Oficiais do Projeto -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/icon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/icon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="/img/icon/favicon.ico">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              lime: '#C7FB03',
+              green: '#10B981',
+              darkgreen: '#064E3B',
+              dark: '#0B0F19'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.5); }
+  </style>
+</head>
+<body id="body-root" class="min-h-screen flex flex-col font-sans transition-colors duration-200 bg-slate-100 text-slate-800 antialiased">
+
+  <!-- Header Institucional com Alternância de Tema -->
+  <header id="main-header" class="border-b transition-colors duration-200 sticky top-0 z-50 px-4 sm:px-6 lg:px-10 py-3.5 bg-gradient-to-r from-emerald-800 to-green-700 text-white shadow-md border-emerald-900/30">
+    <div class="max-w-[1550px] mx-auto flex items-center justify-between">
+      
+      <!-- Identificação do Portal (Esquerda) -->
+      <div class="flex items-center gap-3">
+        <div id="header-logo-box" class="w-11 h-11 rounded-xl bg-white/20 p-1 border border-white/30 shadow-sm flex items-center justify-center overflow-hidden flex-shrink-0 transition-colors">
+          <img src="/img/logo%20IA%20bits.png" alt="EduConecta Logo" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <h1 id="header-title" class="font-bold text-lg leading-tight text-white transition-colors">
+            EduConecta Periferia
+          </h1>
+          <p id="header-subtitle" class="text-xs text-emerald-100 transition-colors">Validação de Comprovantes de Residência</p>
+        </div>
+      </div>
+
+      <!-- Controles (Direita) -->
+      <div class="flex items-center gap-2.5">
+        <!-- Badge EduConecta -->
+        <span id="educonecta-badge" class="text-xs font-semibold px-3 py-1 rounded-full border transition-colors shadow-sm bg-emerald-900/80 text-white border-emerald-500/50 tracking-wide">
+          EduConecta
+        </span>
+
+        <!-- Botão Alternador de Modo Claro / Escuro -->
+        <button 
+          id="theme-toggle-btn"
+          onclick="toggleTheme()" 
+          title="Alternar entre Modo Claro e Modo Escuro"
+          class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl border transition shadow-sm bg-emerald-900/60 hover:bg-emerald-900 border-emerald-600/50 text-white">
+          <i id="theme-icon" class="fa-solid fa-sun text-amber-300"></i>
+          <span id="theme-text" class="hidden sm:inline">Modo Claro</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Container Principal Fluido (Aproveitamento Máximo em Telas Grandes) -->
+  <main class="flex-1 max-w-[1550px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 space-y-7">
+    
+    <!-- Hero Box Sóbrio e Formal (Sem caixa de IA / LGPD aqui) -->
+    <div id="hero-box" class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm transition-all">
+      <div class="max-w-4xl space-y-2.5">
+        <h2 id="hero-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight transition-colors">
+          Validação de Comprovante de Residência para Matrícula
+        </h2>
+        <p id="hero-desc" class="text-slate-600 text-sm sm:text-base leading-relaxed transition-colors">
+          Envie uma foto ou arquivo PDF de sua conta de consumo (<strong>Enel, Sabesp ou Claro</strong>). O sistema realiza a leitura automática do documento, identifica as margens da folha e extrai as informações do titular para comprovação de zoneamento escolar nas bolsas do <strong>EduConecta Periferia</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Barra de Demonstração Rápida (Faturas Oficiais em 1 Clique) -->
+    <div class="space-y-2.5">
+      <div class="flex items-center justify-between">
+        <h3 id="quick-test-label" class="text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors">
+          Exemplos de Faturas das Concessionárias
+        </h3>
+        <span class="text-xs text-slate-500 font-medium">Selecione uma conta para preencher automaticamente</span>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        <!-- Enel Demo -->
+        <button onclick="runSample('enel')" class="demo-card group relative p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-600 transition-all duration-200 text-left flex items-center justify-between shadow-sm hover:shadow-md">
+          <div class="flex items-center gap-3.5">
+            <div class="demo-logo-box w-12 h-12 bg-white flex items-center justify-center flex-shrink-0">
+              <img src="/img/logos/min_enel.png" alt="Enel" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <span class="demo-company-title font-bold text-sm text-slate-800 group-hover:text-emerald-700 transition-colors">ENEL</span>
+              <span class="demo-company-sub block text-xs text-slate-500 font-medium">Energia Elétrica</span>
+            </div>
+          </div>
+          <span class="demo-cta-badge text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 group-hover:bg-emerald-700 group-hover:text-white transition-all">
+            Selecionar Fatura
+          </span>
+        </button>
+
+        <!-- Sabesp Demo -->
+        <button onclick="runSample('sabesp')" class="demo-card group relative p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-600 transition-all duration-200 text-left flex items-center justify-between shadow-sm hover:shadow-md">
+          <div class="flex items-center gap-3.5">
+            <div class="demo-logo-box w-12 h-12 bg-white flex items-center justify-center flex-shrink-0">
+              <img src="/img/logos/min_sabesp.png" alt="Sabesp" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <span class="demo-company-title font-bold text-sm text-slate-800 group-hover:text-emerald-700 transition-colors">SABESP</span>
+              <span class="demo-company-sub block text-xs text-slate-500 font-medium">Água e Saneamento</span>
+            </div>
+          </div>
+          <span class="demo-cta-badge text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 group-hover:bg-emerald-700 group-hover:text-white transition-all">
+            Selecionar Fatura
+          </span>
+        </button>
+
+        <!-- Claro Demo -->
+        <button onclick="runSample('claro')" class="demo-card group relative p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-600 transition-all duration-200 text-left flex items-center justify-between shadow-sm hover:shadow-md">
+          <div class="flex items-center gap-3.5">
+            <div class="demo-logo-box w-12 h-12 bg-white flex items-center justify-center flex-shrink-0">
+              <img src="/img/logos/min_claro.png" alt="Claro" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <span class="demo-company-title font-bold text-sm text-slate-800 group-hover:text-emerald-700 transition-colors">CLARO</span>
+              <span class="demo-company-sub block text-xs text-slate-500 font-medium">Telecomunicações</span>
+            </div>
+          </div>
+          <span class="demo-cta-badge text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 group-hover:bg-emerald-700 group-hover:text-white transition-all">
+            Selecionar Fatura
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Área de Envio de Documento (Drag and Drop Acessível e Responsivo) -->
+    <div class="space-y-2.5">
+      <div class="flex items-center justify-between">
+        <h3 id="upload-label" class="text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors">
+          Envio de Comprovante de Residência
+        </h3>
+        <span class="text-xs text-slate-500 font-medium">Formatos aceitos: PDF, PNG, JPG, JPEG (até 15MB)</span>
+      </div>
+
+      <div id="drop-zone" class="relative group border-2 border-dashed border-slate-300 hover:border-emerald-600 rounded-2xl p-7 sm:p-10 text-center transition-all duration-200 bg-white hover:bg-emerald-50/40 cursor-pointer shadow-sm">
+        <input type="file" id="file-input" class="hidden" accept=".pdf,image/png,image/jpeg,image/jpg" />
+        
+        <div class="max-w-md mx-auto space-y-3 pointer-events-none">
+          <div class="w-14 h-14 mx-auto rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-2xl text-emerald-800 group-hover:scale-105 transition-transform">
+            <i class="fa-regular fa-file-lines"></i>
+          </div>
+          <div>
+            <span id="drop-title" class="text-base font-bold text-slate-800 block transition-colors">Arraste e solte o comprovante aqui</span>
+            <span id="drop-subtitle" class="text-xs text-slate-500 mt-1 block transition-colors">ou clique para escolher um arquivo em seu computador ou celular</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500 pt-1">
+            <span class="badge-format px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-600 font-medium">PDF Digital</span>
+            <span class="badge-format px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-600 font-medium">Foto do Celular (JPG)</span>
+            <span class="badge-format px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-600 font-medium">Arquivo PNG</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado de Carregamento Formal -->
+    <div id="loading-state" class="hidden rounded-2xl border border-emerald-500/30 bg-white dark:bg-slate-900/90 p-8 text-center space-y-4 shadow-lg">
+      <div class="inline-block relative">
+        <div class="w-12 h-12 rounded-full border-4 border-emerald-600/20 border-t-emerald-600 animate-spin mx-auto"></div>
+      </div>
+      <div>
+        <h4 id="loading-step-title" class="text-base font-bold text-slate-900 dark:text-white">Processando Documento...</h4>
+        <p id="loading-step-desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Alinhando imagem e realizando a leitura das informações do endereço...</p>
+      </div>
+      <div class="w-full max-w-xs mx-auto bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+        <div class="bg-emerald-600 h-full w-2/3 animate-pulse"></div>
+      </div>
+    </div>
+
+    <!-- Seção de Resultados (Apresentação Formal e Acessível) -->
+    <div id="results-section" class="hidden space-y-6">
+
+      <!-- Grade Principal: Visualizador do Documento (7 colunas) + Formulário Institucional (5 colunas) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
+        
+        <!-- Esquerda: Visualização do Documento (Sem jargões técnicos tipo Otsu/Warp) -->
+        <div class="lg:col-span-7 xl:col-span-7 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 id="pipeline-label" class="text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors">
+              Conferência Visual do Documento
+            </h3>
+            <span class="text-xs text-slate-500 font-medium">Etapas da Leitura Automática</span>
+          </div>
+
+          <div id="pipeline-card" class="rounded-2xl border border-slate-200 bg-white p-4 space-y-4 shadow-sm transition-colors">
+            
+            <!-- Abas Humanizadas -->
+            <div id="tabs-header" class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3 transition-colors">
+              <button onclick="switchTab('original')" id="tab-btn-original" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-700 text-white transition-colors shadow-sm">
+                1. Documento Original
+              </button>
+              <button onclick="switchTab('desentortado')" id="tab-btn-desentortado" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                2. Alinhamento de Margens
+              </button>
+              <button onclick="switchTab('binarizado')" id="tab-btn-binarizado" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                3. Nitidez e Contraste
+              </button>
+            </div>
+
+            <!-- Área de Exibição de Imagem Ampliada para Telas Grandes -->
+            <div id="image-viewer-container" class="relative min-h-[460px] max-h-[640px] rounded-xl bg-slate-50 flex items-center justify-center p-3 border border-slate-200 overflow-hidden transition-colors">
+              <img id="img-original" class="max-h-[620px] w-auto object-contain rounded shadow" alt="Documento Original" />
+              <img id="img-desentortado" class="hidden max-h-[620px] w-auto object-contain rounded shadow" alt="Documento Alinhado" />
+              <img id="img-binarizado" class="hidden max-h-[620px] w-auto object-contain rounded shadow" alt="Texto Otimizado" />
+            </div>
+
+            <!-- Legenda Explicativa Clara -->
+            <div id="tab-caption" class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 transition-colors leading-relaxed">
+              <strong>1. Documento Original:</strong> Arquivo ou fotografia enviada pelo estudante para conferência.
+            </div>
+          </div>
+        </div>
+
+        <!-- Direita: Formulário Formal de Matrícula (Padrão Institucional) -->
+        <div class="lg:col-span-5 xl:col-span-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 id="form-label" class="text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors">
+              Dados Cadastrais de Residência
+            </h3>
+            <span class="text-xs text-emerald-800 font-semibold">Campos Conferíveis</span>
+          </div>
+
+          <div id="form-card" class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4 shadow-sm transition-colors">
+            
+            <div class="space-y-1">
+              <label class="form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors">
+                Concessionária Emissora
+              </label>
+              <input type="text" id="field-company" readonly class="form-input w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-bold text-emerald-800 focus:outline-none transition-colors" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="sm:col-span-2 space-y-1">
+                <label class="form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors">
+                  Logradouro (Rua, Avenida, etc.)
+                </label>
+                <input type="text" id="field-street" class="form-input w-full bg-white border border-slate-300 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none transition-colors" />
+              </div>
+              <div class="space-y-1">
+                <label class="form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors">
+                  Número
+                </label>
+                <input type="text" id="field-number" class="form-input w-full bg-white border border-slate-300 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none transition-colors" />
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <label class="form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors">
+                Bairro
+              </label>
+              <input type="text" id="field-neighborhood" class="form-input w-full bg-white border border-slate-300 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none transition-colors" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors">
+                  CEP
+                </label>
+                <input type="text" id="field-cep" class="form-input w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-emerald-800 focus:outline-none transition-colors" />
+              </div>
+              <div class="space-y-1">
+                <label class="form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors">
+                  Estado (UF)
+                </label>
+                <input type="text" id="field-uf" class="form-input w-full bg-white border border-slate-300 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none transition-colors" />
+              </div>
+            </div>
+
+            <!-- Parecer do Zoneamento Social -->
+            <div id="zoning-box" class="p-3.5 rounded-xl bg-emerald-100/70 border border-emerald-300 text-xs text-emerald-950 flex items-start gap-3 transition-colors leading-relaxed">
+              <i class="fa-solid fa-map-location-dot text-emerald-800 text-base mt-0.5"></i>
+              <div>
+                <strong class="block text-emerald-900 font-bold">Zoneamento Educacional Aprovado:</strong>
+                O endereço informado localiza-se na área prioritária de atendimento do programa EduConecta Periferia.
+              </div>
+            </div>
+
+            <!-- Botão Formal de Matrícula -->
+            <button onclick="confirmEnrollment()" class="w-full py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-sm transition-all duration-200">
+              Confirmar Endereço e Prosseguir Inscrição
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Cartão Formal de Confirmação (Posicionado no final, representando a validação do documento) -->
+      <div id="result-status-card" class="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl border border-emerald-200 bg-emerald-50/80 gap-4 shadow-sm transition-colors">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-full bg-emerald-200 border border-emerald-300 flex items-center justify-center text-lg text-emerald-900 flex-shrink-0 font-bold">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-200/80 text-emerald-900">
+                Documento Verificado
+              </span>
+              <span id="company-badge" class="text-xs font-bold text-emerald-800">
+                ENEL
+              </span>
+            </div>
+            <h3 id="result-status-title" class="text-base font-bold text-slate-900 mt-0.5 transition-colors">
+              Comprovante Residencial Validado com Sucesso
+            </h3>
+            <p id="result-status-desc" class="text-xs text-slate-600 mt-0.5 transition-colors">
+              O endereço foi extraído e atende aos critérios de zoneamento para o programa EduConecta Periferia.
+            </p>
+          </div>
+        </div>
+
+        <button onclick="resetHub()" id="reset-btn" class="self-start sm:self-center px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors border border-slate-300 shadow-sm flex items-center gap-2 flex-shrink-0">
+          <i class="fa-solid fa-arrow-rotate-left text-slate-500"></i>
+          <span>Trocar Documento</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Formal de Sucesso de Matrícula -->
+    <div id="success-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+      <div id="modal-card" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-md w-full text-center space-y-4 shadow-xl transition-colors">
+        <div class="w-14 h-14 rounded-full bg-emerald-100 border border-emerald-200 text-2xl flex items-center justify-center mx-auto text-emerald-800">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h3 id="modal-title" class="text-xl font-bold text-slate-900 transition-colors">Inscrição Validada com Sucesso</h3>
+        <p id="modal-desc" class="text-xs text-slate-600 leading-relaxed transition-colors">
+          O comprovante de residência foi autenticado e os dados foram vinculados à ficha cadastral do estudante no programa <strong>EduConecta Periferia</strong>.
+        </p>
+        <button onclick="closeSuccessModal()" class="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors">
+          Concluir e Retornar
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Formal Institucional de Privacidade e LGPD (Não parece IA) -->
+    <div id="lgpd-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+      <div id="lgpd-card" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-2xl w-full text-left space-y-4 shadow-2xl transition-colors max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-scale-balanced text-emerald-800 text-lg"></i>
+            <h3 class="text-base font-bold text-slate-900">Política de Privacidade e Tratamento de Dados (LGPD)</h3>
+          </div>
+          <button onclick="closeLgpdModal()" class="text-slate-400 hover:text-slate-700 text-sm">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+          <p>
+            Em total conformidade com a <strong>Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018)</strong>, esta plataforma assegura a transparência, segurança e privacidade dos estudantes e responsáveis:
+          </p>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <strong class="text-slate-800 block text-xs">1. Finalidade do Tratamento:</strong>
+            <p>O envio de faturas de consumo (Enel, Sabesp e Claro) tem por finalidade exclusiva a comprovação de domicílio residencial para fins de enquadramento social e concessão de bolsas integrais de estudo e kits didáticos gratuitos.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <strong class="text-slate-800 block text-xs">2. Processamento Volátil e Não Armazenamento:</strong>
+            <p>Os arquivos e imagens submetidos trafegam unicamente em memória temporária (RAM) durante a sessão de leitura, sendo descartados de forma imediata. <strong>Nenhum documento pessoal é armazenado em banco de dados ou pastas permanentes de servidor.</strong></p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <strong class="text-slate-800 block text-xs">3. Minimização e Descarte de Dados Financeiros:</strong>
+            <p>Valores monetários, códigos de barras bancários, histórico de consumo e demais dados fiscais não relacionados ao endereço são desconsiderados e não processados pelo sistema.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <strong class="text-slate-800 block text-xs">4. Direito de Conferência e Retificação:</strong>
+            <p>Nos termos do Art. 18 da LGPD, o estudante ou responsável detém total controle para auditar, retificar ou complementar os dados de endereço extraídos antes da confirmação final da inscrição.</p>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button onclick="closeLgpdModal()" class="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors">
+            Compreendido e Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Rodapé Institucional com Link da LGPD no Final (Sem cara de IA) -->
+  <footer id="main-footer" class="border-t border-slate-300 bg-slate-200/90 py-6 mt-12 text-center text-xs text-slate-600 transition-colors">
+    <div class="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 space-y-2.5">
+      
+      <!-- Link Formal da Política de Privacidade LGPD (Colocado por último) -->
+      <div>
+        <button onclick="openLgpdModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 hover:text-emerald-950 dark:hover:text-emerald-100 hover:underline transition-colors">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Política de Privacidade e Proteção de Dados (LGPD - Lei nº 13.709/2018)</span>
+        </button>
+      </div>
+
+      <p id="footer-course" class="font-bold text-slate-800 text-sm transition-colors pt-1">
+        FIAP | Global Solution 2026.2 | CitizenTech | 4º Ano Engenharia de Software (4ESPR)
+      </p>
+      <p id="footer-team" class="text-slate-600 transition-colors">
+        Equipe <strong class="text-emerald-800 dark:text-emerald-400 font-semibold">Bits N’ Bytes</strong>: Jó Sales (RM 552679), Miguel Garcez (RM 553768), Vinicius Souza (RM 552781), Edson Leonardo (RM 553737), Eduardo Mazelli (RM 553236)
+      </p>
+      <p id="footer-project" class="text-[11px] text-slate-500 transition-colors">
+        EduConecta Periferia | Inclusão Digital e Apoio Escolar (ODS 4 e 10)
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Gerenciamento de Tema: Inicia obrigatoriamente no MODO CLARO por padrão
+    let currentTheme = localStorage.getItem('theme') || 'light';
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('theme', theme);
+
+      const isDark = theme === 'dark';
+      const body = document.getElementById('body-root');
+      const header = document.getElementById('main-header');
+      const headerTitle = document.getElementById('header-title');
+      const headerSubtitle = document.getElementById('header-subtitle');
+      const headerLogoBox = document.getElementById('header-logo-box');
+      const educonectaBadge = document.getElementById('educonecta-badge');
+      const themeBtn = document.getElementById('theme-toggle-btn');
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      const footer = document.getElementById('main-footer');
+      const footerCourse = document.getElementById('footer-course');
+      const footerTeam = document.getElementById('footer-team');
+      const heroBox = document.getElementById('hero-box');
+      const heroTitle = document.getElementById('hero-title');
+      const heroDesc = document.getElementById('hero-desc');
+      const dropZone = document.getElementById('drop-zone');
+      const dropTitle = document.getElementById('drop-title');
+      const dropSubtitle = document.getElementById('drop-subtitle');
+      const quickLabel = document.getElementById('quick-test-label');
+      const uploadLabel = document.getElementById('upload-label');
+      const pipelineLabel = document.getElementById('pipeline-label');
+      const formLabel = document.getElementById('form-label');
+      const pipelineCard = document.getElementById('pipeline-card');
+      const formCard = document.getElementById('form-card');
+      const statusCard = document.getElementById('result-status-card');
+      const statusTitle = document.getElementById('result-status-title');
+      const statusDesc = document.getElementById('result-status-desc');
+      const imgContainer = document.getElementById('image-viewer-container');
+      const tabCaption = document.getElementById('tab-caption');
+      const tabsHeader = document.getElementById('tabs-header');
+      const resetBtn = document.getElementById('reset-btn');
+      const zoningBox = document.getElementById('zoning-box');
+      const modalCard = document.getElementById('modal-card');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDesc = document.getElementById('modal-desc');
+      const lgpdCard = document.getElementById('lgpd-card');
+
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        body.className = "min-h-screen flex flex-col font-sans transition-colors duration-200 bg-slate-950 text-slate-100 antialiased";
+        header.className = "border-b transition-colors duration-200 sticky top-0 z-50 px-4 sm:px-6 lg:px-10 py-3.5 bg-slate-900 border-emerald-900/50 shadow-md";
+        headerTitle.className = "font-bold text-lg leading-tight text-white transition-colors";
+        headerSubtitle.className = "text-xs text-slate-400 transition-colors";
+        headerLogoBox.className = "w-11 h-11 rounded-xl bg-slate-900 p-1 border border-emerald-500/50 shadow-md flex items-center justify-center overflow-hidden flex-shrink-0 transition-colors";
+        
+        educonectaBadge.className = "text-xs font-semibold px-3 py-1 rounded-full border transition-colors shadow-sm bg-emerald-950/80 text-emerald-300 border-emerald-700/50 tracking-wide";
+        themeBtn.className = "flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl border transition shadow-sm bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200";
+        themeIcon.className = "fa-solid fa-moon text-cyan-300";
+        themeText.innerText = "Modo Escuro";
+
+        footer.className = "border-t border-emerald-950/80 bg-slate-900 py-6 mt-12 text-center text-xs text-slate-400 transition-colors";
+        footerCourse.className = "font-bold text-slate-300 text-sm transition-colors pt-1";
+        footerTeam.className = "text-slate-400 transition-colors";
+
+        heroBox.className = "relative overflow-hidden rounded-2xl border border-emerald-900/40 bg-slate-900 p-6 sm:p-8 shadow-xl transition-all";
+        heroTitle.className = "text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight transition-colors";
+        heroDesc.className = "text-slate-300 text-sm sm:text-base leading-relaxed transition-colors";
+
+        dropZone.className = "relative group border-2 border-dashed border-slate-800 hover:border-emerald-500/80 rounded-2xl p-7 sm:p-10 text-center transition-all duration-200 bg-slate-900/50 hover:bg-slate-900/80 cursor-pointer";
+        dropTitle.className = "text-base font-bold text-white block transition-colors";
+        dropSubtitle.className = "text-xs text-slate-400 mt-1 block transition-colors";
+
+        quickLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-400 transition-colors";
+        uploadLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-400 transition-colors";
+        pipelineLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-400 transition-colors";
+        formLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-400 transition-colors";
+
+        pipelineCard.className = "rounded-2xl border border-slate-800 bg-slate-900/90 p-4 space-y-4 shadow-md transition-colors";
+        formCard.className = "rounded-2xl border border-slate-800 bg-slate-900/90 p-5 sm:p-6 space-y-4 shadow-md transition-colors";
+        statusCard.className = "flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl border border-emerald-800/60 bg-slate-900/90 gap-4 shadow-md transition-colors";
+        statusTitle.className = "text-base font-bold text-white mt-0.5 transition-colors";
+        statusDesc.className = "text-xs text-slate-400 mt-0.5 transition-colors";
+        imgContainer.className = "relative min-h-[460px] max-h-[640px] rounded-xl bg-slate-950 flex items-center justify-center p-3 border border-slate-900 overflow-hidden transition-colors";
+        tabCaption.className = "text-xs text-slate-400 bg-slate-950/70 p-3 rounded-xl border border-slate-800 transition-colors leading-relaxed";
+        tabsHeader.className = "flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3 transition-colors";
+        resetBtn.className = "self-start sm:self-center px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-colors border border-slate-700 shadow-sm flex items-center gap-2 flex-shrink-0";
+        zoningBox.className = "p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-700/40 text-xs text-emerald-200 flex items-start gap-3 transition-colors leading-relaxed";
+
+        modalCard.className = "bg-slate-900 border border-emerald-900/50 rounded-2xl p-6 sm:p-8 max-w-md w-full text-center space-y-4 shadow-2xl transition-colors";
+        modalTitle.className = "text-xl font-bold text-white transition-colors";
+        modalDesc.className = "text-xs text-slate-300 leading-relaxed transition-colors";
+        lgpdCard.className = "bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 max-w-2xl w-full text-left space-y-4 shadow-2xl transition-colors max-h-[90vh] overflow-y-auto text-slate-300";
+
+        // Cards de demonstração
+        document.querySelectorAll('.demo-card').forEach(el => {
+          el.className = "demo-card group relative p-4 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 hover:border-emerald-500/60 transition-all duration-200 text-left flex items-center justify-between shadow-sm";
+        });
+        document.querySelectorAll('.demo-logo-box').forEach(el => {
+          el.className = "demo-logo-box w-12 h-12 bg-white p-1 rounded-lg flex items-center justify-center flex-shrink-0";
+        });
+        document.querySelectorAll('.demo-company-title').forEach(el => {
+          el.className = "demo-company-title font-bold text-sm text-slate-100 group-hover:text-emerald-400 transition-colors";
+        });
+        document.querySelectorAll('.demo-company-sub').forEach(el => {
+          el.className = "demo-company-sub block text-xs text-slate-400 font-medium";
+        });
+        document.querySelectorAll('.demo-cta-badge').forEach(el => {
+          el.className = "demo-cta-badge text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-700/50 group-hover:bg-emerald-600 group-hover:text-white transition-all";
+        });
+
+        // Formulário
+        document.querySelectorAll('.form-field-label').forEach(el => {
+          el.className = "form-field-label text-xs font-bold text-slate-400 uppercase tracking-wider transition-colors";
+        });
+        document.querySelectorAll('.form-input').forEach(el => {
+          if (el.id === 'field-company' || el.id === 'field-cep') {
+            el.className = "form-input w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-bold text-emerald-400 focus:outline-none transition-colors";
+          } else {
+            el.className = "form-input w-full bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors";
+          }
+        });
+        document.querySelectorAll('.badge-format').forEach(el => {
+          el.className = "badge-format px-2.5 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-slate-300 font-medium";
+        });
+
+      } else {
+        // MODO CLARO: Limpo, alto contraste, sem texto apagado, institucional
+        document.documentElement.classList.remove('dark');
+        body.className = "min-h-screen flex flex-col font-sans transition-colors duration-200 bg-slate-100 text-slate-800 antialiased";
+        header.className = "border-b transition-colors duration-200 sticky top-0 z-50 px-4 sm:px-6 lg:px-10 py-3.5 bg-gradient-to-r from-emerald-800 to-green-700 text-white shadow-md border-emerald-900/30";
+        headerTitle.className = "font-bold text-lg leading-tight text-white transition-colors";
+        headerSubtitle.className = "text-xs text-emerald-100 transition-colors";
+        headerLogoBox.className = "w-11 h-11 rounded-xl bg-white/20 p-1 border border-white/30 shadow-sm flex items-center justify-center overflow-hidden flex-shrink-0 transition-colors";
+
+        educonectaBadge.className = "text-xs font-semibold px-3 py-1 rounded-full border transition-colors shadow-sm bg-emerald-900/80 text-white border-emerald-500/50 tracking-wide";
+        themeBtn.className = "flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl border transition shadow-sm bg-emerald-900/60 hover:bg-emerald-900 border-emerald-600/50 text-white";
+        themeIcon.className = "fa-solid fa-sun text-amber-300";
+        themeText.innerText = "Modo Claro";
+
+        footer.className = "border-t border-slate-300 bg-slate-200/90 py-6 mt-12 text-center text-xs text-slate-600 transition-colors";
+        footerCourse.className = "font-bold text-slate-800 text-sm transition-colors pt-1";
+        footerTeam.className = "text-slate-600 transition-colors";
+
+        heroBox.className = "relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm transition-all";
+        heroTitle.className = "text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight transition-colors";
+        heroDesc.className = "text-slate-600 text-sm sm:text-base leading-relaxed transition-colors";
+
+        dropZone.className = "relative group border-2 border-dashed border-slate-300 hover:border-emerald-600 rounded-2xl p-7 sm:p-10 text-center transition-all duration-200 bg-white hover:bg-emerald-50/40 cursor-pointer shadow-sm";
+        dropTitle.className = "text-base font-bold text-slate-800 block transition-colors";
+        dropSubtitle.className = "text-xs text-slate-500 mt-1 block transition-colors";
+
+        quickLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors";
+        uploadLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors";
+        pipelineLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors";
+        formLabel.className = "text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors";
+
+        pipelineCard.className = "rounded-2xl border border-slate-200 bg-white p-4 space-y-4 shadow-sm transition-colors";
+        formCard.className = "rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4 shadow-sm transition-colors";
+        statusCard.className = "flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl border border-emerald-200 bg-emerald-50/80 gap-4 shadow-sm transition-colors";
+        statusTitle.className = "text-base font-bold text-slate-900 mt-0.5 transition-colors";
+        statusDesc.className = "text-xs text-slate-600 mt-0.5 transition-colors";
+        imgContainer.className = "relative min-h-[460px] max-h-[640px] rounded-xl bg-slate-50 flex items-center justify-center p-3 border border-slate-200 overflow-hidden transition-colors";
+        tabCaption.className = "text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 transition-colors leading-relaxed";
+        tabsHeader.className = "flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3 transition-colors";
+        resetBtn.className = "self-start sm:self-center px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors border border-slate-300 shadow-sm flex items-center gap-2 flex-shrink-0";
+        zoningBox.className = "p-3.5 rounded-xl bg-emerald-100/70 border border-emerald-300 text-xs text-emerald-950 flex items-start gap-3 transition-colors leading-relaxed";
+
+        modalCard.className = "bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-md w-full text-center space-y-4 shadow-xl transition-colors";
+        modalTitle.className = "text-xl font-bold text-slate-900 transition-colors";
+        modalDesc.className = "text-xs text-slate-600 leading-relaxed transition-colors";
+        lgpdCard.className = "bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-2xl w-full text-left space-y-4 shadow-2xl transition-colors max-h-[90vh] overflow-y-auto text-slate-600";
+
+        // Cards de demonstração
+        document.querySelectorAll('.demo-card').forEach(el => {
+          el.className = "demo-card group relative p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-600 transition-all duration-200 text-left flex items-center justify-between shadow-sm hover:shadow-md";
+        });
+        document.querySelectorAll('.demo-logo-box').forEach(el => {
+          el.className = "demo-logo-box w-12 h-12 bg-white flex items-center justify-center flex-shrink-0";
+        });
+        document.querySelectorAll('.demo-company-title').forEach(el => {
+          el.className = "demo-company-title font-bold text-sm text-slate-800 group-hover:text-emerald-700 transition-colors";
+        });
+        document.querySelectorAll('.demo-company-sub').forEach(el => {
+          el.className = "demo-company-sub block text-xs text-slate-500 font-medium";
+        });
+        document.querySelectorAll('.demo-cta-badge').forEach(el => {
+          el.className = "demo-cta-badge text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 group-hover:bg-emerald-700 group-hover:text-white transition-all";
+        });
+
+        // Formulário
+        document.querySelectorAll('.form-field-label').forEach(el => {
+          el.className = "form-field-label text-xs font-bold text-slate-700 uppercase tracking-wider transition-colors";
+        });
+        document.querySelectorAll('.form-input').forEach(el => {
+          if (el.id === 'field-company' || el.id === 'field-cep') {
+            el.className = "form-input w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-bold text-emerald-800 focus:outline-none transition-colors";
+          } else {
+            el.className = "form-input w-full bg-white border border-slate-300 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none transition-colors";
+          }
+        });
+        document.querySelectorAll('.badge-format').forEach(el => {
+          el.className = "badge-format px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-600 font-medium";
+        });
+      }
+    }
+
+    function toggleTheme() {
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    // Inicialização segura no modo claro por padrão
+    document.addEventListener('DOMContentLoaded', () => {
+      applyTheme(currentTheme);
+    });
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const loadingState = document.getElementById('loading-state');
+    const resultsSection = document.getElementById('results-section');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-emerald-600', 'bg-emerald-50/60');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('border-emerald-600', 'bg-emerald-50/60');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-emerald-600', 'bg-emerald-50/60');
+      if (e.dataTransfer.files.length > 0) {
+        uploadFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        uploadFile(fileInput.files[0]);
+      }
+    });
+
+    async function uploadFile(file) {
+      showLoading('Processando Documento...', 'Alinhando imagem e realizando a leitura das informações do endereço...');
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/v1/cv/extract-student-address', {
+          method: 'POST',
+          body: formData
+        });
+        const json = await res.json();
+        if (json.success) {
+          renderResults(json);
+        } else {
+          alert('Erro no processamento: ' + (json.error || 'Falha na leitura.'));
+          hideLoading();
+        }
+      } catch (err) {
+        alert('Erro ao conectar com o servidor: ' + err.message);
+        hideLoading();
+      }
+    }
+
+    async function runSample(company) {
+      showLoading(`Carregando Comprovante (${company.toUpperCase()})...`, 'Realizando alinhamento e leitura do endereço residencial...');
+      try {
+        const res = await fetch(`/api/v1/sample/${company}`);
+        const json = await res.json();
+        if (json.success) {
+          renderResults(json);
+        } else {
+          alert('Erro ao processar modelo.');
+          hideLoading();
+        }
+      } catch (err) {
+        alert('Erro ao carregar modelo: ' + err.message);
+        hideLoading();
+      }
+    }
+
+    function showLoading(title, desc) {
+      loadingState.classList.remove('hidden');
+      resultsSection.classList.add('hidden');
+      document.getElementById('loading-step-title').innerText = title;
+      document.getElementById('loading-step-desc').innerText = desc;
+    }
+
+    function hideLoading() {
+      loadingState.classList.add('hidden');
+    }
+
+    function renderResults(json) {
+      hideLoading();
+      resultsSection.classList.remove('hidden');
+
+      const data = json.data;
+      const previews = json.previews;
+
+      // Badge e Nome Concessionária
+      const companyBadge = document.getElementById('company-badge');
+      const companyFormal = data.empresa_formal || data.empresa_detectada || 'Concessionária Residencial';
+      companyBadge.innerText = data.empresa_detectada || 'CONCESSIONÁRIA';
+
+      // Status Formal
+      document.getElementById('result-status-title').innerText = 'Comprovante Residencial Validado com Sucesso';
+      document.getElementById('result-status-desc').innerText = `Fatura da ${companyFormal} reconhecida. O estudante atende aos critérios de zoneamento para o programa EduConecta Periferia.`;
+
+      // Imagens
+      document.getElementById('img-original').src = previews.original || '';
+      document.getElementById('img-desentortado').src = previews.desentortado || '';
+      document.getElementById('img-binarizado').src = previews.binarizado || '';
+
+      // Campos do formulário
+      document.getElementById('field-company').value = companyFormal;
+      document.getElementById('field-street').value = data.logradouro || '';
+      document.getElementById('field-number').value = data.numero || '';
+      document.getElementById('field-neighborhood').value = data.bairro || 'Itaquera';
+      document.getElementById('field-cep').value = data.cep || '';
+      document.getElementById('field-uf').value = data.uf || 'SP';
+
+      switchTab('original');
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function switchTab(tab) {
+      const tabs = ['original', 'desentortado', 'binarizado'];
+      const captions = {
+        'original': '<strong>1. Documento Original:</strong> Arquivo ou fotografia enviada pelo estudante para conferência.',
+        'desentortado': '<strong>2. Alinhamento de Margens:</strong> Identificação das bordas do papel e retificação ortogonal para leitura plana.',
+        'binarizado': '<strong>3. Nitidez e Contraste:</strong> Otimização de contraste do texto para isolar o endereço do titular.'
+      };
+
+      tabs.forEach(t => {
+        const img = document.getElementById(`img-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tab) {
+          img.classList.remove('hidden');
+          btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-700 text-white transition-colors shadow-sm';
+        } else {
+          img.classList.add('hidden');
+          btn.className = currentTheme === 'dark' 
+            ? 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors'
+            : 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors';
+        }
+      });
+      document.getElementById('tab-caption').innerHTML = captions[tab];
+    }
+
+    function resetHub() {
+      resultsSection.classList.add('hidden');
+      fileInput.value = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function confirmEnrollment() {
+      document.getElementById('success-modal').classList.remove('hidden');
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('success-modal').classList.add('hidden');
+    }
+
+    function openLgpdModal() {
+      document.getElementById('lgpd-modal').classList.remove('hidden');
+    }
+
+    function closeLgpdModal() {
+      document.getElementById('lgpd-modal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block titulo %}Cadastro de estudante · Apoio Escolar Periférico{% endblock %}
+{% block cabeca %}<meta name="csrf-token" content="{{ csrf_token }}">{% endblock %}
 {% block conteudo %}
 <section class="estreito">
   <h1>Cadastro de estudante</h1>
@@ -27,9 +28,35 @@
       {% for a in anos %}<option {% if form.ano_escolar == a %}selected{% endif %}>{{ a }}</option>{% endfor %}
     </select>
 
-    <label for="bairro">Bairro onde mora <span class="opcional">(opcional)</span></label>
-    <input id="bairro" name="bairro" maxlength="120" value="{{ form.bairro or '' }}" aria-describedby="bairro-ajuda">
-    <p id="bairro-ajuda" class="ajuda">Usamos só para saber em quais regiões o reforço está chegando. Nunca mostramos seu endereço.</p>
+    <fieldset class="endereco">
+      <legend>Onde você mora <span class="opcional">(opcional)</span></legend>
+      <p class="ajuda">Usamos só o bairro e o CEP, para saber em quais regiões o reforço está chegando. Nunca mostramos seu endereço.</p>
+
+      {% if visao_ativa %}
+      <div class="cartao visao" id="visao" data-ativa="1" hidden>
+        <p class="visao-titulo"><strong>Preencher com a foto de uma conta</strong></p>
+        <p class="ajuda">Conta de luz (Enel), água (Sabesp) ou telefone/internet (Claro). Foto de frente, com boa luz e o papel inteiro aparecendo. A foto é lida na hora e descartada: não guardamos a imagem nem o endereço completo.</p>
+        <label class="botao botao-sec botao-pq visao-escolher" for="visao-arquivo">Tirar foto ou escolher arquivo</label>
+        <input id="visao-arquivo" class="sr" type="file" accept="image/jpeg,image/png,image/webp,application/pdf">
+        <p id="visao-status" class="ajuda" role="status" aria-live="polite"></p>
+        <div id="visao-resultado" class="visao-resultado" hidden>
+          <p class="visao-lido"><span class="tag" id="visao-empresa"></span> Lemos na conta: <strong id="visao-endereco"></strong></p>
+          <p class="ajuda"><strong>Confira:</strong> o bairro e o CEP abaixo foram preenchidos com o que lemos. Corrija se estiver errado.</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="grade">
+        <div>
+          <label for="bairro">Bairro</label>
+          <input id="bairro" name="bairro" maxlength="120" autocomplete="address-level3" value="{{ form.bairro or '' }}">
+        </div>
+        <div>
+          <label for="cep">CEP</label>
+          <input id="cep" name="cep" maxlength="9" inputmode="numeric" autocomplete="postal-code" pattern="\d{5}-?\d{3}" placeholder="00000-000" value="{{ form.cep or '' }}">
+        </div>
+      </div>
+    </fieldset>
 
     <div class="check">
       <input id="consentimento" name="consentimento" type="checkbox">
@@ -39,4 +66,5 @@
     <button class="botao" type="submit">Criar conta e ver monitorias</button>
   </form>
 </section>
+{% if visao_ativa %}<script src="{{ url_for('static', path='visao.js') }}" defer></script>{% endif %}
 {% endblock %}
