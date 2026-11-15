@@ -85,8 +85,8 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 > **[1:40 — Cadastro com Visão Computacional]** "No cadastro, ela tira uma foto do comprovante de endereço. O sistema identifica o documento, corrige a imagem e extrai o endereço. Ela só confere e confirma. Nenhum dado é salvo sem confirmação."
 > [A Visão está integrada ao cadastro do MVP. Gravem num ambiente com o OCR instalado (`requirements-visao.txt`) e usem uma conta do **dataset sintético** (`visao/dataset_sintetico`), nunca uma conta real.]
 >
-> **[2:00 — Território e Dados]** "Com o endereço, a plataforma reconhece que ela estuda num território prioritário, definido pelo nosso pipeline de dados públicos do INEP."
-> [Só se o pipeline de Dados alimentar o MVP.]
+> **[2:00 — Território e Dados]** "Pela escola dela, a plataforma reconhece que ela estuda num território prioritário, definido pelo nosso pipeline de dados públicos do INEP e do IBGE."
+> [O pipeline de Dados alimenta o MVP. Rodem a DAG (ou `dados/rodar_local.py`) antes de gravar e mostrem, em `/impacto`, a tabela "Prioridade territorial das escolas" com origem "Pipeline INEP/IBGE". As escolas são fictícias.]
 >
 > **[2:15 — Monitoria: valor principal]** "Ela escolhe 'matemática' e o turno da noite, vê os monitores disponíveis nesta semana e agenda para quinta, às dezenove horas. Pronto: confirmação na tela."
 >

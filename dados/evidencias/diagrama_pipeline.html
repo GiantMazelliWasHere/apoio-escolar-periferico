@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Diagrama do pipeline</title>
+<style>
+  body{margin:0;background:#fff;font-family:Segoe UI,Arial,sans-serif;color:#1f2937}
+  .wrap{width:1560px;padding:28px 20px;box-sizing:border-box}
+  .row{display:flex;align-items:stretch;gap:0}
+  .col{border:2px solid #94a3b8;border-radius:10px;padding:14px 16px;background:#f8fafc}
+  .col h3{margin:0 0 10px;font-size:20px}
+  .col p{margin:6px 0;font-size:16px;line-height:1.35}
+  .src{width:250px;border-color:#64748b}
+  .af{flex:1;border-color:#0284c7;background:#f0f9ff}
+  .mvp{width:330px;border-color:#16a34a;background:#f0fdf4}
+  .arrow{display:flex;flex-direction:column;justify-content:center;align-items:center;width:150px;font-size:14px;text-align:center;color:#334155}
+  .arrow b{font-size:30px;line-height:1}
+  .tasks{display:flex;gap:10px;align-items:center}
+  .task{border:2px solid #16a34a;border-radius:8px;background:#fff;padding:10px;flex:1;font-size:15px}
+  .task code{font-weight:600;font-size:15px}
+  .ar{font-size:24px;color:#0284c7}
+  .store{display:flex;gap:10px;margin-top:12px}
+  .store div{flex:1;border:1px dashed #0284c7;border-radius:8px;padding:8px;font-size:14px;background:#fff}
+  .note{margin-top:14px;font-size:14px;color:#475569}
+  code{font-family:Consolas,monospace}
+</style></head><body><div class="wrap">
+<div class="row">
+  <div class="col src">
+    <h3>Origem (pública)</h3>
+    <p><b>INEP</b>: Censo Escolar (laboratório, internet) e IDEB anos finais</p>
+    <p><b>IBGE</b>: malha territorial (município, região periférica)</p>
+    <p style="color:#64748b">No protótipo: extração simulada, com as 6 escolas fictícias do MVP</p>
+  </div>
+  <div class="arrow"><b>→</b>ingestão<br>diária<br><code>@daily</code></div>
+  <div class="col af">
+    <h3>Apache Airflow · DAG <code>etl_apoio_escolar_periferico</code></h3>
+    <div class="tasks">
+      <div class="task"><code>extract_inep_ibge</code><br>lê INEP + IBGE</div><span class="ar">→</span>
+      <div class="task"><code>transform_data</code><br>recorte periférico, IDEB faltante = média, Índice de Prioridade</div><span class="ar">→</span>
+      <div class="task"><code>load_to_azure</code><br>envia a camada Trusted ao MVP</div>
+    </div>
+    <div class="store">
+      <div><b>Raw</b>: <code>raw_inep_ibge.csv</code></div>
+      <div><b>Trusted</b>: <code>trusted_escolas_prioritarias.csv</code></div>
+    </div>
+    <p class="note">Índice = (10 − IDEB) + 2 sem laboratório + 2 sem internet · enviado normalizado de 0 a 1</p>
+  </div>
+  <div class="arrow"><b>→</b><code>PUT /api/v1/escolas/<br>prioridade</code><br>HTTPS + <code>X-API-Key</code></div>
+  <div class="col mvp">
+    <h3>Núcleo do MVP</h3><p style="color:#64748b">FastAPI · Azure App Service (nos prints: rodando local)</p>
+    <p>FastAPI grava na tabela <code>escolas</code>: território prioritário, índice e origem <code>pipeline</code></p>
+    <p><b>/impacto</b>: painel com a prioridade de cada escola e o % de estudantes em territórios prioritários</p>
+    <p style="color:#64748b">Mesmo banco lido pelo robô de RPA (relatório do patrocinador)</p>
+  </div>
+</div>
+</div></body></html>

@@ -40,5 +40,19 @@
 </ul>
 {% endif %}
 
+{% if escolas %}
+<h2>Prioridade territorial das escolas</h2>
+<p class="ajuda">O pipeline de Dados (Airflow) cruza IDEB e infraestrutura (INEP) com a malha do IBGE e envia o índice para cá. Quanto maior o índice, mais a escola precisa de apoio. Escolas de demonstração são fictícias.</p>
+<table class="tabela">
+  <caption>Escolas e índice de prioridade</caption>
+  <thead><tr><th scope="col">Escola</th><th scope="col">Território prioritário</th><th scope="col">Índice (0 a 1)</th><th scope="col">Origem</th></tr></thead>
+  <tbody>
+    {% for e in escolas %}
+    <tr><td>{{ e.nome }}</td><td>{{ 'Sim' if e.territorio_prioritario else 'Não' }}</td><td>{{ (e.indice_prioridade | string | replace('.', ',')) if e.indice_prioridade is not none else '—' }}</td><td>{{ 'Pipeline INEP/IBGE' if e.fonte_prioridade == 'pipeline' else 'Valor de demonstração' }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
 <p class="ajuda">Para integrações: <a href="/api/v1/impacto">/api/v1/impacto</a> (JSON).</p>
 {% endblock %}

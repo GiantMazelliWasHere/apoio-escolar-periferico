@@ -1,0 +1,30 @@
+# Airflow local para rodar a DAG e tirar as evidências (prints) da entrega de Dados.
+#
+# Uso (com o núcleo do MVP rodando na máquina, porta 8000, aceitando conexões
+# externas: veja docs/INTEGRACAO.md):
+#
+#   cd dados
+#   docker compose up -d
+#   abrir http://localhost:8080  (sem login: o acesso anônimo é admin, só para uso local)
+#
+# A chave de integração vem da variável INTEGRATION_API_KEY do terminal ou de
+# dados/.env (fora do git). Sem ela, a tarefa de carga falha de propósito.
+services:
+  airflow:
+    image: apache/airflow:2.10.5-python3.12
+    command: standalone
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "False"
+      # O núcleo do MVP rodando no computador (fora do contêiner).
+      MVP_API_URL: ${MVP_API_URL:-http://host.docker.internal:8000}
+      INTEGRATION_API_KEY: ${INTEGRATION_API_KEY:?defina INTEGRATION_API_KEY (a mesma do mvp/.env)}
+    volumes:
+      - ./dags:/opt/airflow/dags
+      # Somente local: visitante anônimo entra como admin (sem senha).
+      - ./airflow/webserver_config.py:/opt/airflow/webserver_config.py:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

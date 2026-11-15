@@ -203,6 +203,24 @@ def test_pipeline_de_dados_atualiza_prioridade_da_escola(app, client):
     assert e1["indice_prioridade"] == 0.87
 
 
+def test_pipeline_de_dados_encontra_escolas_do_seed_pelo_codigo_inep(app, client):
+    # Mesmo formato que dados/dags/etl_apoio_escolar.py envia (montar_payload).
+    payload = [
+        {"codigo_inep": "99000104", "territorio_prioritario": True, "indice_prioridade": 0.73},
+        {"codigo_inep": "99000101", "territorio_prioritario": True, "indice_prioridade": 0.61},
+        {"codigo_inep": "35999999", "territorio_prioritario": True, "indice_prioridade": 0.5},
+    ]
+    r = client.put("/api/v1/escolas/prioridade", json=payload, headers={"X-API-Key": API_KEY})
+    assert r.json() == {"atualizadas": 2}  # código desconhecido é ignorado
+    escolas = {e["codigo_inep"]: e for e in client.get("/api/v1/escolas").json()}
+    assert len(escolas) == 6 and all(c.startswith("99") for c in escolas)
+    assert escolas["99000104"]["indice_prioridade"] == 0.73
+    assert escolas["99000104"]["fonte_prioridade"] == "pipeline"
+    assert escolas["99000105"]["fonte_prioridade"] == "sintetico"
+    pagina = client.get("/impacto").text
+    assert "Prioridade territorial das escolas" in pagina and "Pipeline INEP/IBGE" in pagina
+
+
 def test_senha_guardada_com_hash(app, client):
     cadastrar_estudante(client, email="hash@exemplo.org")
     with app.state.SessionLocal() as db:

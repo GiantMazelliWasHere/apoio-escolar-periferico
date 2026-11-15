@@ -463,7 +463,8 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
 
     @app.get("/impacto", response_class=HTMLResponse)
     def impacto(request: Request, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
-        return render(request, "impacto.html", usuario, k=calcular_impacto(db))
+        escolas = db.scalars(select(Escola).order_by(Escola.indice_prioridade.desc().nulls_last(), Escola.nome)).all()
+        return render(request, "impacto.html", usuario, k=calcular_impacto(db), escolas=escolas)
 
     # ---------- API de integração ----------
 
