@@ -8,7 +8,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 |---|---|---|---|
 | `mvp/` | Núcleo (front + API + banco) | Equipe | ✅ fluxo central funcionando localmente, com testes |
 | `dados/` | Big Data Architecture & Data Integration | Jó Sales | ⬜ aguardando entrega |
-| `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"); 🟡 falta testar com a chave real do OpenRouter |
+| `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
 | `visao/` | Applied Computer Vision | Edson Leonardo | ⬜ aguardando entrega |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | ⬜ aguardando entrega |
 | `.github/workflows/` + Azure | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 CI pronto; deploy em modelo |
@@ -66,7 +66,7 @@ Resposta:
 - **Falhas:** sem chave, com o modelo fora do ar ou com JSON fora do esquema, a resposta vem com `"fonte": "fallback"` (mensagem amigável + link para agendar com um monitor) e o erro fica só no log. A tela sempre mostra as perguntas frequentes, que não dependem da IA.
 - **Limites:** pergunta de até 800 caracteres (`422` acima disso); 8 perguntas por minuto por cliente e 300 por hora no total (`429`). O limite é em memória, por processo.
 - **Privacidade:** só o texto da pergunta vai ao provedor; nada do cadastro é enviado e a conversa não é gravada. `acao` só aceita destinos de uma lista fixa do servidor.
-- **Divergência a alinhar com o autor:** o README de `ia/` ainda chama o produto de "EduConecta Periferia" e descreve telas (envio de comprovante, trilhas) que o MVP não tem.
+- **README de `ia/`:** é a documentação da entrega da disciplina, mantida pelo autor no repositório dele (`EdLeo0708/GAE`). Ele descreve a entrega como foi avaliada pelo professor de IA Generativa, por isso pode usar outro nome de produto e citar telas que o MVP integrado não tem. A referência do produto integrado é este repositório.
 
 ## Contratos a criar quando as entregas chegarem
 
