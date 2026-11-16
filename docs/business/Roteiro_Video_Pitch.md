@@ -33,16 +33,17 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 **Objetivo:** fazer a banca sentir o problema: quem sofre, onde e quanto isso custa hoje.
 **Na tela:**
 - 0:00: imagem real de rua ou escola de periferia (foto própria ou banco de imagens livre).
-- 0:15: mapa do pipeline de Dados, com escolas coloridas por IDEB [só se existir].
-- 0:30: um número grande em tela [PREENCHER com dado verificado].
+- 0:15: diagrama do pipeline de Dados ([`dados/evidencias/00_diagrama_pipeline.png`](../../dados/evidencias/00_diagrama_pipeline.png)), por 2 a 3 segundos. Não mostrem um mapa: o pipeline usa dados simulados de escolas fictícias e não aponta o território real da fala.
+- 0:30: número grande em tela: **23%** ("aprendizado adequado em matemática · 9º ano · rede estadual · São Bernardo do Campo"), com a fonte no rodapé: "QEdu, a partir do Saeb 2023 (Inep)". Opcional: a queda 31% (2019) → 27% (2021) → 23% (2023). Fonte: [https://qedu.org.br/municipio/3548708-sao-bernardo-do-campo/aprendizado](https://qedu.org.br/municipio/3548708-sao-bernardo-do-campo/aprendizado) (rede Estadual, 9º ano).
 - 0:38: a fala de E4 em texto, com a legenda "Estudante de escola pública, entrevista de 14/11/2026".
 
-> "Pense numa estudante de quinze anos, numa escola pública da periferia. Ela ficou com dúvida em matemática na aula de hoje. Em casa, ninguém consegue ajudar. Aula particular custa mais do que a família pode pagar. E o cursinho comunitário mais perto está com a lista de espera cheia.
+> "Pense numa estudante de quinze anos, numa escola pública da periferia de São Bernardo do Campo. Ela ficou com dúvida em matemática na aula de hoje. Em casa, ninguém consegue ajudar. Aula particular custa mais do que a família pode pagar. E o cursinho comunitário mais perto está com a lista de espera cheia.
 >
-> Ela não é exceção. [PREENCHER: dado verificado. Ex.: proporção de alunos do 9º ano com aprendizagem adequada em matemática no território. Fonte: QEdu/INEP.]
+> Ela não é exceção. Em São Bernardo, só vinte e três em cada cem alunos do nono ano da rede estadual aprendem o esperado em matemática.
 >
-> Uma das estudantes que entrevistamos resumiu assim: "De dia eu ajudo em casa e estudo; só tenho tempo livre depois das 19h."
-> [Se o bloco passar de 45 s, deixem a fala de E4 só em texto na tela e cortem esta frase falada.]
+> [Dado conferido em 15/11/2026: QEdu, Saeb 2023, rede estadual, 9º ano, matemática, 23% com aprendizado adequado (2019: 31%; 2021: 27%). É dado do **município inteiro**, não de um bairro: não digam "no bairro tal".]
+>
+> [A fala de E4 ("De dia eu ajudo em casa e estudo; só tenho tempo livre depois das 19h.") fica **só em texto na tela** aos 0:38: com o dado de São Bernardo, falada ela levaria o bloco a ~58 s. A queda de 31% para 23% também fica só na tela.]
 >
 > Esse atraso vira reprovação, desânimo e, muitas vezes, abandono. E fecha portas para o trabalho e para a tecnologia.
 >
@@ -82,7 +83,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 
 > **[1:30 — Acesso]** "Esta é a plataforma no ar, nesta URL pública. Vou entrar como a estudante que acabamos de conhecer."
 >
-> **[1:40 — Cadastro com Visão Computacional]** "No cadastro, ela tira uma foto do comprovante de endereço. O sistema identifica o documento, corrige a imagem e extrai o endereço. Ela só confere e confirma. Nenhum dado é salvo sem confirmação."
+> **[1:40 — Cadastro com Visão Computacional]** "No cadastro, ela envia a foto de uma conta de consumo como comprovante de endereço. O sistema identifica o documento, corrige a imagem e extrai o endereço. Ela só confere e confirma. Nenhum dado é salvo sem confirmação."
 > [A Visão está integrada ao cadastro do MVP. Gravem num ambiente com o OCR instalado (`requirements-visao.txt`) e usem uma conta do **dataset sintético** (`visao/dataset_sintetico`), nunca uma conta real.]
 >
 > **[2:00 — Território e Dados]** "Pela escola dela, a plataforma reconhece que ela estuda num território prioritário, definido pelo nosso pipeline de dados públicos do INEP e do IBGE."
@@ -103,7 +104,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 
 **Se algum passo for cortado:** usem o tempo que sobrar para mostrar com mais calma o passo da monitoria e a confirmação aparecendo também no painel do monitor ou da coordenação.
 
-**Transição:** do relatório de impacto para o bloco 4: "Esse relatório é exatamente o que paga a conta."
+**Transição:** do painel de impacto para o bloco 4: "Esse impacto medido é exatamente o que paga a conta." (a frase funciona com ou sem o relatório do RPA)
 
 ---
 
@@ -115,7 +116,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 - Tabela dos planos: Semente R$ 2.500 · Território R$ 6.000 · Rede R$ 15.000.
 - Gráfico simples de custo por estudante: R$ 52 → R$ 30 → R$ 22, com o rótulo **"projeção"**.
 
-> "Esse relatório é exatamente o que paga a conta. O estudante nunca paga. Quem paga são empresas que precisam comprovar investimento social, o 'S' do ESG.
+> "Esse impacto medido é exatamente o que paga a conta. O estudante nunca paga. Quem paga são empresas que precisam comprovar investimento social, o 'S' do ESG.
 >
 > Vendemos programas por núcleo escolar: o plano Semente atende uma escola com até cem estudantes por dois mil e quinhentos reais por mês; o Território, três escolas por seis mil. Em troca, a empresa recebe painel de impacto e voluntariado para os funcionários.
 >
@@ -163,7 +164,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 
 | Bloco | Quem | Início–fim | Duração | Palavras (≈) |
 |---|---|---|---|---|
-| Problema e cidadão | Edson | 0:00–0:45 | 45 s | ~125 (com o dado e a fala de E4) |
+| Problema e cidadão | Edson | 0:00–0:45 | 45 s | ~113 (com o dado; fala de E4 só na tela) |
 | Solução e proposta de valor | Jó | 0:45–1:30 | 45 s | ~105 |
 | Demonstração do MVP | Eduardo | 1:30–3:00 | 90 s | ~160 (+ pausas de navegação) |
 | Modelo de negócio | Eduardo | 3:00–4:00 | 60 s | ~145 |
@@ -180,7 +181,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 ### Sequência de cenas
 | Tempo | Cena | Tipo | Dica |
 |---|---|---|---|
-| 0:00–0:45 | Edson em câmera + imagens do território + mapa de dados | Câmera + imagens | Começar pelo cidadão, não pelo logo |
+| 0:00–0:45 | Edson em câmera + imagens do território + diagrama do pipeline de Dados | Câmera + imagens | Começar pelo cidadão, não pelo logo |
 | 0:45–1:30 | Jó em câmera + diagrama de 3 ícones | Câmera + gráfico | No máximo 1 slide |
 | 1:30–3:00 | **Gravação de tela contínua** da URL pública | Tela | Barra de endereço visível; nada de mockup |
 | 3:00–4:00 | Eduardo + Lean Canvas e tabela de planos | Câmera + gráfico | Destacar 3 números: preço, equilíbrio, custo por estudante |

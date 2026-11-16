@@ -371,7 +371,7 @@ Diferenciais que devemos destacar: (1) território escolhido por dados públicos
 - **Médio e longo prazo:** contratos de 12 meses com renovação; o segundo ano oferece expansão de território com base nos dados do primeiro.
 
 ### 7.3 Proposta comercial (estrutura de 1 página)
-1. O problema no território X (dados INEP/IBGE do pipeline).
+1. O problema no território (ex.: em São Bernardo do Campo, só 23% dos alunos do 9º ano da rede estadual têm aprendizado adequado em matemática, Saeb 2023 via QEdu), mais o índice de prioridade das escolas calculado pelo pipeline INEP/IBGE.
 2. O programa: núcleo, número de estudantes, duração.
 3. O que a empresa recebe: painel, relatórios, marca, voluntariado.
 4. **Uso do recurso** (transparência), a partir dos custos de §4: ~42% coordenação pedagógica, de território e parcerias · ~35% tecnologia, IA e segurança · ~10% comunicação e apoio a voluntários · ~10% impostos e administração · ~3% reserva [PROJEÇÃO sobre a receita do cenário intermediário, R$ 30 mil].
@@ -495,4 +495,5 @@ A ficha (slide 20) está em um arquivo separado, pronta para abrir o README do r
 - PDF oficial: *Desafio FIAP — GS CitizenTech 4ESPR (Preenchido v3)*, slides 3–34 e páginas das disciplinas.
 - Vídeo da equipe (Google Drive): **não foi acessado** (conector sem autenticação). Este roteiro não presume nada sobre o que foi apresentado nele.
 - Dados educacionais sugeridos: INEP (IDEB, SAEB, Censo Escolar), QEdu, IBGE. Inserir números apenas depois de conferidos.
+- Dado do pitch (bloco 1), conferido em 15/11/2026: São Bernardo do Campo, rede estadual, 9º ano, matemática: 23% com aprendizado adequado no Saeb 2023 (31% em 2019; 27% em 2021). Fonte: QEdu, https://qedu.org.br/municipio/3548708-sao-bernardo-do-campo/aprendizado
 - Regras fiscais citadas (Simples Nacional, FIA/FUMCAD, doações a OSC): por falta de tempo, foram **geradas por IA e apenas simuladas** (§3.5), sem revisão de contador. O aviso precisa aparecer no PDF final.
