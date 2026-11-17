@@ -27,10 +27,12 @@ FOTOS = IMAGENS / "fotos"
 MODELO = IMAGENS / "modelo"
 SAIDA_PDF = AQUI / "Entrega_MakerLab_Suporte_Tablet.pdf"
 BASE = "suporte_tablet_3DP-2026-004_revC"
+ETIQUETA = MAKER / "fabricacao" / "etiqueta_qr_30mm.svg"  # baixada de /maker do MVP publicado
 
 # ----------------------------------------------------------------- preencher
 LINKS = {
     "Publicação no MakerWorld": "",
+    "Plataforma (MVP publicado)": "https://app-apoioescolar-mvp-6e7462.azurewebsites.net/",
     "Pasta do repositório (arquivos brutos)": "https://github.com/GiantMazelliWasHere/apoio-escolar-periferico/tree/main/maker",
 }
 # Como o protótipo foi impresso de verdade.
@@ -191,12 +193,13 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 → página inicial: "Você chegou pelo QR code do suporte de estudo"
 → cadastro do estudante grava origem = peca_maker
 → /impacto: "Cadastros vindos da peça Maker Lab"</div>
-<p>A página <code>/maker</code> do MVP mostra a peça e gera o QR em SVG no tamanho exato da etiqueta (30 mm), pronto para imprimir.</p>
+<p>A página <code>/maker</code> do MVP mostra a peça e gera o QR em SVG no tamanho exato da etiqueta (30 mm), pronto para imprimir. A etiqueta definitiva, gerada no MVP publicado, aponta para <code>https://app-apoioescolar-mvp-6e7462.azurewebsites.net/qr</code>:</p>
+<img src="{ETIQUETA.as_uri()}" alt="Etiqueta QR definitiva" style="width:30mm;height:30mm;display:block;margin:3mm 0">
 
 <h2>7. Arquivos</h2>
 <table><tbody>
 <tr><th>CAD e desenho</th><td><code>maker/cad/</code>: .step · desenho técnico .pdf · desenho 2D .dxf</td></tr>
-<tr><th>Fabricação</th><td><code>maker/fabricacao/</code>: .3mf · .stl</td></tr>
+<tr><th>Fabricação</th><td><code>maker/fabricacao/</code>: .3mf · .stl · etiqueta QR de 30 mm (.svg)</td></tr>
 <tr><th>Imagens</th><td><code>maker/imagens/</code>: renders gerados do STL, <code>modelo/</code> (capturas do CAD) e <code>fotos/</code> (impressão do protótipo)</td></tr>
 </tbody></table>
 </body></html>"""

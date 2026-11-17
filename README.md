@@ -14,7 +14,7 @@ Reforço escolar gratuito, com monitor de verdade, para quem estuda na periferia
 | **Arquitetura: componentes** | Núcleo web (FastAPI + Jinja + SQLAlchemy) · pipeline de Dados (Airflow) · Visão (OCR de endereço) · IA Generativa (assistente da plataforma, via OpenRouter) · RPA (UiPath) · Azure App Service + GitHub Actions + Application Insights · peça Maker Lab (suporte de tablet com QR code que leva à plataforma) |
 | **Fontes de dados** | INEP e IBGE (públicas) · dados operacionais do MVP · dados sintéticos documentados em [`mvp/app/seed.py`](mvp/app/seed.py) |
 | **Modelos de IA utilizados** | OCR/visão computacional para endereço · LLM via OpenRouter para o assistente (`google/gemini-2.5-flash`, configurável) |
-| **URL do MVP e repositório** | MVP: [PREENCHER] · Repositório: https://github.com/GiantMazelliWasHere/apoio-escolar-periferico |
+| **URL do MVP e repositório** | MVP: https://app-apoioescolar-mvp-6e7462.azurewebsites.net · Repositório: https://github.com/GiantMazelliWasHere/apoio-escolar-periferico |
 | **Indicadores de impacto** | Monitorias realizadas · horas de reforço · taxa de presença · estudantes ativos · % em territórios prioritários |
 | **ODS conectados** | ODS 4 (Educação de Qualidade) · ODS 10 (Redução das Desigualdades) |
 
