@@ -55,7 +55,22 @@ cd mvp
 .venv/Scripts/python -m pip_audit -r requirements.txt
 ```
 
-## Infraestrutura ([`infra/provisionar.sh`](../infra/provisionar.sh))
+## Ambiente em produção
+
+O MVP integrado roda em **https://app-apoioescolar-mvp-6e7462.azurewebsites.net**, num Web App próprio (`app-apoioescolar-mvp-6e7462`) no mesmo plano B1 (`plan-apoioescolar`) e no mesmo Resource Group (`rg-apoio-escolar-gs`, West US 3) do app da disciplina (`app-apoioescolar-6e7462`), que segue no ar. Não há custo extra de App Service.
+
+| Item | Como está configurado |
+|---|---|
+| Web App | Python 3.12, `sh startup.sh`, só HTTPS, TLS 1.2, FTP e autenticação básica (FTP e SCM) desligados, HTTP/2, Always On, health check em `/health`, tags do projeto |
+| Segredos | Próprios do MVP no Key Vault `kv-apoioescolar-6e7462`: `MVP-SECRET-KEY`, `MVP-INTEGRATION-API-KEY` e `MVP-FERNET-KEY`, gerados no Cloud Shell sem aparecer na tela. O app lê por referência `@Microsoft.KeyVault(...)` com a identidade gerenciada (Key Vault Secrets User) |
+| Banco | SQLite em `/home/data/apoio-mvp.db` |
+| Monitoramento | Application Insights `appi-apoioescolar` e Log Analytics `log-apoioescolar` compartilhados; alertas `alerta-mvp-health-check` (sev 0), `alerta-mvp-erros-5xx` (sev 1) e `alerta-mvp-lentidao` (sev 2) no grupo de ação `ag-apoioescolar` |
+| Deploy (OIDC) | Identidade gerenciada `id-github-deploy-mvp` com credenciais federadas para `repo:GiantMazelliWasHere/apoio-escolar-periferico:environment:production` e `:ref:refs/heads/main`, e papel **Website Contributor só neste Web App**. Usamos identidade gerenciada em vez de app registration: não exige permissão no Entra ID e não tem segredo |
+| GitHub | Variáveis do repositório `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_WEBAPP_NAME` e environment `production` |
+
+Acesso da equipe: Contributor e Role Based Access Control Administrator (restrito a Website Contributor, Key Vault Secrets User e Reader) no RG, e Key Vault Secrets Officer no Key Vault.
+
+## Infraestrutura do zero ([`infra/provisionar.sh`](../infra/provisionar.sh))
 
 Script Azure CLI **idempotente** (pode rodar de novo). Rodar no **Azure Cloud Shell (Bash)**, que já vem logado, ou no Git Bash/WSL depois de `az login`:
 
