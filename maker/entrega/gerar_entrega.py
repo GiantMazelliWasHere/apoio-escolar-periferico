@@ -31,18 +31,19 @@ ETIQUETA = MAKER / "fabricacao" / "etiqueta_qr_30mm.svg"  # baixada de /maker do
 
 # ----------------------------------------------------------------- preencher
 LINKS = {
-    "Publicação no MakerWorld": "",
+    "Publicação no MakerWorld": "https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code",
     "Plataforma (MVP publicado)": "https://app-apoioescolar-mvp-6e7462.azurewebsites.net/",
     "Pasta do repositório (arquivos brutos)": "https://github.com/GiantMazelliWasHere/apoio-escolar-periferico/tree/main/maker",
 }
 # Como o protótipo foi impresso de verdade.
 IMPRESSAO = "PETG, Creality Ender 3 (mesa 220 × 220 mm), perfil deitado, sem suporte, com brim: 5 horas e 90 g de filamento"
 # Link de crédito da peça baixada usada no bônus (deixe "não se aplica" se não usou nenhuma).
-CREDITO_BONUS = ""
+CREDITO_BONUS = "não se aplica"
 # ---------------------------------------------------------------------------
 
 # Legendas pelo nome do arquivo (sem extensão). Arquivo sem legenda aqui sai com uma genérica.
 LEGENDAS = {
+    "07_peca_pronta": "Protótipo pronto, fora da mesa e sem o brim: encaixe da base, painel de leitura com a janela em losango e, ao fundo, a perna traseira",
     "01_perfil_na_mesa": "Impressão em andamento: o perfil em A deitado na mesa, com encaixe, painel a 65° e perna a 80°",
     "02_vista_de_cima": "Vista de cima da mesa de 220 × 220 mm: a peça cabe com folga",
     "03_encaixe": "Encaixe de 15 mm da base, já com as primeiras camadas",
