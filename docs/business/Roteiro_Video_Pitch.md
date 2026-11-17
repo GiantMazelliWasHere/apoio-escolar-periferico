@@ -84,10 +84,10 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 > **[1:30 — Acesso e cadastro]** "Esta é a plataforma no ar. Vou me cadastrar como a estudante que acabamos de conhecer: só um apelido, sem nome e sem e-mail."
 > [Apelido sintético, faixa "13 a 15 anos", 9º ano EF, escola de território prioritário.]
 >
-> **[1:38 — Visão Computacional]** "Para o endereço, ela fotografa uma conta de consumo. O sistema lê a conta e preenche o endereço. Ela só confere e confirma."
-> [No plano B1 da Azure o OCR fica desligado: gravar este trecho no MVP local com `requirements-visao.txt` e uma conta do **dataset sintético** (`visao/dataset_sintetico`), nunca uma conta real. Na edição, legenda na tela: "Leitura da foto: ambiente local".]
+> **[1:40 — Endereço opcional]** "O endereço é opcional: só bairro e CEP, nunca o endereço completo."
+> [A leitura da conta pela foto (Visão Computacional) existe no código, mas fica desligada no plano B1 da Azure, que não tem memória para o OCR. Por isso ela não entra na demo: a gravação é contínua e toda na URL pública. A Visão aparece na Entrega de Business, na Ficha Técnica e na entrega da própria disciplina.]
 >
-> **[1:52 — Autorização do responsável (LGPD)]** "Como ela é menor de idade, o responsável precisa autorizar. O link vai pelo WhatsApp, a mãe abre e autoriza. Pronto: agendamento liberado."
+> **[1:48 — Autorização do responsável (LGPD)]** "Como ela é menor de idade, o responsável precisa autorizar. O link vai pelo WhatsApp, a mãe abre e autoriza. Pronto: agendamento liberado."
 > [Copiar o link da tela "Peça a autorização", abrir numa **aba anônima**, clicar em Autorizar com um e-mail sintético e voltar à aba da estudante.]
 >
 > **[2:05 — Território e Dados]** "A escola dela está num território prioritário, apontado pelo nosso pipeline de dados públicos do INEP e do IBGE."
