@@ -190,8 +190,8 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         return render(request, "maker.html", usuario, peca=PECA, destino=destino, qr=qr_svg(destino), cadastros=k["cadastros_via_peca_maker"])
 
     @app.get("/maker/qrcode.svg")
-    def qrcode_svg(request: Request, tamanho_mm: int = 40):
-        """QR vetorial no tamanho da etiqueta (padrão 40 mm), para imprimir ou gravar a laser."""
+    def qrcode_svg(request: Request, tamanho_mm: int = PECA["etiqueta_mm"]):
+        """QR vetorial no tamanho da etiqueta (padrão: PECA["etiqueta_mm"]), para imprimir em papel adesivo."""
         tamanho_mm = min(max(tamanho_mm, 15), 200)
         svg = qr_svg(url_do_qr(base_publica(request)), tamanho_mm=tamanho_mm)
         return PlainTextResponse(
