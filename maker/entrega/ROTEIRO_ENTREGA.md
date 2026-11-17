@@ -4,11 +4,11 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 
 | # | Passo | Quem | Tempo | Pronto? |
 |---|---|---|---|---|
-| 0 | Imprimir e fotografar o protótipo | Vinicius | — | 🟡 impressão fotografada (6 fotos em `imagens/fotos/`); falta a foto da peça pronta com tablet e QR |
+| 0 | Imprimir e fotografar o protótipo | Vinicius | — | ✅ 6 fotos da impressão + peça pronta (`07_peca_pronta.jpg`); foto com tablet e QR é opcional |
 | 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ✅ PETG, Creality Ender 3, 5 h, 90 g |
-| 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ⬜ textos prontos abaixo |
+| 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ✅ [publicado](https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code) |
 | 3 | Pasta de arquivos com link público | Equipe | — | ✅ repositório público, `maker/` organizada |
-| 4 | PDF único no portal | Vinicius | 10 min | 🟡 gerado com fotos e modelo; faltam link do MakerWorld e crédito |
+| 4 | PDF único no portal | Vinicius | 10 min | 🟡 gerado com fotos, modelo e link do MakerWorld; falta só o crédito do bônus |
 
 ---
 
@@ -18,8 +18,9 @@ A impressão já está fotografada (Creality, mesa de 220 × 220 mm, perfil deit
 
 Falta **uma ou duas fotos da peça pronta**, que valem mais que as da impressão, principalmente para a capa do MakerWorld:
 
-- `07_pronta_com_tablet.jpg`: tirada a peça da mesa e removido o brim, com um tablet ou celular apoiado, de frente
-- `08_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
+- ✅ `07_peca_pronta.jpg`: a peça fora da mesa, sem o brim
+- (opcional) `08_com_tablet.jpg`: com um tablet ou celular apoiado, de frente
+- (opcional) `09_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
 
 Salvem em `maker/imagens/fotos/` com esses nomes e adicionem a legenda em `LEGENDAS` no topo de `gerar_entrega.py`. Sem legenda, a foto sai com uma genérica.
 
@@ -48,7 +49,7 @@ Os parâmetros recomendados, para quem for imprimir de novo:
    - `fabricacao/suporte_tablet_3DP-2026-004_revC_impressao.3mf` e `.stl`
    - `cad/suporte_tablet_3DP-2026-004_revC.step`
    - `cad/..._desenho_tecnico.pdf` e `..._desenho_2d.dxf`: se o site não aceitar como arquivo de modelo, use **Outros arquivos / Attachments**
-3. **Imagens:** primeiro as fotos reais (`imagens/fotos/`; capa = `07_pronta_com_tablet.jpg` quando existir, senão `01_perfil_na_mesa.jpg`), depois as capturas do CAD (`imagens/modelo/01_cad_perspectiva.jpg`, `02_cad_frontal.jpg`) e os renders. O site remove publicações sem foto de impressão real, então as fotos são obrigatórias.
+3. **Imagens:** primeiro as fotos reais (`imagens/fotos/`; capa = `07_peca_pronta.jpg`, senão `01_perfil_na_mesa.jpg`), depois as capturas do CAD (`imagens/modelo/01_cad_perspectiva.jpg`, `02_cad_frontal.jpg`) e os renders. O site remove publicações sem foto de impressão real, então as fotos são obrigatórias.
 4. **Título, descrição, categoria e tags:** copie os blocos abaixo.
 5. **Lista de materiais (BOM):** bloco abaixo.
 6. **Licença:** CC BY (ou a que o professor pedir).

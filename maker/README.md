@@ -53,6 +53,8 @@ A peça física do Apoio Escolar Periférico: um suporte para o estudante apoiar
 
 Impresso em PETG numa Creality Ender 3 (mesa de 220 × 220 mm), em 5 horas e com 90 g de filamento, na orientação dos arquivos: perfil deitado, sem suporte, com brim.
 
+<img src="imagens/fotos/07_peca_pronta.jpg" alt="Protótipo pronto sobre a mesa" width="360">
+
 | | |
 |---|---|
 | ![Perfil em A na mesa](imagens/fotos/01_perfil_na_mesa.jpg) | ![Lateral da impressão](imagens/fotos/06_lateral.jpg) |
@@ -101,7 +103,8 @@ Passo a passo (fotos, dados da impressão, MakerWorld, pasta pública e PDF úni
 
 ## Pendências da disciplina
 
-- [ ] Publicar o projeto no MakerWorld e colocar o link na [Ficha Técnica](../docs/FICHA_TECNICA_MVP.md#links-da-entrega)
+- [x] Publicado no [MakerWorld](https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code) e link na [Ficha Técnica](../docs/FICHA_TECNICA_MVP.md#links-da-entrega)
 - [x] Fotos da impressão (`imagens/fotos/`)
-- [ ] Foto da peça pronta com tablet e etiqueta QR colada
+- [x] Foto da peça pronta (`imagens/fotos/07_peca_pronta.jpg`)
+- [ ] (Opcional) Foto com tablet apoiado e etiqueta QR colada
 - [x] Etiqueta definitiva gerada no MVP publicado (`fabricacao/etiqueta_qr_30mm.svg`)
