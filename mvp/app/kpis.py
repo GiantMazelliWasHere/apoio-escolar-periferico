@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from .maker import ORIGEM_MAKER
 from .models import Agendamento, Escola, Horario, Usuario
 
 
@@ -33,6 +34,10 @@ def calcular_impacto(db: Session, agora: datetime | None = None) -> dict:
             )
         )
         or 0
+    )
+
+    cadastros_maker = (
+        db.scalar(select(func.count()).select_from(Usuario).where(Usuario.origem == ORIGEM_MAKER)) or 0
     )
 
     def contar(status: str) -> int:
@@ -89,6 +94,7 @@ def calcular_impacto(db: Session, agora: datetime | None = None) -> dict:
         "voluntarios_cadastrados": voluntarios,
         "voluntarios_ativos_30d": voluntarios_ativos,
         "oportunidades_abertas": horarios_futuros,
+        "cadastros_via_peca_maker": cadastros_maker,
         "agendamentos_por_materia": por_materia,
         "calculado_em": agora.isoformat(timespec="seconds"),
     }

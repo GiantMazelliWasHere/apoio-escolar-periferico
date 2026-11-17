@@ -44,7 +44,7 @@
 | 1. Quem é o cidadão beneficiado? | Estudante de escola pública em comunidade periférica |
 | 2. Qual problema será resolvido? | Falta de acesso a reforço escolar gratuito, com acompanhamento e no horário do estudante |
 | 3. Como a solução funcionará? | Plataforma web: cadastro → busca de monitoria por matéria → agendamento com voluntário → assistente de IA para dúvidas de uso → presença registrada → painel de impacto ao patrocinador |
-| 4. Quais tecnologias serão empregadas? | Pipeline de dados (Airflow), Visão Computacional (OCR), IA Generativa, RPA (UiPath), Azure (App Service, GitHub Actions, Application Insights), peça fabricada (Maker Lab) |
+| 4. Quais tecnologias serão empregadas? | Pipeline de dados (Airflow), Visão Computacional (OCR), IA Generativa, RPA (UiPath), Azure (App Service, GitHub Actions, Application Insights), suporte de tablet fabricado no Maker Lab, com QR code para a plataforma |
 | 5. Quem participará do ecossistema? | Estudantes, voluntários (universitários, profissionais, voluntariado corporativo), escolas, ONGs, empresas patrocinadoras, fundos e editais |
 | 6. Como o impacto poderá ser medido e ampliado? | Indicadores acima, reportados em painel e relatório; expansão por núcleo escolar, replicando o modelo em novos territórios |
 
@@ -54,13 +54,13 @@
 
 | Componente | Disciplina (professor) | O que entra no MVP | Como conversa com o resto | Status |
 |---|---|---|---|---|
-| **Núcleo do MVP** (front + API + banco) | Sem disciplina própria: é o produto que todas usam | Cadastro, busca e agendamento de monitorias, painéis do estudante e do voluntário, painel de impacto público. Pasta [`mvp/`](../mvp/): FastAPI + Jinja + SQLAlchemy (SQLite/PostgreSQL), 57 testes automatizados | API REST (`/api/docs`) + banco de dados; contratos em [INTEGRACAO.md](INTEGRACAO.md) | ✅ local · ⬜ no ar |
+| **Núcleo do MVP** (front + API + banco) | Sem disciplina própria: é o produto que todas usam | Cadastro, busca e agendamento de monitorias, painéis do estudante e do voluntário, painel de impacto público. Pasta [`mvp/`](../mvp/): FastAPI + Jinja + SQLAlchemy (SQLite/PostgreSQL), 63 testes automatizados | API REST (`/api/docs`) + banco de dados; contratos em [INTEGRACAO.md](INTEGRACAO.md) | ✅ local · ⬜ no ar |
 | **Dados** | Big Data Architecture & Data Integration (Ana Machado) | DAG no Airflow (extract → transform → load) que ingere IDEB/Censo Escolar/IBGE (simulados), calcula o Índice de Prioridade Educacional das escolas periféricas e gera a camada Trusted | A última tarefa chama `PUT /api/v1/escolas/prioridade` no núcleo (`X-API-Key`); o painel de impacto mostra o índice e a origem. Entrega da disciplina em [`dados/`](../dados/) | ✅ integrado, com testes automatizados e executado no Airflow 2.10.5 (Docker) contra o núcleo local; diagrama e prints no PDF da disciplina · ⬜ rodar contra a URL da Azure |
 | **Inteligência** | Generative AI for Engineering (Reinaldo Ramos) | Assistente que tira dúvidas sobre a plataforma (cadastro, agendamento, privacidade, erros comuns), via OpenRouter, com resposta em JSON e tratamento de falhas; dúvida de matéria é encaminhada ao monitor humano | Tela "Ajuda" do front chama `POST /api/v1/assistente`; entrega da disciplina em [`ia/`](../ia/), código integrado em [`mvp/app/assistente.py`](../mvp/app/assistente.py) | ✅ integrado, com testes automatizados (modelo simulado) e testado com a chave real do OpenRouter |
 | **Visão** | Applied Computer Vision (Wilians Souza) | Extração do endereço de fotos de contas (3 empresas, ex.: Enel, Sabesp, Claro), com confirmação do usuário | Tela de cadastro envia a foto para `POST /api/v1/visao/endereco`; o estudante confere bairro e CEP e só eles vão para o banco. Entrega da disciplina em [`visao/`](../visao/) ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)), código integrado em [`mvp/app/visao.py`](../mvp/app/visao.py) | ✅ integrado, com testes automatizados (OCR simulado) e testado com EasyOCR real · ⬜ OCR no Azure (exige plano com mais RAM) |
 | **Automação** | Robotic Process Automation (Cibele Ribeiro) | Robô UiPath que consolida presenças, gera e envia o relatório de impacto ao patrocinador e emite certificados de voluntários | Lê dados do MVP (API/planilha exportada) e devolve o relatório | 🟡 |
 | **Produção** | Secure DevOps Tools & Cloud Computing (Gabriel Arcanjo) | MVP na Azure com HTTPS, deploy automático a cada commit, segredos fora do código, acesso por papel e alertas | GitHub Actions → Azure App Service; Application Insights. CI ([ci.yml](../.github/workflows/ci.yml)) pronto; deploy em modelo ([deploy-azure.yml](../.github/workflows/deploy-azure.yml)) | 🟡 |
-| **Físico** | Project-Based Maker Lab (Caio Sousa) | Redesign de um objeto do espaço público no trajeto do estudante (ex.: assento do ponto de ônibus em frente à escola), com placa e QR code para a plataforma | QR code leva à URL do MVP | 🟡 |
+| **Físico** | Project-Based Maker Lab (Caio Sousa) | Suporte de tablet para estudo (2 placas de 220 × 140 × 3 mm; impressão 3D e corte a laser), com etiqueta de QR code para a plataforma. Arquivos em [maker/](../maker/README.md) | QR code → `GET /qr` marca a origem → o cadastro grava `origem = peca_maker` → `/impacto` mostra "Cadastros vindos da peça Maker Lab" | ✅ CAD e integração no repositório · ⬜ foto da peça fabricada e MakerWorld |
 | **Negócio e pitch** | BI & Startup Development (Henio Scheidt) | Lean Canvas, modelo de negócio, indicadores, vídeo-pitch com demo | Indicadores lidos do banco do MVP | ✅ documento em [docs/business](business/Entrega_Business_Apoio_Escolar_Periferico.md) |
 
 ### Diagrama (proposta — atualizar quando os componentes chegarem)
@@ -79,7 +79,7 @@ flowchart LR
     RPA -->|e-mail/PDF| P
     GH[GitHub Actions] -->|deploy| API
     API --> AI[Application Insights<br/>alertas]
-    QR[Peça Maker Lab<br/>QR code] -.-> FE
+    QR[Suporte de tablet<br/>Maker Lab, QR code] -->|GET /qr| FE
 ```
 
 ---
@@ -93,7 +93,7 @@ flowchart LR
 | Resiliente ao mundo real | Páginas leves para celular de entrada e conexão fraca; lembretes por SMS/WhatsApp | 🟡 |
 | IA responsável | A assistente tem escopo limitado ao uso da plataforma, não guarda a conversa e encaminha dúvidas de matéria ao monitor humano; endereço extraído sempre confirmado pelo usuário | 🟡 |
 | Integração real | Componentes conversam por API e banco, não por prints colados lado a lado | 🟡 |
-| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 57 testes) |
+| Reprodutível | README, requirements e instruções para rodar e testar | ✅ núcleo (README + 63 testes) |
 
 ### Contraste da paleta do MVP (WCAG 2.1, mínimo AA = 4,5:1 para texto normal)
 

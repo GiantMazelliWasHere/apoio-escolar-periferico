@@ -23,7 +23,7 @@ def make_sessionmaker(url: str) -> sessionmaker:
 def adicionar_colunas_novas(engine) -> None:
     """Migração mínima: `create_all` não altera tabelas existentes, então colunas
     opcionais criadas depois da 1ª versão são adicionadas aqui (bancos já no ar)."""
-    novas = {"usuarios": {"cep": "VARCHAR(9)"}}
+    novas = {"usuarios": {"cep": "VARCHAR(9)", "origem": "VARCHAR(30)"}}
     insp = inspect(engine)
     with engine.begin() as conn:
         for tabela, colunas in novas.items():

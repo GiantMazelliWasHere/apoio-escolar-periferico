@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}Suporte de estudo (Maker Lab) · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>{{ peca.nome }}</h1>
+<p class="lead">A peça física do projeto: um suporte para o estudante apoiar o tablet ou o celular durante a monitoria online e ficar com as mãos livres para o caderno. A etiqueta com o QR code leva direto para a plataforma.</p>
+
+<div class="maker-grade">
+  <figure class="cartao maker-figura">
+    <img src="{{ url_for('static', path='maker-suporte.png') }}" alt="Modelo 3D do suporte: duas placas inclinadas de 220 por 140 milímetros; a placa da frente tem uma aba na base que segura o tablet." loading="lazy">
+    <figcaption class="ajuda">Modelo no Fusion 360 (arquivos em <code>maker/</code> no repositório).</figcaption>
+  </figure>
+
+  <section class="cartao destaque maker-etiqueta" aria-labelledby="etiqueta">
+    <h2 id="etiqueta">Etiqueta com QR code</h2>
+    <div class="maker-qr">{{ qr | safe }}</div>
+    <p><strong>Reforço escolar grátis.</strong><br>Aponte a câmera e agende.</p>
+    <p class="ajuda">Destino: <code>{{ destino }}</code></p>
+    <p class="nao-imprimir"><a class="botao" href="/maker/qrcode.svg?tamanho_mm={{ peca.etiqueta_mm }}" download>Baixar QR ({{ peca.etiqueta_mm }} mm, SVG)</a></p>
+  </section>
+</div>
+
+<table class="tabela maker-ficha">
+  <caption>Ficha da peça</caption>
+  <tbody>
+    <tr><th scope="row">Placas</th><td>2 placas de {{ peca.placas_mm }} mm, {{ peca.espessura_mm }} mm de espessura (frente com aba de {{ peca.aba_mm }} mm; apoio traseiro liso)</td></tr>
+    <tr><th scope="row">Fabricação</th><td>Impressão 3D das duas placas (arquivo 3MF) ou apoio traseiro em corte a laser (arquivo DXF, retângulo de 220 × 140 mm)</td></tr>
+    <tr><th scope="row">Integração</th><td>QR code de {{ peca.etiqueta_mm }} mm colado ou gravado na placa da frente, apontando para <code>/qr</code></td></tr>
+    <tr><th scope="row">Cadastros vindos da peça</th><td>{{ cadastros }} (também no <a href="/impacto">painel de impacto</a>)</td></tr>
+  </tbody>
+</table>
+<p class="ajuda">Quem chega pelo QR e se cadastra na mesma visita fica marcado com a origem "peça Maker Lab". Guardamos só esse rótulo do canal, sem localização nem dados do aparelho.</p>
+{% endblock %}

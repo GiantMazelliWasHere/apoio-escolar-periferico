@@ -218,6 +218,17 @@ details.cartao summary { font-weight: 700; cursor: pointer; }
 .visao-lido { margin: .25rem 0; overflow-wrap: anywhere; }
 .campo-lido { border-color: var(--brand); background: var(--brand-soft); }
 
+/* Maker Lab: suporte de tablet com QR code */
+.maker-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .75rem; align-items: start; }
+.maker-figura { margin: .75rem 0; }
+.maker-figura img { width: 100%; height: auto; border-radius: 8px; display: block; }
+.maker-etiqueta { text-align: center; }
+.maker-qr { width: min(220px, 70vw); margin: .5rem auto; }
+.maker-qr svg { width: 100%; height: auto; display: block; border-radius: 6px; }
+.maker-etiqueta code, .maker-ficha code { overflow-wrap: anywhere; }
+.tabela.maker-ficha td { white-space: normal; font-weight: 400; }
+.aviso-peca { background: var(--brand-soft); }
+
 @media print {
   .topo, .rodape, .faixa-demo, .pular, .nao-imprimir { display: none !important; }
   body { background: #fff; color: #000; }

@@ -11,7 +11,7 @@ Reforço escolar gratuito, com monitor de verdade, para quem estuda na periferia
 | **Cidadão e território** | Estudantes de escolas públicas (Fundamental II e Ensino Médio) em comunidades periféricas; território piloto escolhido por dados (IDEB/INEP) |
 | **Problema, em uma frase** | Estudantes da periferia não têm acesso a reforço escolar gratuito, com acompanhamento de uma pessoa e no horário deles |
 | **Proposta de valor** | Monitoria gratuita com voluntários reais, financiada por empresas que recebem impacto medido |
-| **Arquitetura: componentes** | Núcleo web (FastAPI + Jinja + SQLAlchemy) · pipeline de Dados (Airflow) · Visão (OCR de endereço) · IA Generativa (assistente da plataforma, via OpenRouter) · RPA (UiPath) · Azure App Service + GitHub Actions + Application Insights · peça Maker Lab com QR code |
+| **Arquitetura: componentes** | Núcleo web (FastAPI + Jinja + SQLAlchemy) · pipeline de Dados (Airflow) · Visão (OCR de endereço) · IA Generativa (assistente da plataforma, via OpenRouter) · RPA (UiPath) · Azure App Service + GitHub Actions + Application Insights · peça Maker Lab (suporte de tablet com QR code que leva à plataforma) |
 | **Fontes de dados** | INEP e IBGE (públicas) · dados operacionais do MVP · dados sintéticos documentados em [`mvp/app/seed.py`](mvp/app/seed.py) |
 | **Modelos de IA utilizados** | OCR/visão computacional para endereço · LLM via OpenRouter para o assistente (`google/gemini-2.5-flash`, configurável) |
 | **URL do MVP e repositório** | MVP: [PREENCHER] · Repositório: https://github.com/GiantMazelliWasHere/apoio-escolar-periferico |
@@ -34,6 +34,8 @@ Fluxo central, do primeiro clique ao resultado:
 
 7. O **pipeline de Dados** (Airflow, pasta [`dados/`](dados/)) calcula o Índice de Prioridade Educacional das escolas (IDEB e infraestrutura do INEP + malha do IBGE, simulados) e grava no núcleo pela API; o painel de impacto mostra o índice de cada escola e a origem.
 
+8. O **suporte de tablet** do Maker Lab (pasta [`maker/`](maker/)) leva uma etiqueta com **QR code** para a plataforma. Quem chega pelo QR e se cadastra fica marcado com essa origem, e o painel de impacto mostra quantos cadastros vieram da peça. A página `/maker` mostra a peça e gera o QR em SVG no tamanho da etiqueta.
+
 APIs de integração para Dados e RPA: ver [docs/INTEGRACAO.md](docs/INTEGRACAO.md).
 
 ## Rodar localmente
@@ -53,3 +55,4 @@ Abrir http://localhost:8000. Para a leitura da foto da conta no cadastro, instal
 | Roteiro de entrevistas de validação (Lean Canvas) | [docs/business/Roteiro_Entrevistas_Validacao.md](docs/business/Roteiro_Entrevistas_Validacao.md) |
 | Roteiro do vídeo-pitch | [docs/business/Roteiro_Video_Pitch.md](docs/business/Roteiro_Video_Pitch.md) |
 | Integração entre disciplinas e deploy | [docs/INTEGRACAO.md](docs/INTEGRACAO.md) |
+| Maker Lab: suporte de tablet (CAD, arquivos de fabricação, QR code) | [maker/README.md](maker/README.md) |
