@@ -1,0 +1,53 @@
+*VÍDEO-PITCH · Apoio Escolar Periférico*
+*Eduardo Mazelli · Bloco 3: Demonstração do MVP*
+Duração: *90 segundos* (de 1:30 a 3:00). Gravação de *tela*, com sua voz por cima. Você entra depois da Jó e emenda direto no seu bloco 4.
+
+*O QUE FALAR* (cada parágrafo acompanha uma tela; espere a tela carregar antes de falar)
+
+[1:30 · tela inicial → cadastro]
+"Esta é a plataforma no ar. Vou me cadastrar como a estudante que acabamos de conhecer: só um apelido, sem nome e sem e-mail."
+
+[1:38 · foto da conta]
+"Para o endereço, ela fotografa uma conta de consumo. O sistema lê a conta e preenche o endereço. Ela só confere e confirma."
+
+[1:52 · link do responsável → aba anônima → Autorizar]
+"Como ela é menor de idade, o responsável precisa autorizar. O link vai pelo WhatsApp, a mãe abre e autoriza. Pronto: agendamento liberado."
+
+[2:05 · /impacto, tabela de prioridade territorial]
+"A escola dela está num território prioritário, apontado pelo nosso pipeline de dados públicos do INEP e do IBGE."
+
+[2:15 · monitorias → agendar]
+"Ela escolhe matemática, à noite, e agenda com um monitor para quinta, às dezenove horas. Confirmado."
+
+[2:28 · Ajuda → assistente]
+"Se travar no site, ela pergunta à assistente: 'como cancelo minha monitoria?', e recebe o passo a passo."
+
+[2:38 · login da coordenação → Aprovar voluntários]
+"Do lado da coordenação, nosso robô já credenciou os voluntários no portal de credenciamento e mandou os cadastros para cá. A coordenação só confere e aprova."
+
+[2:52 · /impacto]
+"E cada monitoria realizada vira indicador no painel de impacto do patrocinador."
+
+*COMEÇA EM:* "Esta é a plataforma no ar." (logo depois da Jó)
+*TERMINA EM:* "...painel de impacto do patrocinador." → você mesmo emenda: "Esse impacto medido é exatamente o que paga a conta." (início do bloco 4)
+
+*CUIDADOS*
+• Use só *dados sintéticos*: apelido inventado, conta do dataset sintético (visao/dataset_sintetico), e-mail de responsável fictício. Nunca dado real.
+• No cadastro: faixa "13 a 15 anos", 9º ano EF, uma escola de território prioritário.
+• O trecho da foto da conta é gravado no *MVP local* (o OCR não roda no plano B1 da Azure). A edição coloca a legenda "Leitura da foto: ambiente local". O resto é na *URL pública*, com a barra de endereço visível.
+• No /impacto, "menos de 5" é proposital (LGPD esconde grupos pequenos). Não é erro: não precisa explicar.
+• Estourou 90 s? Encurte as pausas de navegação primeiro; se ainda passar, corte a frase da assistente.
+
+*ANTES DE GRAVAR (checklist)*
+• Voluntário aprovado com horário de matemática à noite (quinta, 19h).
+• Pelo menos um voluntário enviado pelo robô de RPA, ainda pendente de aprovação.
+• Pipeline de Dados rodado (DAG ou dados/rodar_local.py).
+• Chave do OpenRouter configurada (assistente responde).
+• Duas abas abertas: a da estudante e uma *anônima* para o responsável.
+• Login da coordenação à mão.
+• Zoom do navegador em 125%, notificações do sistema desligadas, cursor visível.
+
+*COMO GRAVAR*
+• Grave a tela em *1080p*, 30 fps (OBS ou Xbox Game Bar).
+• Grave a navegação inteira de uma vez; a voz pode ser gravada junto ou depois, por cima.
+• Grave *2 tomadas*. Os cortes entre telas ficam na edição.
