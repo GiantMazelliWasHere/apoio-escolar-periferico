@@ -33,8 +33,8 @@ LINKS = {
     "Publicação no MakerWorld": "",
     "Pasta do repositório (arquivos brutos)": "https://github.com/GiantMazelliWasHere/apoio-escolar-periferico/tree/main/maker",
 }
-# Como o protótipo foi impresso de verdade (ex.: "PLA, Creality (mesa 220 × 220), camada 0,2 mm, brim de 5 mm, 2 h 40 min, 38 g").
-IMPRESSAO = ""
+# Como o protótipo foi impresso de verdade.
+IMPRESSAO = "PETG, Creality Ender 3 (mesa 220 × 220 mm), perfil deitado, sem suporte, com brim: 5 horas e 90 g de filamento"
 # Link de crédito da peça baixada usada no bônus (deixe "não se aplica" se não usou nenhuma).
 CREDITO_BONUS = ""
 # ---------------------------------------------------------------------------
@@ -165,7 +165,7 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 <h2>3. Lista de materiais</h2>
 <table><tbody>
 <tr><th>Peça</th><td>1 peça impressa em 3D, 110 × 125 × 104 mm (largura × altura × fundo), chapa de 2 mm, dobras R3 int. / R5 ext.</td></tr>
-<tr><th>Material</th><td>Filamento PLA (ou PETG para mais resistência), cerca de 63 g (51 cm³ de peça maciça, calculado do STL)</td></tr>
+<tr><th>Material</th><td>Filamento PETG: 90 g no protótipo, incluindo o brim (a peça em si tem 51 cm³, calculado do STL). PLA também serve</td></tr>
 <tr><th>Etiqueta</th><td>QR code de 30 × 30 mm em papel adesivo, no canto inferior da face de trás da perna traseira</td></tr>
 <tr><th>Montagem</th><td>Nenhuma: a peça sai pronta da impressora</td></tr>
 <tr><th>Parafusos e cola</th><td>Nenhum</td></tr>
@@ -182,7 +182,7 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 </tbody></table>
 
 <h2>5. Fotos do protótipo</h2>
-<p>Impressão do protótipo em uma Creality com mesa de 220 × 220 mm, na orientação dos arquivos: perfil deitado, sem suporte, com brim.</p>
+<p>Impressão do protótipo em PETG numa Creality Ender 3 (mesa de 220 × 220 mm), em 5 horas, na orientação dos arquivos: perfil deitado, sem suporte, com brim.</p>
 {galeria}
 
 <h2>6. Integração com a plataforma</h2>

@@ -5,10 +5,10 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 | # | Passo | Quem | Tempo | Pronto? |
 |---|---|---|---|---|
 | 0 | Imprimir e fotografar o protótipo | Vinicius | — | 🟡 impressão fotografada (6 fotos em `imagens/fotos/`); falta a foto da peça pronta com tablet e QR |
-| 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ⬜ tempo, gramas e material no fatiador da Creality |
+| 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ✅ PETG, Creality Ender 3, 5 h, 90 g |
 | 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ⬜ textos prontos abaixo |
 | 3 | Pasta de arquivos com link público | Equipe | — | ✅ repositório público, `maker/` organizada |
-| 4 | PDF único no portal | Vinicius | 10 min | 🟡 gerado com fotos e modelo; faltam link do MakerWorld, dados da impressão e crédito |
+| 4 | PDF único no portal | Vinicius | 10 min | 🟡 gerado com fotos e modelo; faltam link do MakerWorld e crédito |
 
 ---
 
@@ -27,7 +27,7 @@ Salvem em `maker/imagens/fotos/` com esses nomes e adicionem a legenda em `LEGEN
 
 ## 1. Dados reais da impressão
 
-A impressora é uma **Creality** (não é Bambu), então o fatiador é o Creality Print (ou o OrcaSlicer). Abram o projeto que foi impresso e anotem o que ele mostra: **tempo, gramas de filamento, material e altura de camada**. Vão para `IMPRESSAO` no PDF e para a descrição do MakerWorld.
+✅ Já preenchido: **PETG, Creality Ender 3, 5 horas, 90 g**. Está em `IMPRESSAO` no PDF e na descrição do MakerWorld abaixo.
 
 Os parâmetros recomendados, para quem for imprimir de novo:
 
@@ -82,19 +82,18 @@ Na face de trás vai uma etiqueta com QR code que leva para a plataforma de moni
 
 Como imprimir
 O arquivo já vem na orientação certa: o perfil dobrado deitado na mesa. Não precisa de suporte.
-PLA ou PETG, camada 0,2 mm, 5 paredes, brim de 5 mm. Cerca de 63 g de PLA.
+PETG (usado no protótipo) ou PLA, camada 0,2 mm, 5 paredes, brim de 5 mm. O protótipo levou 5 horas e 90 g de PETG numa Creality Ender 3.
 
 Projeto da Global Solution FIAP 2026.2 (CitizenTech), disciplina Project-Based Maker Lab, Engenharia de Software, turma 4ESPR. Desenho técnico 3DP-2026-004 rev. C nos anexos.
 ```
 
 ### Lista de materiais
 ```
-- 1 peça impressa em 3D (PLA ou PETG), ~63 g
+- 1 peça impressa em 3D em PETG (ou PLA), 90 g com o brim
 - 1 etiqueta adesiva com QR code de 30 x 30 mm
 - Parafusos, cola, montagem: nenhum
 ```
 
-> Troquem "~63 g" pelo valor real do fatiador (passo 1).
 
 ## 3. Pasta de arquivos com link público ✅
 
@@ -117,7 +116,7 @@ Ordem do PDF: capa (disciplina, título, integrantes) → **links clicáveis em 
 
 1. Abra `maker/entrega/gerar_entrega.py` e preencha no topo:
    - `LINKS["Publicação no MakerWorld"]`: link do passo 2
-   - `IMPRESSAO`: o que foi usado de verdade, ex.: `"PLA, Creality (mesa 220 × 220 mm), camada 0,2 mm, brim 5 mm, 2 h 40 min, 61 g"`
+   - `IMPRESSAO`: ✅ já preenchido (PETG, Ender 3, 5 h, 90 g)
    - `CREDITO_BONUS`: link da peça de origem, ou `"não se aplica"`
 2. Fotos em `maker/imagens/fotos/`.
 3. Rode (só precisa do Python e do Edge):
