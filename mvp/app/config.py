@@ -24,6 +24,21 @@ def ler_versao() -> str:
         return "dev"
 
 
+# Nomes legíveis das regiões do Azure (o App Service informa o código, ex.: "westus3").
+REGIOES = {
+    "westus3": "West US 3 (Arizona, EUA)",
+    "brazilsouth": "Brazil South (São Paulo)",
+    "brazilsoutheast": "Brazil Southeast (Rio de Janeiro)",
+    "eastus": "East US (Virgínia, EUA)",
+    "eastus2": "East US 2 (Virgínia, EUA)",
+}
+
+
+def nome_da_regiao(codigo: str) -> str:
+    codigo = (codigo or "").strip()
+    return REGIOES.get(codigo.replace(" ", "").lower(), codigo)
+
+
 class Settings:
     def __init__(self) -> None:
         self.env = os.getenv("APP_ENV", "development")
@@ -49,5 +64,6 @@ class Settings:
         self.seed_demo = os.getenv("SEED_DEMO", "1") == "1"
         self.https_only_cookies = self.env == "production"
         # Região do Azure onde o app roda (o App Service define REGION_NAME), exibida no Aviso de Privacidade.
-        self.regiao = os.getenv("REGION_NAME", "").strip()
+        self.regiao = nome_da_regiao(os.getenv("REGION_NAME", ""))
+        self.regiao_no_brasil = os.getenv("REGION_NAME", "").replace(" ", "").lower().startswith("brazil")
 

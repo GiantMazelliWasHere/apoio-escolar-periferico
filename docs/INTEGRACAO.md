@@ -11,7 +11,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
 | `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)) e integrada ao cadastro do núcleo; testada com EasyOCR real |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | 🟡 relatório copiado e contrato do robô implementado no núcleo (`POST /api/v1/integracao/voluntarios`); ⬜ copiar o projeto UiPath para `rpa/` |
-| `.github/workflows/` + `infra/` | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 pipeline completo (qualidade, gitleaks, deploy OIDC com smoke test), infraestrutura em script e app pronto para produção ([DEVOPS.md](DEVOPS.md)); ⬜ rodar o provisionamento e o 1º deploy |
+| `.github/workflows/` + `infra/` | Secure DevOps Tools & Cloud Computing | Miguel Garcez | ✅ no ar em https://app-apoioescolar-mvp-6e7462.azurewebsites.net, publicado pelo pipeline (qualidade, gitleaks, deploy OIDC com smoke test); detalhes em [DEVOPS.md](DEVOPS.md) |
 | `maker/` | Project-Based Maker Lab | Vinicius Souza | ✅ entrega copiada (suporte de tablet: CAD, 3MF e DXF) e integrada ao núcleo pelo QR code: `/qr` marca a origem, o cadastro grava e o `/impacto` conta |
 | `docs/business/` | BI & Startup Development | Eduardo Mazelli | ✅ |
 
