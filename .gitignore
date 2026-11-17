@@ -10,3 +10,6 @@ Desafio-FIAP-GS-CitizenTech_*.pdf
 
 # HTML intermediário do PDF de Business (gerado por docs/business/pdf/gerar_pdf.py)
 docs/business/pdf/*.html
+
+# Vídeos brutos e editados do pitch (pesados, ficam fora do repositório)
+docs/[Vv]ideo/

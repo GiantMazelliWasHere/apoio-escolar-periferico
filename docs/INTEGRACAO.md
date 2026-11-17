@@ -10,8 +10,8 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | `dados/` | Big Data Architecture & Data Integration | Jó Sales | ✅ entrega copiada e integrada ao núcleo: a DAG grava a prioridade das escolas pela API e o painel `/impacto` mostra o resultado |
 | `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
 | `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)) e integrada ao cadastro do núcleo; testada com EasyOCR real |
-| `rpa/` | Robotic Process Automation | Miguel Garcez | ⬜ aguardando entrega |
-| `.github/workflows/` + Azure | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 CI pronto; deploy em modelo |
+| `rpa/` | Robotic Process Automation | Miguel Garcez | 🟡 relatório copiado e contrato do robô implementado no núcleo (`POST /api/v1/integracao/voluntarios`); ⬜ copiar o projeto UiPath para `rpa/` |
+| `.github/workflows/` + `infra/` | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 pipeline completo (qualidade, gitleaks, deploy OIDC com smoke test), infraestrutura em script e app pronto para produção ([DEVOPS.md](DEVOPS.md)); ⬜ rodar o provisionamento e o 1º deploy |
 | `maker/` | Project-Based Maker Lab | Vinicius Souza | ✅ entrega copiada (suporte de tablet: CAD, 3MF e DXF) e integrada ao núcleo pelo QR code: `/qr` marca a origem, o cadastro grava e o `/impacto` conta |
 | `docs/business/` | BI & Startup Development | Eduardo Mazelli | ✅ |
 
@@ -64,10 +64,12 @@ Para conferir: `GET /api/v1/escolas` ou a tabela "Prioridade territorial das esc
 ### Núcleo → RPA: presenças para o relatório de impacto
 `GET /api/v1/agendamentos.csv` (exige `X-API-Key`)
 
-Colunas: `agendamento_id, estudante_pseudo, escola, territorio_prioritario, materia, inicio, duracao_min, status, voluntario_pseudo`.
+Colunas: `agendamento_id, estudante_pseudo, escola, territorio_prioritario, materia, inicio, duracao_min, status, voluntario_pseudo`. Só aparecem estudantes autorizados pelo responsável (pendentes não agendam).
 Sem nomes nem e-mails: os identificadores são pseudônimos (hash). O robô UiPath pode baixar o CSV (HTTP Request), consolidar presenças, montar o relatório do patrocinador e enviá-lo por e-mail.
 
-`GET /api/v1/impacto` (público, agregado e anônimo): os mesmos indicadores do painel `/impacto`, em JSON.
+`GET /api/v1/impacto` (público, agregado e anônimo): os mesmos indicadores do painel `/impacto`, em JSON Contagens de pessoas entre 1 e 4 vêm como `null` ("menos de 5", LGPD) e matérias com menos de 5 agendamentos ficam fora de `agendamentos_por_materia` (`materias_ocultas` diz quantas); quem consome a API deve tratar `null`.
+
+`POST /api/v1/manutencao/expurgo` (exige `X-API-Key`): apaga na hora os cadastros de menores sem autorização do responsável há mais de 30 dias. O app já faz isso sozinho na subida e a cada hora; o endpoint serve para automação ou demonstração. Resposta: `{"apagados": n}`.
 
 ### Front → núcleo → IA Generativa: assistente AI Bits
 `POST /api/v1/assistente` (chamado pela tela [`/ajuda`](../mvp/app/templates/ajuda.html); exige o cabeçalho `X-CSRF-Token` da sessão)
@@ -128,11 +130,35 @@ Marca a sessão com `origem = "peca_maker"` (só se a pessoa não estiver logada
 - **Privacidade:** só o rótulo do canal fica gravado, sem localização nem dados do aparelho (descrito em `/privacidade`). Valores fora da lista do servidor são ignorados.
 - **Testes:** [`mvp/tests/test_maker.py`](../mvp/tests/test_maker.py) gera o QR, lê de volta com o detector do OpenCV e percorre QR → cadastro → indicador.
 
+### RPA → núcleo: voluntários credenciados no SICREV
+`POST /api/v1/integracao/voluntarios` (exige `X-API-Key`)
+
+O robô UiPath ([relatório](../rpa/Relatorio_RPA_ApoioEscolar.pdf), seção 7) faz a triagem das inscrições, credencia cada voluntário no portal legado da Diretoria (SICREV, sem API, por automação de tela) e devolve ao núcleo, pelo workflow `AtualizarBaseMVP.xaml`, quem ficou `CREDENCIADO` ou `JA_CREDENCIADO`:
+
+```json
+[
+  {"apelido": "vol_I001", "email": "pessoa@exemplo.com.br", "bairro": "Capão Redondo", "aceita_boletim": true}
+]
+```
+Resposta **201**:
+```json
+{"criados": ["vol_I001"], "rejeitados": [], "motivos": {}}
+```
+- **Estado no núcleo:** cada voluntário entra como pendente de aprovação (`aprovado = false`, `origem = "rpa_sicrev"`) e aparece em `/coordenacao/voluntarios` com a marca "Já credenciado no SICREV pelo robô"; a coordenação aprova ou recusa (e apaga).
+- **Idempotência:** apelido (sem diferenciar maiúsculas) ou e-mail já existente volta em `rejeitados`, com o motivo em `motivos`; reexecutar o robô não duplica nada.
+- **Item ruim não derruba o lote:** e-mail inválido, apelido fora do padrão (3 a 30 caracteres: letras, números, `_ . -`) ou repetido no mesmo lote vai para `rejeitados`. Lote máximo: 500 itens (acima disso, `413`).
+- **Minimização (LGPD):** só os quatro campos acima. Campo extra (CPF, nome, telefone) faz o item ser rejeitado. `aceita_boletim` é gravado como opt-in do boletim.
+- **Conta sem senha:** o voluntário vindo do robô ainda não consegue entrar (não há senha utilizável); a conta serve à coordenação. Falta o fluxo para ele definir a senha (ver pendências).
+- **No robô:** `MvpApiUrl` no `Config.xlsx` = URL do App Service + `/api/v1/integracao/voluntarios`; a chave vem da variável de ambiente `APOIO_MVP_API_KEY`, com o valor do segredo `integration-api-key` do Key Vault.
+- **Testes:** [`mvp/tests/test_rpa.py`](../mvp/tests/test_rpa.py).
+
+O export `GET /api/v1/agendamentos.csv` (abaixo) continua disponível para relatórios do robô.
+
 ## Contratos a criar quando as entregas chegarem
 
 | Componente | Ponto de encaixe sugerido | O que o núcleo precisa |
 |---|---|---|
-| **RPA** | `GET /api/v1/agendamentos.csv` (já disponível, acima) | Só a `INTEGRATION_API_KEY` |
+| **RPA** | ✅ `POST /api/v1/integracao/voluntarios` (acima) | Projeto UiPath em `rpa/`; fluxo para o voluntário vindo do robô definir a senha |
 
 ## Executar o núcleo localmente
 
@@ -147,16 +173,10 @@ Abrir http://localhost:8000. No Linux/macOS, use `.venv/bin/python`.
 
 ## Publicar no Azure (disciplina de DevOps)
 
-1. Criar um App Service Linux com Python 3.12.
-2. Em **Configuração > Configurações de aplicativo**:
-   - `APP_ENV=production`
-   - `SECRET_KEY=<valor longo e aleatório>`
-   - `INTEGRATION_API_KEY=<outro valor aleatório>`
-   - `PUBLIC_URL=https://<app>.azurewebsites.net` (vai no QR code do suporte do Maker Lab)
-   - `OPENROUTER_API_KEY=<chave do OpenRouter>` (assistente da tela "Ajuda"; sem ela, só as perguntas frequentes)
-   - Leitura da foto da conta (opcional): o build instala só o `requirements.txt`, então o OCR fica desligado. Para ligar, publicar com o `requirements-visao.txt` e usar um plano com pelo menos 3,5 GB de RAM (B2 ou P1v3): o EasyOCR ocupa ~1 GB de RAM e o B1 tem 1,75 GB
-   - `DATABASE_URL=sqlite:////home/data/apoio.db` (o `/home` é persistente no App Service; para produção real, usar PostgreSQL)
-   - `SCM_DO_BUILD_DURING_DEPLOYMENT=true` (instala o `requirements.txt` no deploy)
-3. **Comando de inicialização:** `sh startup.sh`
-4. No GitHub: secret `AZURE_WEBAPP_PUBLISH_PROFILE` e variável `AZURE_WEBAPP_NAME`. O workflow [`deploy-azure.yml`](../.github/workflows/deploy-azure.yml) publica depois que o CI passa.
-5. Application Insights + alerta sobre `/health` (exigência de monitoramento do slide 40).
+Tudo automatizado; detalhes em [DEVOPS.md](DEVOPS.md).
+
+1. Rodar [`infra/provisionar.sh`](../infra/provisionar.sh) (Azure Cloud Shell): cria App Service, Key Vault com os segredos, Application Insights, alertas, orçamento e a identidade OIDC do GitHub, e grava as variáveis do pipeline no repositório.
+2. Push na `main`: o workflow [`ci-cd.yml`](../.github/workflows/ci-cd.yml) testa, varre segredos, publica e confere `/health` com a versão do commit.
+3. Depois do 1º deploy: gerar a etiqueta definitiva do QR em `https://<app>.azurewebsites.net/maker` e apontar o Airflow (`MVP_API_URL`) e o robô RPA para a URL pública, com a `INTEGRATION_API_KEY` lida do Key Vault (`az keyvault secret show --vault-name <kv> -n integration-api-key --query value -o tsv`).
+
+Configurações do App Service (o script já define): `APP_ENV=production`, `SECRET_KEY`, `INTEGRATION_API_KEY`, `FERNET_KEY` e `OPENROUTER_API_KEY` como referências ao Key Vault, `DATABASE_URL=sqlite:////home/data/apoio-mvp.db`, `PUBLIC_URL`, `SCM_DO_BUILD_DURING_DEPLOYMENT=true`, `APPLICATIONINSIGHTS_CONNECTION_STRING` e comando de inicialização `sh startup.sh`. A leitura da foto da conta (OCR) continua desligada no B1: exige publicar com o `requirements-visao.txt` e um plano com pelo menos 3,5 GB de RAM.

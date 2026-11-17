@@ -50,22 +50,29 @@ def test_pagina_maker(client):
 
 
 def test_cadastro_pelo_qr_conta_no_impacto(client, app):
-    antes = client.get("/api/v1/impacto").json()["cadastros_via_peca_maker"]
+    assert client.get("/api/v1/impacto").json()["cadastros_via_peca_maker"] == 0
 
     r = client.get("/qr", follow_redirects=False)
     assert r.status_code == 303 and r.headers["location"] == "/"
     assert "QR code do" in client.get("/").text
 
-    assert cadastrar_estudante(client, email="qr@exemplo.org").status_code == 303
+    assert cadastrar_estudante(client, apelido="qr.1").status_code == 303
     with app.state.SessionLocal() as db:
-        assert db.query(Usuario).filter_by(email="qr@exemplo.org").one().origem == "peca_maker"
+        assert db.query(Usuario).filter_by(apelido="qr.1").one().origem == "peca_maker"
 
-    depois = client.get("/api/v1/impacto").json()["cadastros_via_peca_maker"]
-    assert depois == antes + 1
-    assert re.search(r"Cadastros vindos da peça Maker Lab</td><td>\d+", client.get("/impacto").text)
+    # LGPD: com menos de 5 cadastros o indicador fica oculto ("menos de 5")
+    assert client.get("/api/v1/impacto").json()["cadastros_via_peca_maker"] is None
+    assert "Cadastros vindos da peça Maker Lab</td><td>menos de 5" in client.get("/impacto").text
+
+    for i in range(2, 6):  # cada visitante novo lê o QR e se cadastra
+        outro = TestClient(app)
+        outro.get("/qr")
+        assert cadastrar_estudante(outro, apelido=f"qr.{i}").status_code == 303
+    assert client.get("/api/v1/impacto").json()["cadastros_via_peca_maker"] == 5
+    assert re.search(r"Cadastros vindos da peça Maker Lab</td><td>5<", client.get("/impacto").text)
 
 
 def test_cadastro_sem_qr_nao_tem_origem(client, app):
-    assert cadastrar_estudante(client, email="direto@exemplo.org").status_code == 303
+    assert cadastrar_estudante(client, apelido="direto").status_code == 303
     with app.state.SessionLocal() as db:
-        assert db.query(Usuario).filter_by(email="direto@exemplo.org").one().origem is None
+        assert db.query(Usuario).filter_by(apelido="direto").one().origem is None

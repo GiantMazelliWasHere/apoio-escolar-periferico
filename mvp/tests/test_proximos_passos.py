@@ -5,18 +5,7 @@ from datetime import datetime, timedelta
 
 from app.models import Agendamento, Horario, Usuario
 
-from .test_fluxo import app, cadastrar_estudante, client, csrf  # noqa: F401  (fixtures)
-
-
-def cadastrar_voluntario(client, nome="Vol Certificado", email="vol.cert@exemplo.org"):
-    token = csrf(client, "/cadastro/voluntario")
-    r = client.post(
-        "/cadastro/voluntario",
-        data={"csrf_token": token, "nome": nome, "email": email, "senha": "senha-forte-123", "formacao": "Eng. de Software"},
-        follow_redirects=False,
-    )
-    assert r.status_code == 303
-    return email
+from .test_fluxo import app, cadastrar_estudante, cadastrar_voluntario, client, csrf  # noqa: F401  (fixtures)
 
 
 def test_busca_por_tags_de_materia(client):
@@ -29,7 +18,7 @@ def test_busca_por_tags_de_materia(client):
 
 
 def test_voluntario_ve_horas_e_emite_certificado(app, client):
-    email = cadastrar_voluntario(client)
+    email = cadastrar_voluntario(client, app, nome="Vol Certificado", email="vol.cert@exemplo.org")
     # Sem monitoria realizada: zero horas e certificado ainda indisponível
     assert "0 h" in client.get("/voluntario").text
     assert "ainda não tem horas" in client.get("/voluntario/certificado").text
@@ -54,7 +43,7 @@ def test_voluntario_ve_horas_e_emite_certificado(app, client):
     assert "1 h 30 min" in painel and "1 monitoria realizada" in painel
     cert = client.get("/voluntario/certificado").text
     assert "Vol Certificado" in cert and "1 h 30 min" in cert and "Química" in cert
-    assert "Eng. de Software" in cert
+    assert "Licenciatura" in cert
 
 
 def test_certificado_exige_voluntario(client):
@@ -64,7 +53,7 @@ def test_certificado_exige_voluntario(client):
 
 
 def test_grade_semanal_cria_horarios_nos_dias_escolhidos(app, client):
-    email = cadastrar_voluntario(client, nome="Vol Grade", email="vol.grade@exemplo.org")
+    email = cadastrar_voluntario(client, app, nome="Vol Grade", email="vol.grade@exemplo.org")
     amanha = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     token = csrf(client, "/voluntario")
     r = client.post(
@@ -85,7 +74,7 @@ def test_grade_semanal_cria_horarios_nos_dias_escolhidos(app, client):
 
 
 def test_horario_unico_continua_funcionando_sem_dias(app, client):
-    email = cadastrar_voluntario(client, nome="Vol Unico", email="vol.unico@exemplo.org")
+    email = cadastrar_voluntario(client, app, nome="Vol Unico", email="vol.unico@exemplo.org")
     amanha = datetime.now() + timedelta(days=1)
     token = csrf(client, "/voluntario")
     r = client.post(

@@ -12,7 +12,7 @@ import re
 import threading
 import time
 from collections import defaultdict, deque
-from typing import Callable
+from collections.abc import Callable
 
 import httpx
 from pydantic import BaseModel, Field, ValidationError, field_validator

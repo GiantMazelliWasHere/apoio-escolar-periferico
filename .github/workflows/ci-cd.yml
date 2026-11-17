@@ -1,0 +1,156 @@
+# CI/CD do Apoio Escolar Periférico (disciplina de Secure DevOps Tools & Cloud Computing).
+#
+# Pull request: qualidade + segredos + pipeline de dados.
+# Push na main (ou execução manual): os mesmos jobs e, se todos passarem, pacote → deploy no
+# Azure App Service com login OIDC (sem senha guardada no GitHub) e smoke test em /health
+# conferindo que a versão no ar é a do commit.
+#
+# Configuração (uma vez; infra/provisionar.sh grava sozinho com o gh CLI ou imprime os comandos):
+#   variáveis do repositório (Settings > Secrets and variables > Actions > Variables)
+#   AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID e AZURE_WEBAPP_NAME. Nenhuma é segredo.
+#   Ficam no repositório (não no environment) porque o "if" do job deploy só enxerga variáveis do repositório.
+# Enquanto AZURE_WEBAPP_NAME não existir, o deploy é pulado e o CI segue funcionando.
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  qualidade:
+    name: qualidade (lint, testes, SAST, dependências)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mvp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: mvp/requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - name: ruff (lint com regras de segurança)
+        run: ruff check app tests --output-format=github
+      - name: pytest com cobertura mínima de 80%
+        run: python -m pytest -q --cov=app --cov-report=term-missing --cov-fail-under=80
+      - name: bandit (análise estática de segurança)
+        run: bandit -r app -ll
+      - name: pip-audit (vulnerabilidades conhecidas nas dependências)
+        run: pip-audit -r requirements.txt --progress-spinner off
+
+  pipeline-dados:
+    name: pipeline de dados (ETL)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dados
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "pandas>=2.0.0" pytest
+      - run: python -m pytest -q test_etl.py
+
+  segredos:
+    name: segredos (gitleaks no histórico)
+    runs-on: ubuntu-latest
+    env:
+      GITLEAKS_VERSION: "8.24.2"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # histórico inteiro: um segredo apagado num commit antigo continua exposto
+      - name: Instala o gitleaks
+        run: |
+          curl -sSfL -o gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          tar -xzf gitleaks.tgz gitleaks
+          rm gitleaks.tgz
+      - name: Varre todo o histórico
+        run: ./gitleaks git . --redact --verbose --exit-code 1
+
+  pacote:
+    name: pacote
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: [qualidade, pipeline-dados, segredos]
+    runs-on: ubuntu-latest
+    outputs:
+      versao: ${{ steps.versao.outputs.versao }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: versao
+        name: Grava o hash do commit em VERSAO
+        run: |
+          versao="${GITHUB_SHA::7}"
+          echo "$versao" > mvp/VERSAO
+          echo "versao=$versao" >> "$GITHUB_OUTPUT"
+      - name: Monta o pacote só com o necessário
+        run: |
+          mkdir -p pacote
+          cp -r mvp/app mvp/requirements.txt mvp/startup.sh mvp/VERSAO pacote/
+          find pacote -name "__pycache__" -type d -prune -exec rm -rf {} +
+          (cd pacote && zip -qr ../mvp.zip .)
+          unzip -l mvp.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mvp
+          path: mvp.zip
+          retention-days: 7
+
+  deploy:
+    name: deploy (Azure App Service)
+    needs: pacote
+    if: vars.AZURE_WEBAPP_NAME != ''
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net
+    permissions:
+      contents: read
+      id-token: write # token OIDC de curta duração para o login na Azure
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mvp
+      - name: Login na Azure (OIDC, sem segredo)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Publica no App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: mvp.zip
+      - name: Smoke test em /health (versão publicada = commit)
+        env:
+          URL: https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net/health
+          ESPERADA: ${{ needs.pacote.outputs.versao }}
+        run: |
+          # O App Service instala as dependências e reinicia: espera até 10 minutos.
+          for i in $(seq 1 40); do
+            corpo="$(curl -s --max-time 10 "$URL" || true)"
+            echo "tentativa $i: $corpo"
+            if echo "$corpo" | grep -q "\"status\":\"ok\"" && echo "$corpo" | grep -q "\"versao\":\"$ESPERADA\""; then
+              echo "::notice::Versão $ESPERADA no ar e saudável."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::$URL não respondeu saudável com a versão $ESPERADA."
+          exit 1

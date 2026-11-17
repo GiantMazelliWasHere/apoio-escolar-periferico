@@ -1,0 +1,15 @@
+# Lint do núcleo. Além de estilo e bugs comuns (E, F, W, B, UP, I), liga as regras de
+# segurança do flake8-bandit (S): senha fixa no código, SQL montado com string, subprocess, etc.
+target-version = "py312"
+line-length = 160
+
+[lint]
+select = ["E", "F", "W", "B", "UP", "I", "S"]
+ignore = [
+  "E501",  # linhas longas de HTML/mensagens: o formato não é critério de segurança
+  "B008",  # Depends()/Form() como valor padrão é o padrão do FastAPI
+]
+
+[lint.per-file-ignores]
+# Testes: assert é a ferramenta; tokens/senhas são valores de teste; fixtures do pytest redefinem nomes.
+"tests/**" = ["S101", "S105", "S106", "F811"]

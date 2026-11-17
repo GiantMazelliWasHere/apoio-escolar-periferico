@@ -4,16 +4,14 @@
 {% block conteudo %}
 <section class="estreito">
   <h1>Cadastro de estudante</h1>
-  <p class="lead">É gratuito. Pedimos só o necessário para agendar suas monitorias.</p>
+  <p class="lead">É gratuito. Pedimos só o necessário para agendar suas monitorias: nada de nome completo, e-mail, telefone ou documento.</p>
   {% if erro %}<p class="alerta" role="alert">{{ erro }}</p>{% endif %}
   <form method="post" action="/cadastro/estudante" class="form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
-    <label for="nome">Seu nome (ou como quer ser chamado)</label>
-    <input id="nome" name="nome" required maxlength="120" autocomplete="given-name" value="{{ form.nome or '' }}">
-
-    <label for="email">E-mail</label>
-    <input id="email" name="email" type="email" required autocomplete="email" value="{{ form.email or '' }}">
+    <label for="apelido">Apelido (é com ele que você entra no site)</label>
+    <input id="apelido" name="apelido" required minlength="3" maxlength="20" pattern="[A-Za-z0-9][A-Za-z0-9._\-]{2,19}" autocomplete="username" autocapitalize="none" value="{{ form.apelido or '' }}" aria-describedby="apelido-ajuda">
+    <p class="ajuda" id="apelido-ajuda">De 3 a 20 letras (sem acento), números, ponto, hífen ou _. Ex.: <code>leo.mat</code>. Não use seu nome completo: o monitor vê só o apelido e o ano escolar.</p>
 
     <label for="senha">Senha (mínimo 8 caracteres)</label>
     <input id="senha" name="senha" type="password" required minlength="8" autocomplete="new-password">
@@ -23,10 +21,21 @@
       {% for e in escolas %}<option value="{{ e.id }}" {% if form.escola_id == e.id %}selected{% endif %}>{{ e.nome }} ({{ e.bairro }})</option>{% endfor %}
     </select>
 
-    <label for="ano_escolar">Ano escolar</label>
-    <select id="ano_escolar" name="ano_escolar" required>
-      {% for a in anos %}<option {% if form.ano_escolar == a %}selected{% endif %}>{{ a }}</option>{% endfor %}
-    </select>
+    <div class="grade">
+      <div>
+        <label for="ano_escolar">Ano escolar</label>
+        <select id="ano_escolar" name="ano_escolar" required>
+          {% for a in anos %}<option {% if form.ano_escolar == a %}selected{% endif %}>{{ a }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="faixa_idade">Sua idade</label>
+        <select id="faixa_idade" name="faixa_idade" required>
+          {% for f in faixas %}<option {% if form.faixa_idade == f %}selected{% endif %}>{{ f }}</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+    <p class="ajuda">Menor de 18 anos? Depois do cadastro você recebe um link para mandar ao seu responsável (pelo WhatsApp, por exemplo). Você já pode ver as monitorias, e agenda assim que ele autorizar.</p>
 
     <fieldset class="endereco">
       <legend>Onde você mora <span class="opcional">(opcional)</span></legend>
@@ -59,11 +68,11 @@
     </fieldset>
 
     <div class="check">
-      <input id="consentimento" name="consentimento" type="checkbox">
-      <label for="consentimento">Meu responsável sabe e concorda com o meu cadastro (obrigatório para menores de 18 anos). Li a <a href="/privacidade">política de privacidade</a>.</label>
+      <input id="aceite_aviso" name="aceite_aviso" type="checkbox" required>
+      <label for="aceite_aviso">Li o <a href="/privacidade" target="_blank" rel="noopener">Aviso de Privacidade</a> (versão {{ aviso_versao }}) e entendi como meus dados são usados.</label>
     </div>
 
-    <button class="botao" type="submit">Criar conta e ver monitorias</button>
+    <button class="botao" type="submit">Criar conta</button>
   </form>
 </section>
 {% if visao_ativa %}<script src="{{ url_for('static', path='visao.js') }}" defer></script>{% endif %}

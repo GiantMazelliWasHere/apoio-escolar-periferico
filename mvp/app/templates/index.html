@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block conteudo %}
+{% if conta_apagada %}<p class="sucesso" role="status">Sua conta e os seus dados foram apagados.</p>{% endif %}
 {% if veio_da_peca and not usuario %}
 <p class="cartao aviso-peca" role="status">Você chegou pelo QR code do <a href="/maker">suporte de estudo</a>. Cadastre-se e agende sua primeira monitoria: é grátis.</p>
 {% endif %}
