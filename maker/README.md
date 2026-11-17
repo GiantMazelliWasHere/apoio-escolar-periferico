@@ -17,7 +17,7 @@ A peça física do Apoio Escolar Periférico: um suporte para o estudante apoiar
 | Encaixe na base | 15 mm de largura e 10 mm de altura (aceita capa de até ~14 mm) |
 | Janelas | Losango de 80 × 80 mm nos dois painéis, para economizar material |
 | Aparelhos | Feito para o Galaxy Tab A 8.0 (2017); serve de 7" a 11" e celulares, deitados ou em pé |
-| Material | Filamento (PLA ou PETG), ~51 cm³ ≈ 63 g de PLA (calculado do STL) |
+| Material | Protótipo em **PETG**: 90 g com o brim, 5 h numa Creality Ender 3 (a peça tem ~51 cm³, calculado do STL; PLA também serve) |
 | Etiqueta QR | 30 mm, canto inferior da face de trás da perna traseira |
 | Tolerância | ± 0,5 mm |
 
@@ -51,7 +51,7 @@ A peça física do Apoio Escolar Periférico: um suporte para o estudante apoiar
 
 ## Impressão do protótipo
 
-Impresso numa Creality com mesa de 220 × 220 mm, na orientação dos arquivos: perfil deitado, sem suporte, com brim.
+Impresso em PETG numa Creality Ender 3 (mesa de 220 × 220 mm), em 5 horas e com 90 g de filamento, na orientação dos arquivos: perfil deitado, sem suporte, com brim.
 
 | | |
 |---|---|
