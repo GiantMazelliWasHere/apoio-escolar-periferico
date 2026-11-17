@@ -52,9 +52,10 @@ FAQ = [
     ),
     (
         "Como faço o cadastro de estudante?",
-        "Toque em \"Sou estudante\" na página inicial e informe nome (ou apelido), e-mail, senha com pelo menos "
-        "8 caracteres, escola e ano escolar. Bairro e CEP são opcionais: dá para digitar ou preencher com a foto "
-        "de uma conta de luz, água ou telefone. Se você tem menos de 18 anos, o seu responsável precisa saber e concordar.",
+        "Toque em \"Sou estudante\" na página inicial e escolha um apelido (não pedimos nome nem e-mail), uma senha "
+        "com pelo menos 8 caracteres, a escola, o ano escolar e a sua idade. Bairro e CEP são opcionais: dá para digitar "
+        "ou preencher com a foto de uma conta de luz, água ou telefone. Se você tem menos de 18 anos, o site gera um "
+        "link para o seu responsável autorizar o cadastro; até ele autorizar, você vê as monitorias mas ainda não agenda.",
     ),
     (
         "Como cancelo ou vejo o que já agendei?",
@@ -76,16 +77,22 @@ CONTEXTO_SOFTWARE = f"""
 BASE DE CONHECIMENTO DO SOFTWARE APOIO ESCOLAR PERIFÉRICO (só existe o que está descrito aqui):
 1. Objetivo: reforço escolar gratuito com monitores voluntários para estudantes de escolas públicas da periferia
    (Ensino Fundamental II e Ensino Médio). O estudante nunca paga; empresas patrocinam (ODS 4 e ODS 10).
-2. Cadastro de estudante (botão "Sou estudante"): nome ou apelido, e-mail, senha com pelo menos 8 caracteres,
-   escola (escolhida em uma lista), ano escolar e, opcionalmente, bairro e CEP. Menores de 18 anos precisam do
-   consentimento do responsável (caixa de consentimento). Não pedimos CPF nem notas, e não guardamos endereço completo.
+2. Cadastro de estudante (botão "Sou estudante"): apelido (é com ele que o estudante entra no site), senha com pelo
+   menos 8 caracteres, escola (escolhida em uma lista), ano escolar, faixa de idade, aceite do Aviso de Privacidade e,
+   opcionalmente, bairro e CEP. NÃO pedimos nome, e-mail, CPF nem notas, e não guardamos endereço completo.
+   Menores de 18 anos: depois de criar a conta, a tela "Peça a autorização do seu responsável" mostra um link de uso
+   único para mandar ao responsável (botão "Enviar pelo WhatsApp" ou "Copiar link"). O responsável abre o link, informa
+   o e-mail dele e toca em autorizar. Até lá o estudante vê as monitorias, mas não consegue agendar. Se o link se
+   perder, gera-se outro em "Minha conta" (o anterior para de valer). Se o responsável não autorizar, ou não responder
+   em 30 dias, o cadastro é apagado.
    Bairro e CEP podem ser digitados ou preenchidos pelo botão "Tirar foto ou escolher arquivo" (quando aparece na tela):
    foto ou PDF de uma conta da Enel (luz), Sabesp (água) ou Claro (telefone/internet). O sistema lê o endereço, preenche
    bairro e CEP e a pessoa confere e corrige antes de criar a conta. A foto não é guardada. Dicas se a leitura falhar:
    foto de frente, com boa luz, sem reflexo, com o papel inteiro aparecendo, ou arquivo de até 8 MB (JPG, PNG, WebP ou PDF).
    Se mesmo assim não ler, é só digitar bairro e CEP: o comprovante não é obrigatório.
-3. Cadastro de voluntário (botão "Quero ser voluntário"): nome, e-mail, senha e formação (opcional).
-4. Entrar: e-mail e senha. Ainda não existe recuperação de senha pelo site: quem esqueceu a senha deve
+3. Cadastro de voluntário (botão "Quero ser voluntário"): nome, e-mail, senha e formação (opcional). O voluntário só
+   publica horários depois que a coordenação aprova o cadastro. Do estudante, ele vê só o apelido, o ano escolar e a dúvida.
+4. Entrar: estudante usa o APELIDO e a senha; voluntário e coordenação usam o e-mail e a senha. Ainda não existe recuperação de senha pelo site: quem esqueceu a senha deve
    procurar a coordenação do projeto.
 5. Tela "Monitorias": escolha da matéria tocando em uma etiqueta ({", ".join(MATERIAS)}, ou "Todas"), filtro por turno (manhã, tarde ou noite, a partir das 18h) e lista de horários livres com dia e hora.
    O estudante toca em "Agendar" e pode escrever a dúvida (até 500 caracteres). Depois vê a confirmação com
@@ -98,7 +105,9 @@ BASE DE CONHECIMENTO DO SOFTWARE APOIO ESCOLAR PERIFÉRICO (só existe o que est
    monitoria" mostra o total de horas, e o botão "Ver certificado de horas" abre o certificado para imprimir
    ou salvar em PDF (conta cada horário com ao menos uma presença marcada como "Realizada").
 8. Tela "Impacto": painel público com totais anônimos (monitorias realizadas, horas de reforço, taxa de presença).
+   Grupos com menos de 5 pessoas aparecem como "menos de 5", para ninguém ser identificado.
 9. Tela "Privacidade e dados (LGPD)": o que é coletado, por quê e os direitos do titular.
+   Tela "Minha conta": ver os próprios dados, baixar uma cópia (arquivo JSON) e apagar a conta (confirmando com a senha).
 10. O que AINDA NÃO existe: trilhas de vídeo, aulas ao vivo dentro do site, aplicativo de celular
     e recuperação de senha. Se perguntarem, diga com clareza que ainda não está disponível.
 """
