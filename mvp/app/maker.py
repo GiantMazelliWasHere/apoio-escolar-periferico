@@ -15,13 +15,17 @@ ORIGEM_MAKER = "peca_maker"
 ORIGENS_VALIDAS = {ORIGEM_MAKER}
 CAMINHO_QR = "/qr"
 
-# Medidas da peça (de maker/cad/suporte_tablet.step), em milímetros.
+# Medidas da peça (desenho técnico 3DP-2026-004 rev. C, em maker/cad/), em milímetros.
 PECA = {
     "nome": "Suporte de tablet para estudo",
-    "placas_mm": "220 × 140",
-    "espessura_mm": 3,
-    "aba_mm": 27,
-    "etiqueta_mm": 40,
+    "revisao": "3DP-2026-004 rev. C",
+    "medidas_mm": "110 × 125 × 104",  # largura × altura × fundo
+    "espessura_mm": 2,
+    "angulo_leitura": 65,
+    "angulo_perna": 80,
+    "encaixe_mm": 15,
+    "janela_mm": "80 × 80",
+    "etiqueta_mm": 30,
 }
 
 
@@ -39,7 +43,7 @@ def matriz_qr(texto: str) -> list[list[bool]]:
 
 
 def qr_svg(texto: str, tamanho_mm: int | None = None) -> str:
-    """SVG vetorial do QR (bom para corte/gravação a laser e para imprimir em qualquer tamanho).
+    """SVG vetorial do QR (imprime nítido em qualquer tamanho).
 
     Cada sequência de módulos escuros de uma linha vira um retângulo, para o arquivo ficar pequeno.
     """

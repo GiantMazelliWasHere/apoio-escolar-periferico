@@ -2,35 +2,65 @@
 
 **Disciplina:** Project-Based Maker Lab (prof. Caio Sousa) · **Responsável:** Vinicius Souza e Silva (RM 552781)
 
-A peça física do Apoio Escolar Periférico: um suporte para o estudante apoiar o tablet ou o celular durante a monitoria online e ficar com as mãos livres para o caderno. Uma etiqueta com QR code na placa da frente leva direto para a plataforma, e o MVP conta quantos cadastros chegaram por ela.
+A peça física do Apoio Escolar Periférico: um suporte para o estudante apoiar o tablet ou o celular durante a monitoria online e ficar com as mãos livres para o caderno. Uma etiqueta com QR code leva direto para a plataforma, e o MVP conta quantos cadastros chegaram por ela.
 
-![Modelo 3D do suporte](imagens/render_frente_proximo.png)
+![Render do suporte rev. C](imagens/render_perspectiva.png)
 
-## A peça
+## A peça (desenho 3DP-2026-004 rev. C, 17/11/2026)
 
 | Item | Medida |
 |---|---|
-| Placas | 2 placas de **220 × 140 mm**, **3 mm** de espessura |
-| Placa da frente | Com aba na base (profundidade total de 27 mm) que segura o tablet |
-| Apoio traseiro | Placa lisa (`apoio traseiro:1` no modelo) que dá a inclinação |
-| Pegada na mesa | Cerca de 170 mm de profundidade |
-| Etiqueta QR | 40 mm, na placa da frente, acima da área coberta pelo tablet |
+| Formato | Peça única, chapa dobrada de **2 mm** em forma de A (dobras R3 int. / R5 ext.) |
+| Tamanho | **110 × 125 × 104 mm** (largura × altura × fundo) |
+| Painel de leitura | 65° em relação à mesa |
+| Perna traseira | 80°, para não tombar |
+| Encaixe na base | 15 mm de largura e 10 mm de altura (aceita capa de até ~14 mm) |
+| Janelas | Losango de 80 × 80 mm nos dois painéis, para economizar material |
+| Aparelhos | Feito para o Galaxy Tab A 8.0 (2017); serve de 7" a 11" e celulares, deitados ou em pé |
+| Material | Filamento (PLA ou PETG), ~51 cm³ ≈ 63 g de PLA (calculado do STL) |
+| Etiqueta QR | 30 mm, canto inferior da face de trás da perna traseira |
+| Tolerância | ± 0,5 mm |
 
-Medidas lidas do STEP e do 3MF (unidade: milímetro).
+| Lateral | Frontal |
+|---|---|
+| ![Vista lateral](imagens/render_lateral.png) | ![Vista frontal](imagens/render_frontal.png) |
+
+**Por que a etiqueta vai na perna traseira:** o painel da frente fica coberto pelo tablet durante o uso. Atrás, o QR fica visível para quem está na mesma sala enquanto o estudante usa o suporte. O maior quadrado que cabe no canto do painel sem invadir a janela tem cerca de 39 mm, então 30 mm deixa margem.
 
 ## Arquivos
 
 | Arquivo | Para quê |
 |---|---|
-| [`cad/suporte_tablet.f3d`](cad/suporte_tablet.f3d) | Projeto editável no Fusion 360 |
-| [`cad/suporte_tablet.step`](cad/suporte_tablet.step) | Modelo 3D neutro (abre em qualquer CAD) |
-| [`cad/suporte_tablet.fbx`](cad/suporte_tablet.fbx) | Malha para visualização/renderização |
-| [`fabricacao/suporte_tablet_impressao3d.3mf`](fabricacao/suporte_tablet_impressao3d.3mf) | Impressão 3D: as duas placas, prontas para o fatiador (Bambu Studio, PrusaSlicer, Cura) |
-| [`fabricacao/suporte_tablet_placa_frente.stl`](fabricacao/suporte_tablet_placa_frente.stl) · [`suporte_tablet_apoio_traseiro.stl`](fabricacao/suporte_tablet_apoio_traseiro.stl) | Placas separadas, já deitadas na mesa (geradas do 3MF por [`entrega/gerar_entrega.py`](entrega/gerar_entrega.py)) |
-| [`fabricacao/apoio_traseiro_corte_laser.dxf`](fabricacao/apoio_traseiro_corte_laser.dxf) | Corte a laser do apoio traseiro: retângulo de 220 × 140 mm (chapa de 3 mm, MDF ou acrílico) |
-| [`imagens/`](imagens/) | Renders do modelo (frente, frente aproximada e perfil) |
+| [`cad/suporte_tablet_3DP-2026-004_revC_desenho_tecnico.pdf`](cad/suporte_tablet_3DP-2026-004_revC_desenho_tecnico.pdf) | Desenho técnico cotado (vistas, perspectiva e especificações) |
+| [`cad/suporte_tablet_3DP-2026-004_revC_desenho_2d.dxf`](cad/suporte_tablet_3DP-2026-004_revC_desenho_2d.dxf) | As mesmas vistas em DXF (abre em AutoCAD, LibreCAD, Fusion) |
+| [`cad/suporte_tablet_3DP-2026-004_revC.step`](cad/suporte_tablet_3DP-2026-004_revC.step) | Modelo 3D neutro (abre em qualquer CAD) |
+| [`fabricacao/suporte_tablet_3DP-2026-004_revC_impressao.3mf`](fabricacao/suporte_tablet_3DP-2026-004_revC_impressao.3mf) | Impressão 3D: pronto para o fatiador (Creality Print, OrcaSlicer, Bambu Studio, PrusaSlicer, Cura) |
+| [`fabricacao/suporte_tablet_3DP-2026-004_revC_impressao.stl`](fabricacao/suporte_tablet_3DP-2026-004_revC_impressao.stl) | A mesma peça em STL |
+| [`imagens/`](imagens/) | Renders gerados do STL por [`entrega/renderizar_stl.py`](entrega/renderizar_stl.py) |
+| [`imagens/modelo/`](imagens/modelo/) | Capturas do modelo 3D no CAD (perspectiva, frente, lateral, de cima e perfil 2D) |
+| [`imagens/fotos/`](imagens/fotos/) | Fotos da impressão do protótipo |
 
-Os arquivos são a entrega original do Vinicius (exceto os STLs, gerados do 3MF), só renomeados (sem espaços) e organizados em pastas.
+**Orientação de impressão:** os arquivos já vêm com o perfil dobrado deitado na mesa e os 110 mm de largura na altura. Assim as dobras saem sem suporte e as janelas em losango ficam com bordas a 45°. Recomendado: camada de 0,2 mm, 5 perímetros (parede maciça), **brim de 5 mm** (a base é só o contorno fino da chapa) e sem suporte.
+
+## Modelo 3D
+
+| Perspectiva | Frontal |
+|---|---|
+| ![Modelo 3D em perspectiva](imagens/modelo/01_cad_perspectiva.jpg) | ![Modelo 3D de frente](imagens/modelo/02_cad_frontal.jpg) |
+| ![Modelo 3D de lado](imagens/modelo/03_cad_lateral.jpg) | ![Perfil e frente em 2D](imagens/modelo/05_cad_perfil_e_frente_2d.jpg) |
+
+## Impressão do protótipo
+
+Impresso numa Creality com mesa de 220 × 220 mm, na orientação dos arquivos: perfil deitado, sem suporte, com brim.
+
+| | |
+|---|---|
+| ![Perfil em A na mesa](imagens/fotos/01_perfil_na_mesa.jpg) | ![Lateral da impressão](imagens/fotos/06_lateral.jpg) |
+| ![Encaixe da base](imagens/fotos/03_encaixe.jpg) | ![Brim da perna traseira](imagens/fotos/05_brim_perna_traseira.jpg) |
+
+Mais fotos em [`imagens/fotos/`](imagens/fotos/).
+
+A revisão anterior (duas placas de 220 × 140 mm com apoio em corte a laser) foi substituída pela rev. C e continua no histórico do git.
 
 ## Integração com a plataforma
 
@@ -50,7 +80,7 @@ Etiqueta QR na peça ──► GET /qr ──► sessão marcada "peca_maker" �
 |---|---|
 | `GET /qr` | Destino gravado no QR. Marca a origem na sessão (se a pessoa não estiver logada) e leva ao início |
 | `GET /maker` | Página da peça: render, ficha, QR pronto para imprimir e o número de cadastros vindos dela |
-| `GET /maker/qrcode.svg?tamanho_mm=40` | QR vetorial no tamanho físico pedido (15 a 200 mm), para imprimir, colar ou gravar a laser |
+| `GET /maker/qrcode.svg?tamanho_mm=30` | QR vetorial no tamanho físico pedido (15 a 200 mm; padrão 30), para imprimir em papel adesivo |
 
 - **URL dentro do QR:** `PUBLIC_URL` + `/qr`. Configure `PUBLIC_URL` no App Service (ex.: `https://<app>.azurewebsites.net`). Sem ela, o QR usa o endereço pelo qual a página foi aberta, que serve para testar localmente mas **não** para a etiqueta definitiva.
 - **Geração:** o próprio MVP gera o QR com o OpenCV (já instalado para a Visão Computacional), sem dependência nova. Os testes em [`mvp/tests/test_maker.py`](../mvp/tests/test_maker.py) geram o QR e o leem de volta com o detector do OpenCV.
@@ -59,16 +89,17 @@ Etiqueta QR na peça ──► GET /qr ──► sessão marcada "peca_maker" �
 ## Como produzir a etiqueta
 
 1. Com o MVP publicado e `PUBLIC_URL` configurada, abra `https://<app>/maker`.
-2. Clique em **Baixar QR (40 mm, SVG)**.
-3. Imprima em 100% (sem "ajustar à página") e cole na placa da frente, ou importe o SVG no software da laser para gravar direto na peça.
+2. Clique em **Baixar QR (30 mm, SVG)**.
+3. Imprima em 100% (sem "ajustar à página") em papel adesivo e cole no canto inferior da face de trás da perna traseira.
 4. Teste com a câmera do celular: deve abrir a página inicial com o aviso "Você chegou pelo QR code do suporte de estudo".
 
 ## Entrega no portal
 
-Passo a passo (fotos, MakerWorld, pasta pública e PDF único): [`entrega/ROTEIRO_ENTREGA.md`](entrega/ROTEIRO_ENTREGA.md). O PDF é gerado por [`entrega/gerar_entrega.py`](entrega/gerar_entrega.py).
+Passo a passo (fotos, dados da impressão, MakerWorld, pasta pública e PDF único): [`entrega/ROTEIRO_ENTREGA.md`](entrega/ROTEIRO_ENTREGA.md). O PDF é gerado por [`entrega/gerar_entrega.py`](entrega/gerar_entrega.py).
 
 ## Pendências da disciplina
 
 - [ ] Publicar o projeto no MakerWorld e colocar o link na [Ficha Técnica](../docs/FICHA_TECNICA_MVP.md#links-da-entrega)
-- [ ] Foto da peça fabricada, com a etiqueta QR colada (`imagens/foto_peca.jpg`)
+- [x] Fotos da impressão (`imagens/fotos/`)
+- [ ] Foto da peça pronta com tablet e etiqueta QR colada
 - [ ] Gerar a etiqueta definitiva depois que a URL pública do MVP existir
