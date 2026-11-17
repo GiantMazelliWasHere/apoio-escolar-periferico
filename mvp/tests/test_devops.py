@@ -3,6 +3,7 @@ segredos obrigatórios, cabeçalhos de segurança, limite de tentativas e teleme
 import re
 
 import pytest
+from cryptography.fernet import Fernet
 from fastapi.testclient import TestClient
 
 from app import config
@@ -67,7 +68,7 @@ def test_producao_com_segredos_sobe(monkeypatch):
     monkeypatch.setenv("APP_ENV", "production")
     monkeypatch.setenv("SECRET_KEY", "x" * 64)
     monkeypatch.setenv("INTEGRATION_API_KEY", "y" * 32)
-    monkeypatch.setenv("FERNET_KEY", "QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU=")
+    monkeypatch.setenv("FERNET_KEY", Fernet.generate_key().decode())  # chave gerada no teste, nunca fixa
     s = Settings()
     assert s.secret_key == "x" * 64
     assert s.https_only_cookies is True
@@ -87,7 +88,7 @@ def test_hsts_em_producao(tmp_path, monkeypatch):
     monkeypatch.setenv("APP_ENV", "production")
     monkeypatch.setenv("SECRET_KEY", "x" * 64)
     monkeypatch.setenv("INTEGRATION_API_KEY", "y" * 32)
-    monkeypatch.setenv("FERNET_KEY", "QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU=")
+    monkeypatch.setenv("FERNET_KEY", Fernet.generate_key().decode())  # chave gerada no teste, nunca fixa
     app = create_app(database_url=f"sqlite:///{tmp_path / 'teste.db'}", seed=False)
     r = TestClient(app, base_url="https://testserver").get("/health")
     assert r.headers["strict-transport-security"].startswith("max-age=31536000")

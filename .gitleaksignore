@@ -1,0 +1,5 @@
+# Falsos positivos do gitleaks já no histórico (não são segredos).
+# Chave Fernet FICTÍCIA de teste (base64 de "ABCDEFGHIJKLMNOPQRSTUVWXYZ012345") usada em
+# mvp/tests/test_devops.py no commit 58cdc64. O teste passou a gerar a chave na hora.
+58cdc64854045fb92bd257173e288c21e242a841:mvp/tests/test_devops.py:generic-api-key:70
+58cdc64854045fb92bd257173e288c21e242a841:mvp/tests/test_devops.py:generic-api-key:90
