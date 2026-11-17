@@ -416,7 +416,7 @@ O roteiro completo, com falas, elenco, tempos, telas e transições, está em um
 A sequência de cenas, as dicas de gravação e o checklist de publicação estão no [roteiro](Roteiro_Video_Pitch.md#plano-de-gravação).
 
 ### 9.1 Fluxo central a congelar até a gravação
-1. Abrir URL pública → 2. cadastro só com apelido (com a leitura do endereço pela foto da conta, gravada no ambiente local porque o OCR não roda no plano B1) → 3. autorização do responsável pelo link (LGPD, menor de idade) → 4. busca de monitoria por matéria → 5. agendamento confirmado → 6. assistente AI Bits na tela Ajuda (só com a chave do OpenRouter configurada) → 7. coordenação aprova um voluntário credenciado pelo robô de RPA → 8. painel `/impacto` (grupos com menos de 5 pessoas aparecem como "menos de 5").
+1. Abrir URL pública → 2. cadastro só com apelido, com endereço opcional (bairro e CEP). A leitura da conta pela foto fica fora da demo: o OCR está desligado no plano B1 da Azure, e a demo é toda na URL pública → 3. autorização do responsável pelo link (LGPD, menor de idade) → 4. busca de monitoria por matéria → 5. agendamento confirmado → 6. assistente AI Bits na tela Ajuda (só com a chave do OpenRouter configurada) → 7. coordenação aprova um voluntário credenciado pelo robô de RPA → 8. painel `/impacto` (grupos com menos de 5 pessoas aparecem como "menos de 5").
 O **mínimo** para a nota de demo é 1→5 funcionando de verdade. Os passos 6 a 8 só entram se estiverem no ar.
 
 ### 9.2 Evidência de valor (rubrica: 3,5 pontos) — teste de usabilidade em 2 dias
