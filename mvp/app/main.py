@@ -312,7 +312,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
 
     @app.get("/privacidade", response_class=HTMLResponse)
     def privacidade(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
-        return render(request, "privacidade.html", usuario, regiao=settings.regiao)
+        return render(request, "privacidade.html", usuario, regiao=settings.regiao, regiao_no_brasil=settings.regiao_no_brasil)
 
     @app.get("/ajuda", response_class=HTMLResponse)
     def ajuda(request: Request, usuario: Usuario | None = Depends(usuario_atual)):

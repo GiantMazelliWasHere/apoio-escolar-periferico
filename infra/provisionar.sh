@@ -10,6 +10,7 @@
 #   SUFIXO [6 primeiros caracteres do id da assinatura]  nomes globais únicos e estáveis (ex.: app-apoioescolar-6e7462).
 #   APP, KV, RG               nomes do Web App, Key Vault e Resource Group (ex.: reaproveitar um Web App existente).
 #   GITHUB_REPO [GiantMazelliWasHere/apoio-escolar-periferico]
+#   GITHUB_OWNER_ID, GITHUB_REPO_ID  IDs numéricos do GitHub para o subject OIDC com IDs (o script busca com o gh).
 #   OPENROUTER_API_KEY        se definida, vai para o Key Vault (assistente de IA). Nunca é impressa.
 #   LEITORES                  lista separada por vírgula (e-mails/UPNs ou object ids) que recebem Reader no RG.
 #   ORCAMENTO [150]           orçamento mensal do RG, na moeda da conta, com aviso por e-mail em 80%.
@@ -32,7 +33,7 @@ KV="${KV:-kv-apoioescolar-$SUFIXO}"
 LAW="${LAW:-log-apoioescolar}"
 APPI="${APPI:-appi-apoioescolar}"
 AG="${AG:-ag-apoioescolar}"
-OIDC_APP_NOME="${OIDC_APP_NOME:-github-apoioescolar-deploy}"
+OIDC_IDENTIDADE="${OIDC_IDENTIDADE:-id-github-deploy}"
 GITHUB_REPO="${GITHUB_REPO:-GiantMazelliWasHere/apoio-escolar-periferico}"
 ORCAMENTO="${ORCAMENTO:-150}"
 CONFIGURAR_GITHUB="${CONFIGURAR_GITHUB:-1}"
@@ -164,24 +165,47 @@ az rest --method put \
   || echo "   aviso: não foi possível criar o orçamento (algumas assinaturas não suportam); crie em Cost Management."
 
 passo "Identidade do GitHub Actions (OIDC, sem segredo) com Website Contributor só no Web App"
-OIDC_APP_ID="$(az ad app list --display-name "$OIDC_APP_NOME" --query '[0].appId' -o tsv)"
-if [ -z "$OIDC_APP_ID" ]; then
-  OIDC_APP_ID="$(az ad app create --display-name "$OIDC_APP_NOME" --query appId -o tsv)"
+# Identidade gerenciada (user-assigned) em vez de app registration: não exige permissão no Entra ID
+# (basta Contributor no RG para criá-la) e não tem segredo nenhum.
+if ! existe az identity show -g "$RG" -n "$OIDC_IDENTIDADE"; then
+  az identity create -g "$RG" -n "$OIDC_IDENTIDADE" -l "$LOCAL" --tags "${TAGS[@]}" -o none
 fi
-if ! existe az ad sp show --id "$OIDC_APP_ID"; then
-  az ad sp create --id "$OIDC_APP_ID" -o none
+OIDC_CLIENT_ID="$(az identity show -g "$RG" -n "$OIDC_IDENTIDADE" --query clientId -o tsv)"
+OIDC_PRINCIPAL_ID="$(az identity show -g "$RG" -n "$OIDC_IDENTIDADE" --query principalId -o tsv)"
+
+# O GitHub manda o "subject" do token em dois formatos, conforme a configuração da conta:
+#   clássico:      repo:<dono>/<repo>:environment:production
+#   com IDs fixos: repo:<dono>@<id-do-dono>/<repo>@<id-do-repo>:environment:production
+# (o formato com IDs não muda se o repositório ou a conta forem renomeados). Cadastramos os dois.
+SUBJECTS=("repo:${GITHUB_REPO}:environment:production")
+if [ -z "${GITHUB_OWNER_ID:-}" ] || [ -z "${GITHUB_REPO_ID:-}" ]; then
+  if command -v gh >/dev/null && gh auth status >/dev/null 2>&1; then
+    read -r GITHUB_OWNER_ID GITHUB_REPO_ID < <(gh api "repos/$GITHUB_REPO" --jq '"\(.owner.id) \(.id)"')
+  else
+    # Sem o gh: a API pública do GitHub dá os IDs (não são segredo; só funciona com repositório público).
+    read -r GITHUB_OWNER_ID GITHUB_REPO_ID < <(curl -fsSL "https://api.github.com/repos/$GITHUB_REPO" \
+      | jq -r '"\(.owner.id) \(.id)"' 2>/dev/null) || true
+  fi
 fi
-OIDC_SP_ID="$(az ad sp show --id "$OIDC_APP_ID" --query id -o tsv)"
-SUBJECT="repo:${GITHUB_REPO}:environment:production"
-if [ -z "$(az ad app federated-credential list --id "$OIDC_APP_ID" --query "[?subject=='$SUBJECT'].name" -o tsv)" ]; then
-  az ad app federated-credential create --id "$OIDC_APP_ID" --parameters "{
-    \"name\": \"github-production\",
-    \"issuer\": \"https://token.actions.githubusercontent.com\",
-    \"subject\": \"$SUBJECT\",
-    \"audiences\": [\"api://AzureADTokenExchange\"],
-    \"description\": \"Deploy do workflow CI/CD no environment production\"}" -o none
+if [ -n "${GITHUB_OWNER_ID:-}" ] && [ -n "${GITHUB_REPO_ID:-}" ]; then
+  SUBJECTS+=("repo:${GITHUB_REPO%%/*}@${GITHUB_OWNER_ID}/${GITHUB_REPO#*/}@${GITHUB_REPO_ID}:environment:production")
+else
+  echo "   aviso: sem os IDs do repositório (repo privado sem gh?). Defina GITHUB_OWNER_ID e GITHUB_REPO_ID e rode de novo."
 fi
-com_retentativa az role assignment create --assignee-object-id "$OIDC_SP_ID" --assignee-principal-type ServicePrincipal \
+EXISTENTES="$(az identity federated-credential list -g "$RG" --identity-name "$OIDC_IDENTIDADE" --query '[].subject' -o tsv)"
+n=0
+for subject in "${SUBJECTS[@]}"; do
+  n=$((n + 1))
+  if grep -qxF "$subject" <<< "$EXISTENTES"; then
+    echo "   credencial federada já existe: $subject"
+  else
+    az identity federated-credential create -g "$RG" --identity-name "$OIDC_IDENTIDADE" -n "github-production-$n" \
+      --issuer https://token.actions.githubusercontent.com --subject "$subject" \
+      --audiences api://AzureADTokenExchange -o none
+    echo "   credencial federada criada: $subject"
+  fi
+done
+com_retentativa az role assignment create --assignee-object-id "$OIDC_PRINCIPAL_ID" --assignee-principal-type ServicePrincipal \
   --role "Website Contributor" --scope "$APP_ID" -o none
 
 if [ -n "${LEITORES:-}" ]; then
@@ -195,7 +219,7 @@ fi
 
 passo "Variáveis do pipeline no GitHub"
 declare -A VARS=(
-  [AZURE_CLIENT_ID]="$OIDC_APP_ID"
+  [AZURE_CLIENT_ID]="$OIDC_CLIENT_ID"
   [AZURE_TENANT_ID]="$TENANT_ID"
   [AZURE_SUBSCRIPTION_ID]="$ASSINATURA_ID"
   [AZURE_WEBAPP_NAME]="$APP"
