@@ -10,8 +10,9 @@ Não criamos histórico de monitorias passadas: o painel de impacto mostra apena
 o que acontecer de verdade na plataforma (evita números que pareçam resultados).
 
 Contas de demonstração (senhas só para o ambiente de demo):
-- estudante:   estudante.demo@exemplo.org   / estudante123
-- voluntários: voluntario1..4@exemplo.org    / voluntario123
+- estudante:   apelido estudante.demo        / estudante123 (autorizado pelo responsável)
+- voluntários: voluntario1..4@exemplo.org    / voluntario123 (aprovados)
+               voluntario5@exemplo.org       / voluntario123 (em análise: a coordenação aprova)
 - coordenação: coordenacao.demo@exemplo.org / coordenacao123
 """
 from datetime import datetime, timedelta
@@ -19,7 +20,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .models import Escola, Horario, Usuario
+from .lgpd import AVISO_VERSAO
+from .models import CONSENTIMENTO_AUTORIZADO, Escola, Horario, Usuario
 from .security import hash_senha
 
 ESCOLAS = [
@@ -37,12 +39,13 @@ VOLUNTARIOS = [
     ("Beatriz (Letras)", "voluntario3@exemplo.org", "Letras Português/Inglês", ["Português", "Inglês"]),
     ("Diego (Biomedicina)", "voluntario4@exemplo.org", "Biomedicina", ["Biologia", "Química", "Ciências"]),
 ]
+VOLUNTARIO_EM_ANALISE = ("Elisa (Pedagogia)", "voluntario5@exemplo.org", "Pedagogia")
 
 HORAS = [9, 14, 16, 18, 19]
 
 
 def _criar_horarios_futuros(db: Session, agora: datetime) -> None:
-    voluntarios = db.scalars(select(Usuario).where(Usuario.papel == "voluntario", Usuario.email.like("voluntario%@exemplo.org"))).all()
+    voluntarios = db.scalars(select(Usuario).where(Usuario.papel == "voluntario", Usuario.aprovado.is_(True), Usuario.email.like("voluntario%@exemplo.org"))).all()
     materias_por_email = {email: mats for _, email, _, mats in VOLUNTARIOS}
     base = agora.replace(minute=0, second=0, microsecond=0)
     for i, vol in enumerate(voluntarios):
@@ -71,12 +74,24 @@ def seed_demo(db: Session) -> None:
         for nome, bairro, prioritario, indice, inep in ESCOLAS:
             db.add(Escola(nome=nome, bairro=bairro, municipio="Município Exemplo", territorio_prioritario=prioritario, indice_prioridade=indice, fonte_prioridade="sintetico", codigo_inep=inep))
         db.flush()
-        primeira = db.scalar(select(Escola).order_by(Escola.id))
-        db.add(Usuario(nome="Estudante Demo", email="estudante.demo@exemplo.org", senha_hash=hash_senha("estudante123"), papel="estudante", escola_id=primeira.id, ano_escolar="9º ano EF", bairro=primeira.bairro, consentimento_responsavel=True, consentimento_em=agora))
         db.add(Usuario(nome="Coordenação Demo", email="coordenacao.demo@exemplo.org", senha_hash=hash_senha("coordenacao123"), papel="coordenacao"))
         for nome, email, formacao, _ in VOLUNTARIOS:
-            db.add(Usuario(nome=nome, email=email, senha_hash=hash_senha("voluntario123"), papel="voluntario", formacao=formacao))
+            db.add(Usuario(nome=nome, email=email, senha_hash=hash_senha("voluntario123"), papel="voluntario", formacao=formacao, aprovado=True))
         db.flush()
+
+    # Contas de demonstração do fluxo LGPD (também em bancos criados antes dele).
+    if db.scalar(select(Usuario).where(Usuario.apelido == "estudante.demo")) is None:
+        primeira = db.scalar(select(Escola).order_by(Escola.id))
+        db.add(Usuario(
+            apelido="estudante.demo", senha_hash=hash_senha("estudante123"), papel="estudante", faixa_idade="13 a 15 anos",
+            escola_id=primeira.id, ano_escolar="9º ano EF", bairro=primeira.bairro,
+            consentimento_status=CONSENTIMENTO_AUTORIZADO, consentimento_responsavel=True, consentimento_em=agora,
+            aviso_versao=AVISO_VERSAO, aviso_aceito_em=agora,
+        ))
+    nome, email, formacao = VOLUNTARIO_EM_ANALISE
+    if db.scalar(select(Usuario).where(Usuario.email == email)) is None:
+        db.add(Usuario(nome=nome, email=email, senha_hash=hash_senha("voluntario123"), papel="voluntario", formacao=formacao, aprovado=False))
+    db.flush()
 
     # Bancos criados antes da integração com o pipeline de Dados não têm o código INEP.
     codigos = {nome: inep for nome, _, _, _, inep in ESCOLAS}

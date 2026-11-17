@@ -280,21 +280,21 @@ def dados_cadastro(client, **extra):
     escola_id = re.search(r'<option value="(\d+)"', html).group(1)
     return {
         "csrf_token": re.search(r'name="csrf_token" value="([^"]+)"', html).group(1),
-        "nome": "Bia",
-        "email": "bia@exemplo.org",
+        "apelido": "bia",
         "senha": "senha-segura",
         "escola_id": escola_id,
         "ano_escolar": "9º ano EF",
-        "consentimento": "on",
+        "faixa_idade": "13 a 15 anos",
+        "aceite_aviso": "on",
         **extra,
     }
 
 
 def test_cadastro_grava_bairro_e_cep_confirmados(app, client):
     r = client.post("/cadastro/estudante", data=dados_cadastro(client, bairro="Grajau", cep="07657532"), follow_redirects=False)
-    assert r.status_code == 303
+    assert r.status_code == 200 and "/responsavel/" in r.text  # menor: segue para o link do responsável
     with app.state.SessionLocal() as db:
-        u = db.query(Usuario).filter_by(email="bia@exemplo.org").one()
+        u = db.query(Usuario).filter_by(apelido="bia").one()
         assert (u.bairro, u.cep) == ("Grajau", "07657-532")
 
 

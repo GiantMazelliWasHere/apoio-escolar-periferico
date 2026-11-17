@@ -1,0 +1,36 @@
+*VÍDEO-PITCH · Apoio Escolar Periférico*
+*Eduardo Mazelli · Bloco 4: Modelo de negócio e Lean Canvas*
+Duração: *60 segundos* (de 3:00 a 4:00). Você entra logo depois da sua própria demo (bloco 3).
+
+*O QUE FALAR* (ler exatamente isto; pausas nas quebras de parágrafo)
+
+"Esse impacto medido é exatamente o que paga a conta. O estudante nunca paga. Quem paga são empresas que precisam comprovar investimento social, o 'S' do ESG.
+
+Vendemos programas por núcleo escolar: o plano Semente atende uma escola com até cem estudantes por dois mil e quinhentos reais por mês; o Território, três escolas por seis mil. Em troca, a empresa recebe painel de impacto e voluntariado para os funcionários.
+
+Chegamos aos estudantes pela escola e por ONGs, e aos voluntários pelas universidades.
+
+Nas nossas projeções, o ponto de equilíbrio está em cerca de sete contratos, perto de mil estudantes ativos. Com escala, o custo por estudante cai de cinquenta e dois para vinte e dois reais por mês.
+
+Editais e fundos não entram na receita: servem para financiar o primeiro ano. A métrica que sustenta tudo é a renovação dos patrocínios."
+
+*COMEÇA EM:* "Esse impacto medido é exatamente o que paga a conta." (a demo termina no painel de impacto, então a frase funciona com ou sem o relatório do RPA)
+*TERMINA EM:* "...a renovação dos patrocínios." → o Miguel entra com "E patrocínio só se renova com impacto."
+
+*CUIDADOS*
+• Fale "nas nossas projeções" antes do equilíbrio e do custo por estudante: são projeções, não resultado.
+• O plano Rede (R$ 15.000) aparece só na tabela da tela, não na fala.
+• Os três números para destacar na tela: o preço (R$ 2.500), o equilíbrio (~7 contratos) e o custo por estudante (R$ 52 → R$ 22).
+• Estourou 60 s? Corte texto (a frase dos canais é a primeira candidata), não acelere.
+
+*NA TELA (edição)*
+• Lean Canvas resumido, com Segmentos, Receitas e Métricas em destaque.
+• Tabela dos planos: Semente R$ 2.500 · Território R$ 6.000 · Rede R$ 15.000.
+• Gráfico do custo por estudante: R$ 52 → R$ 30 → R$ 22, com o rótulo *"projeção"*.
+
+*COMO GRAVAR*
+• Câmera na *horizontal* (16:9), na altura dos olhos, enquadrado do peito para cima, *mesmo enquadramento dos outros*.
+• Luz de frente, fundo neutro, fone com microfone, lugar silencioso.
+• Grave *2 tomadas* da fala inteira.
+• Grave também *3 segundos olhando para a câmera, em silêncio e sorrindo*: entra no mosaico do time no bloco 6.
+• Exporte em 1080p.

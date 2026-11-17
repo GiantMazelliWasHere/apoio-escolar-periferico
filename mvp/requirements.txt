@@ -8,7 +8,11 @@ itsdangerous==2.2.0
 httpx==0.28.1
 tenacity==9.2.1
 python-dotenv==1.2.4
+# Cifra do e-mail do responsável (Fernet)
+cryptography==50.0.2
 # Visão Computacional (pré-processamento leve; o OCR fica em requirements-visao.txt)
 opencv-python-headless==5.0.0.93
 numpy==2.5.4
 pypdfium2==5.15.2
+# Telemetria no Application Insights (OpenTelemetry); só liga com APPLICATIONINSIGHTS_CONNECTION_STRING
+azure-monitor-opentelemetry==1.8.12

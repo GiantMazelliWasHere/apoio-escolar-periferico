@@ -1,38 +1,44 @@
 {% extends "base.html" %}
 {% block titulo %}Painel de impacto · Apoio Escolar Periférico{% endblock %}
 {% block conteudo %}
+{% macro n(v) %}{{ v if v is not none else 'menos de ' ~ k.k_minimo }}{% endmacro %}
+{% macro p(v) %}{{ (v | string | replace('.', ',') ~ '%') if v is not none else '—' }}{% endmacro %}
 <h1>Painel de impacto</h1>
 <p class="lead">Indicadores calculados em tempo real a partir do uso da plataforma. Dados agregados e anônimos.</p>
+<p class="ajuda">Para proteger os estudantes (LGPD), qualquer grupo com menos de {{ k.k_minimo }} pessoas aparece como "menos de {{ k.k_minimo }}" e percentuais que revelariam um grupo pequeno ficam como "—". Só contam estudantes com o cadastro autorizado pelo responsável.</p>
 <p class="ajuda">Atualizado em {{ k.calculado_em.replace('T', ' ') }}. Números de demonstração refletem apenas o uso real deste ambiente, sem histórico simulado.</p>
 
 <div class="kpis">
   <div class="kpi"><p class="kpi-valor">{{ k.monitorias_realizadas }}</p><p class="kpi-nome">Monitorias realizadas</p></div>
   <div class="kpi"><p class="kpi-valor">{{ k.horas_reforco | string | replace('.', ',') }} h</p><p class="kpi-nome">Horas de reforço</p></div>
-  <div class="kpi"><p class="kpi-valor">{{ k.estudantes_ativos_30d }}</p><p class="kpi-nome">Estudantes ativos (30 dias)</p></div>
-  <div class="kpi"><p class="kpi-valor">{{ (k.taxa_presenca | string | replace('.', ',') ~ '%') if k.taxa_presenca is not none else '—' }}</p><p class="kpi-nome">Taxa de presença</p></div>
+  <div class="kpi"><p class="kpi-valor">{{ n(k.estudantes_ativos_30d) }}</p><p class="kpi-nome">Estudantes ativos (30 dias)</p></div>
+  <div class="kpi"><p class="kpi-valor">{{ p(k.taxa_presenca) }}</p><p class="kpi-nome">Taxa de presença</p></div>
 </div>
 
 <table class="tabela">
   <caption>Indicadores e como são calculados</caption>
   <thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th><th scope="col">Cálculo</th></tr></thead>
   <tbody>
-    <tr><td>Estudantes cadastrados</td><td>{{ k.estudantes_cadastrados }}</td><td>Contas de estudante com consentimento do responsável</td></tr>
-    <tr><td>Estudantes ativos (30 dias)</td><td>{{ k.estudantes_ativos_30d }}</td><td>Estudantes com ≥ 1 agendamento não cancelado nos últimos 30 dias</td></tr>
-    <tr><td>Em territórios prioritários</td><td>{{ (k.pct_estudantes_territorio_prioritario | string | replace('.', ',') ~ '%') if k.pct_estudantes_territorio_prioritario is not none else '—' }}</td><td>Estudantes de escolas marcadas como prioritárias ÷ total</td></tr>
+    <tr><td>Estudantes cadastrados</td><td>{{ n(k.estudantes_cadastrados) }}</td><td>Contas de estudante autorizadas pelo responsável (ou de maiores de 18)</td></tr>
+    <tr><td>Estudantes ativos (30 dias)</td><td>{{ n(k.estudantes_ativos_30d) }}</td><td>Estudantes com ≥ 1 agendamento não cancelado nos últimos 30 dias</td></tr>
+    <tr><td>Em territórios prioritários</td><td>{{ p(k.pct_estudantes_territorio_prioritario) }}</td><td>Estudantes de escolas marcadas como prioritárias ÷ total</td></tr>
     <tr><td>Monitorias agendadas (a realizar)</td><td>{{ k.monitorias_agendadas }}</td><td>Agendamentos com status "agendado"</td></tr>
     <tr><td>Monitorias realizadas</td><td>{{ k.monitorias_realizadas }}</td><td>Presença confirmada pelo monitor</td></tr>
-    <tr><td>Faltas</td><td>{{ k.faltas }}</td><td>Ausência registrada pelo monitor</td></tr>
-    <tr><td>Taxa de presença</td><td>{{ (k.taxa_presenca | string | replace('.', ',') ~ '%') if k.taxa_presenca is not none else '—' }}</td><td>Realizadas ÷ (realizadas + faltas)</td></tr>
+    <tr><td>Faltas</td><td>{{ n(k.faltas) }}</td><td>Ausência registrada pelo monitor</td></tr>
+    <tr><td>Taxa de presença</td><td>{{ p(k.taxa_presenca) }}</td><td>Realizadas ÷ (realizadas + faltas)</td></tr>
     <tr><td>Horas de reforço</td><td>{{ k.horas_reforco | string | replace('.', ',') }}</td><td>Soma da duração das monitorias realizadas</td></tr>
     <tr><td>Voluntários cadastrados</td><td>{{ k.voluntarios_cadastrados }}</td><td>Contas de voluntário</td></tr>
     <tr><td>Voluntários ativos (30 dias)</td><td>{{ k.voluntarios_ativos_30d }}</td><td>Voluntários com horário nos últimos ou próximos 30 dias</td></tr>
-    <tr><td>Cadastros vindos da peça Maker Lab</td><td>{{ k.cadastros_via_peca_maker }}</td><td>Contas criadas depois de ler o QR code do <a href="/maker">suporte de estudo</a></td></tr>
+    <tr><td>Cadastros vindos da peça Maker Lab</td><td>{{ n(k.cadastros_via_peca_maker) }}</td><td>Contas criadas depois de ler o QR code do <a href="/maker">suporte de estudo</a></td></tr>
     <tr><td>Oportunidades abertas</td><td>{{ k.oportunidades_abertas }}</td><td>Horários futuros publicados</td></tr>
   </tbody>
 </table>
 
-{% if k.agendamentos_por_materia %}
+{% if k.agendamentos_por_materia or k.materias_ocultas %}
 <h2>Agendamentos por matéria</h2>
+{% if k.materias_ocultas %}<p class="ajuda">{{ k.materias_ocultas }} matéria{{ '' if k.materias_ocultas == 1 else 's' }} com menos de {{ k.k_minimo }} agendamentos não aparece{{ '' if k.materias_ocultas == 1 else 'm' }}.</p>{% endif %}
+{% endif %}
+{% if k.agendamentos_por_materia %}
 {% set maximo = k.agendamentos_por_materia.values() | max %}
 <ul class="barras">
   {% for materia, n in k.agendamentos_por_materia.items() %}

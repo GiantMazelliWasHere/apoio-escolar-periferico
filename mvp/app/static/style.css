@@ -235,3 +235,12 @@ details.cartao summary { font-weight: 700; cursor: pointer; }
   .certificado { border-color: #0b6e4f; }
 }
 .certificado .tabela td:nth-child(3), .certificado .tabela th:nth-child(3) { display: table-cell; }
+
+/* LGPD: autorização do responsável, Minha conta */
+.botao-perigo { background: var(--danger); border-color: var(--danger); color: var(--danger-bg); }
+.aviso-pendente { border-left: 4px solid var(--brand); }
+.link-responsavel code { display: block; overflow-wrap: anywhere; padding: .5rem; }
+.dados { display: grid; grid-template-columns: minmax(8rem, max-content) 1fr; gap: .35rem 1rem; margin: .5rem 0 1rem; }
+.dados dt { font-weight: 600; }
+.dados dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .dados { grid-template-columns: 1fr; } .dados dd { margin-bottom: .4rem; } }

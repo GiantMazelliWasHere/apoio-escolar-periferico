@@ -37,6 +37,8 @@
     </div>
     {% if h.id in ja_agendados %}
       <p class="tag">Você já agendou</p>
+    {% elif usuario and usuario.papel == 'estudante' and not usuario.pode_agendar %}
+      <a class="botao botao-sec" href="/minha-conta/responsavel">Falta a autorização do responsável</a>
     {% elif usuario and usuario.papel == 'estudante' %}
       <form method="post" action="/monitorias/{{ h.id }}/agendar" class="form-agendar">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">

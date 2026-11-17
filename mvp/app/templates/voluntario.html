@@ -3,7 +3,8 @@
 {% block conteudo %}
 {% if bemvindo %}<p class="sucesso" role="status">Bem-vindo(a)! Crie seu primeiro horário de monitoria abaixo.</p>{% endif %}
 {% if criados %}<p class="sucesso" role="status">{{ criados }} horário{{ '' if criados == 1 else 's' }} publicado{{ '' if criados == 1 else 's' }}.</p>{% endif %}
-<h1>Olá, {{ usuario.nome.split(' ')[0] }}</h1>
+<h1>Olá, {{ usuario.exibicao }}</h1>
+{% if not usuario.aprovado %}<p class="cartao aviso-pendente" role="status"><strong>Seu cadastro está em análise pela coordenação.</strong> Assim que for aprovado, você pode publicar horários de monitoria.</p>{% endif %}
 
 <section aria-labelledby="horas" class="cartao destaque horas-vol">
   <h2 id="horas">Suas horas de monitoria</h2>
@@ -25,7 +26,7 @@
       <ul class="alunos">
         {% for a in ativos %}
         <li>
-          <span><strong>{{ a.estudante.nome }}</strong> · {{ a.estudante.ano_escolar }}{% if a.duvida %} · Dúvida: “{{ a.duvida }}”{% endif %}</span>
+          <span><strong>{{ a.estudante.apelido }}</strong> · {{ a.estudante.ano_escolar }}{% if a.duvida %} · Dúvida: “{{ a.duvida }}”{% endif %}</span>
           {% if a.status == 'agendado' and h.inicio > limite_presenca %}
           <span class="tag">Presença liberada 1 h antes</span>
           {% elif a.status == 'agendado' %}
@@ -57,7 +58,7 @@
       <p class="horario-materia">{{ h.materia }} · {{ h.inicio | data_amigavel }}</p>
       {% for a in h.agendamentos if a.status != 'cancelado' %}
       <div class="alunos-linha">
-        <span>{{ a.estudante.nome }}</span>
+        <span>{{ a.estudante.apelido }} · {{ a.estudante.ano_escolar }}</span>
         {% if a.status == 'agendado' %}
         <form method="post" action="/agendamentos/{{ a.id }}/presenca" class="presenca">
           <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -73,6 +74,7 @@
 </section>
 {% endif %}
 
+{% if usuario.aprovado %}
 <section aria-labelledby="novo" class="cartao">
   <h2 id="novo">Oferecer novo horário</h2>
   <form method="post" action="/voluntario/horarios" class="form grade">
@@ -98,4 +100,5 @@
     <div class="largo"><button class="botao" type="submit">Publicar horário</button></div>
   </form>
 </section>
+{% endif %}
 {% endblock %}

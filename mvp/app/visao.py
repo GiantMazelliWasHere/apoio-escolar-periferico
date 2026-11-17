@@ -24,7 +24,7 @@ import re
 import threading
 import time
 from collections import defaultdict, deque
-from typing import Callable
+from collections.abc import Callable
 
 import cv2
 import numpy as np

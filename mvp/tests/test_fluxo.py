@@ -31,26 +31,43 @@ def csrf(client, url):
     return m.group(1)
 
 
-def cadastrar_estudante(client, email="ana.teste@exemplo.org", consentimento=True):
+def cadastrar_estudante(client, apelido="ana.teste", faixa_idade="18 anos ou mais", aceite=True):
+    """Por padrão cadastra um estudante maior de idade (agenda na hora). O fluxo do responsável
+    para menores está em test_lgpd.py."""
     token = csrf(client, "/cadastro/estudante")
     escola_id = re.search(r'<option value="(\d+)"', client.get("/cadastro/estudante").text).group(1)
     data = {
         "csrf_token": token,
-        "nome": "Ana Teste",
-        "email": email,
+        "apelido": apelido,
         "senha": "senha-forte-123",
         "escola_id": escola_id,
-        "ano_escolar": "9º ano EF",
+        "ano_escolar": "3ª série EM",
+        "faixa_idade": faixa_idade,
         "bairro": "Jardim Exemplo",
     }
-    if consentimento:
-        data["consentimento"] = "on"
+    if aceite:
+        data["aceite_aviso"] = "on"
     return client.post("/cadastro/estudante", data=data, follow_redirects=False)
 
 
-def entrar(client, email, senha):
+def cadastrar_voluntario(client, app, nome="Vol Novo", email="vol.novo@exemplo.org", aprovar=True):
+    token = csrf(client, "/cadastro/voluntario")
+    r = client.post(
+        "/cadastro/voluntario",
+        data={"csrf_token": token, "nome": nome, "email": email, "senha": "senha-forte-123", "formacao": "Licenciatura", "aceite_aviso": "on"},
+        follow_redirects=False,
+    )
+    assert r.status_code == 303, r.text
+    if aprovar:
+        with app.state.SessionLocal() as db:
+            db.query(Usuario).filter_by(email=email).one().aprovado = True
+            db.commit()
+    return email
+
+
+def entrar(client, login, senha):
     token = csrf(client, "/entrar")
-    return client.post("/entrar", data={"csrf_token": token, "email": email, "senha": senha}, follow_redirects=False)
+    return client.post("/entrar", data={"csrf_token": token, "login": login, "senha": senha}, follow_redirects=False)
 
 
 def primeiro_horario_livre(app, materia="Matemática"):
@@ -75,14 +92,14 @@ def test_paginas_publicas_abrem(client):
         assert client.get(url).status_code == 200, url
 
 
-def test_cadastro_exige_consentimento_do_responsavel(client):
-    r = cadastrar_estudante(client, consentimento=False)
+def test_cadastro_exige_aceite_do_aviso_de_privacidade(client):
+    r = cadastrar_estudante(client, aceite=False)
     assert r.status_code == 400
-    assert "consentimento" in r.text.lower()
+    assert "Aviso de Privacidade" in r.text
 
 
 def test_post_sem_csrf_e_rejeitado(client):
-    r = client.post("/entrar", data={"email": "x@x.org", "senha": "x"})
+    r = client.post("/entrar", data={"login": "x@x.org", "senha": "x"})
     assert r.status_code == 403
 
 
@@ -123,7 +140,7 @@ def test_fluxo_completo_estudante_agenda_e_voluntario_registra_presenca(app, cli
     client.post("/sair", data={"csrf_token": csrf(client, "/minhas-monitorias")})
     assert entrar(client, vol_email, "voluntario123").status_code == 303
     r = client.get("/voluntario")
-    assert "Ana Teste" in r.text
+    assert "ana.teste" in r.text  # o voluntário vê o apelido, nunca nome
     token = csrf(client, "/voluntario")
 
     # Presença ainda não liberada (monitoria é em mais de 1 hora)
@@ -165,13 +182,7 @@ def test_agendar_exige_login_de_estudante(app, client):
 
 
 def test_voluntario_cria_horario(app, client):
-    token = csrf(client, "/cadastro/voluntario")
-    r = client.post(
-        "/cadastro/voluntario",
-        data={"csrf_token": token, "nome": "Vol Novo", "email": "vol.novo@exemplo.org", "senha": "senha-forte-123", "formacao": "Licenciatura"},
-        follow_redirects=False,
-    )
-    assert r.status_code == 303
+    cadastrar_voluntario(client, app)
     amanha = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     token = csrf(client, "/voluntario")
     r = client.post(
@@ -222,9 +233,9 @@ def test_pipeline_de_dados_encontra_escolas_do_seed_pelo_codigo_inep(app, client
 
 
 def test_senha_guardada_com_hash(app, client):
-    cadastrar_estudante(client, email="hash@exemplo.org")
+    cadastrar_estudante(client, apelido="hash.teste")
     with app.state.SessionLocal() as db:
-        u = db.query(Usuario).filter_by(email="hash@exemplo.org").one()
+        u = db.query(Usuario).filter_by(apelido="hash.teste").one()
         assert "senha-forte-123" not in u.senha_hash
 
 

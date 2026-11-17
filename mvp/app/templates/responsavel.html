@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titulo %}Autorização do responsável · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<section class="estreito texto">
+  {% if invalido %}
+  <h1>Link inválido ou vencido</h1>
+  <p>Este link já foi usado, venceu (vale 30 dias) ou foi trocado por um mais novo. Peça ao estudante para gerar outro em "Minha conta".</p>
+  {% elif concluido == 'autorizado' %}
+  <h1>Obrigado! Cadastro autorizado.</h1>
+  <p>O estudante já pode agendar monitorias gratuitas. Você pode pedir a qualquer momento que os dados sejam apagados, e o próprio estudante também consegue apagar a conta em "Minha conta".</p>
+  {% elif concluido == 'negado' %}
+  <h1>Cadastro não autorizado</h1>
+  <p>Tudo bem. O cadastro e os dados do estudante foram <strong>apagados</strong> agora mesmo.</p>
+  {% else %}
+  <h1>Autorizar o cadastro de um estudante</h1>
+  <p class="lead">O estudante <strong>{{ estudante.apelido }}</strong> ({{ estudante.ano_escolar }}{% if estudante.escola %}, {{ estudante.escola.nome }}{% endif %}) se cadastrou no <strong>Apoio Escolar Periférico</strong> e indicou você como responsável.</p>
+  <h2>O que é</h2>
+  <p>Reforço escolar <strong>gratuito</strong> com monitores voluntários, para estudantes de escolas públicas. O estudante escolhe a matéria, agenda um horário e tira dúvidas com o monitor, online ou na escola.</p>
+  <h2>O que guardamos</h2>
+  <ul>
+    <li>Apelido, ano escolar, faixa de idade, escola e, se ele informou, bairro e CEP. <strong>Não</strong> pedimos nome completo, CPF, telefone, endereço, data de nascimento nem foto.</li>
+    <li>Os horários agendados, a presença e a dúvida que ele escreve para o monitor.</li>
+    <li>O seu e-mail, só para registrar quem autorizou e para falarmos com você se preciso. Ele fica <strong>cifrado</strong> e não é mostrado a ninguém na plataforma.</li>
+  </ul>
+  <p>O monitor vê só o apelido, o ano escolar e a dúvida. Patrocinadores veem só números agregados. Detalhes no <a href="/privacidade" target="_blank" rel="noopener">Aviso de Privacidade</a> (versão {{ aviso_versao }}).</p>
+
+  {% if erro %}<p class="alerta" role="alert">{{ erro }}</p>{% endif %}
+  <form method="post" action="/responsavel/{{ token }}" class="form cartao">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label for="email_responsavel">Seu e-mail</label>
+    <input id="email_responsavel" name="email_responsavel" type="email" maxlength="200" autocomplete="email">
+    <div class="check">
+      <input id="declaro" name="declaro" type="checkbox">
+      <label for="declaro">Sou mãe, pai ou responsável legal por este estudante e autorizo o cadastro.</label>
+    </div>
+    <div class="acoes">
+      <button class="botao" type="submit" name="decisao" value="autorizar">Autorizar</button>
+      <button class="botao botao-sec" type="submit" name="decisao" value="negar" formnovalidate>Não autorizar e apagar o cadastro</button>
+    </div>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

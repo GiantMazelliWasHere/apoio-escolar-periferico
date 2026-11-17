@@ -7,8 +7,8 @@
   <form method="post" action="/entrar" class="form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <input type="hidden" name="proximo" value="{{ proximo }}">
-    <label for="email">E-mail</label>
-    <input id="email" name="email" type="email" autocomplete="email" required>
+    <label for="login">Apelido (estudante) ou e-mail (voluntário e coordenação)</label>
+    <input id="login" name="login" autocomplete="username" autocapitalize="none" required>
     <label for="senha">Senha</label>
     <input id="senha" name="senha" type="password" autocomplete="current-password" required>
     <button class="botao" type="submit">Entrar</button>
@@ -17,9 +17,9 @@
   <details class="cartao">
     <summary>Contas de demonstração (para avaliadores)</summary>
     <ul>
-      <li>Estudante: <code>estudante.demo@exemplo.org</code> / <code>estudante123</code></li>
+      <li>Estudante: <code>estudante.demo</code> / <code>estudante123</code></li>
       <li>Voluntário: <code>voluntario1@exemplo.org</code> / <code>voluntario123</code></li>
-      <li>Coordenação: <code>coordenacao.demo@exemplo.org</code> / <code>coordenacao123</code></li>
+      <li>Coordenação: <code>coordenacao.demo@exemplo.org</code> / <code>coordenacao123</code> (aprova o voluntário <code>voluntario5@exemplo.org</code>, que está em análise)</li>
     </ul>
   </details>
 </section>

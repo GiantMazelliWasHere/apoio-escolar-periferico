@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}Autorização do responsável · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<section class="estreito">
+  {% if novo_cadastro %}<p class="sucesso" role="status">Conta criada! Falta só um passo.</p>{% endif %}
+  <h1>Peça a autorização do seu responsável</h1>
+  <p class="lead">Como você tem menos de 18 anos, a lei (LGPD, art. 14) pede que mãe, pai ou responsável autorize o seu cadastro. Até lá, você pode ver as monitorias, mas ainda não consegue agendar.</p>
+
+  {% if link %}
+  {% set mensagem = "Oi! Me cadastrei no Apoio Escolar Periférico, um reforço escolar gratuito com monitores voluntários. Preciso que você autorize o meu cadastro neste link (vale uma vez só): " ~ link %}
+  <div class="cartao destaque">
+    <p><strong>Mande este link para o seu responsável:</strong></p>
+    <p class="link-responsavel"><code id="link-responsavel">{{ link }}</code></p>
+    <div class="acoes">
+      <a class="botao" href="https://wa.me/?text={{ mensagem | urlencode }}" target="_blank" rel="noopener noreferrer">Enviar pelo WhatsApp</a>
+      <button class="botao botao-sec" type="button" id="copiar-link" data-link="{{ link }}">Copiar link</button>
+    </div>
+    <p id="copiar-status" class="ajuda" role="status" aria-live="polite"></p>
+  </div>
+  <p class="ajuda">O link funciona uma vez só e vale até {{ usuario.consentimento_expira_em.strftime('%d/%m/%Y') if usuario.consentimento_expira_em else '30 dias após o cadastro' }}. Por segurança, não guardamos o link: se perder, gere outro em <a href="/minha-conta">Minha conta</a> (o anterior para de funcionar). Sem autorização em 30 dias, o cadastro é apagado automaticamente.</p>
+  {% else %}
+  <p>Perdeu o link ou ele não chegou? Gere um novo. O link anterior deixa de funcionar.</p>
+  <form method="post" action="/minha-conta/responsavel">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <button class="botao" type="submit">Gerar novo link para o responsável</button>
+  </form>
+  {% endif %}
+  <p><a href="/monitorias">Ver monitorias</a></p>
+</section>
+<script src="{{ url_for('static', path='responsavel.js') }}" defer></script>
+{% endblock %}

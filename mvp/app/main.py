@@ -3,19 +3,23 @@
 Fluxo central: cadastro do estudante → busca de monitoria por matéria →
 agendamento → voluntário registra presença → painel de impacto.
 """
+import asyncio
 import csv
 import hashlib
 import io
+import logging
 import re
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel, Field, field_validator
-from sqlalchemy import select
+from pydantic import BaseModel, Field, ValidationError, field_validator
+from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session, selectinload
 from starlette.middleware.sessions import SessionMiddleware
 
@@ -23,8 +27,37 @@ from .assistente import FAQ, MAX_PERGUNTA, NOME_ASSISTENTE, Assistente, LimiteEx
 from .config import Settings
 from .db import Base, adicionar_colunas_novas, get_db, make_sessionmaker
 from .kpis import calcular_impacto
+from .lgpd import (
+    AVISO_DATA,
+    AVISO_VERSAO,
+    Cifra,
+    apagar_usuario,
+    apelido_valido,
+    auditar,
+    autorizar,
+    buscar_por_token,
+    configurar_auditoria,
+    exportar_dados,
+    expurgar_pendentes,
+    gerar_link_responsavel,
+    normalizar_apelido,
+)
 from .maker import ORIGEM_MAKER, ORIGENS_VALIDAS, PECA, qr_svg, url_do_qr
-from .models import ANOS_ESCOLARES, MATERIAS, TURNOS, Agendamento, Escola, Horario, Usuario
+from .models import (
+    ANOS_ESCOLARES,
+    CONSENTIMENTO_NAO_EXIGIDO,
+    CONSENTIMENTO_PENDENTE,
+    FAIXA_MAIOR,
+    FAIXAS_IDADE,
+    MATERIAS,
+    ORIGEM_RPA,
+    TURNOS,
+    Agendamento,
+    Escola,
+    Horario,
+    Usuario,
+)
+from .protecao import CabecalhosSeguranca, LimiteTentativas, limitar
 from .security import (
     LoginNecessario,
     csrf_header,
@@ -38,12 +71,16 @@ from .security import (
     verificar_senha,
 )
 from .seed import seed_demo
+from .telemetria import configurar_telemetria
 from .visao import MAX_BYTES, TIPOS_ACEITOS, ArquivoInvalido, LeitorEndereco, criar_ocr_easyocr
 from .visao import LimiteExcedido as LimiteVisao
 
 BASE_DIR = Path(__file__).parent
+log = logging.getLogger("apoio")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
+INTERVALO_EXPURGO_S = 60 * 60  # verifica cadastros sem autorização a cada hora
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 JANELA_PRESENCA = timedelta(hours=1)  # presença só perto do horário: evita inflar indicadores
 STATUS_LABEL = {"agendado": "Agendada", "realizado": "Realizada", "faltou": "Falta", "cancelado": "Cancelada"}
 DIAS = ["segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo"]
@@ -88,6 +125,38 @@ class PrioridadeEscola(BaseModel):
     indice_prioridade: float | None = None
 
 
+# RPA → núcleo: voluntários credenciados no SICREV pelo robô (contrato em docs/INTEGRACAO.md).
+APELIDO_RPA_RE = re.compile(r"^[A-Za-z0-9_.-]{3,30}$")
+MAX_LOTE_RPA = 500
+
+
+class VoluntarioRPA(BaseModel):
+    """Mínimo necessário (LGPD): sem CPF, nome ou telefone. Campo extra é recusado."""
+
+    model_config = {"extra": "forbid"}
+
+    apelido: str = Field(max_length=30)
+    email: str = Field(max_length=200)
+    bairro: str = Field(default="", max_length=120)
+    aceita_boletim: bool = False
+
+    @field_validator("apelido")
+    @classmethod
+    def _apelido(cls, v: str) -> str:
+        v = v.strip()
+        if not APELIDO_RPA_RE.fullmatch(v):
+            raise ValueError("apelido inválido (3 a 30 caracteres: letras, números, _ . -)")
+        return v
+
+    @field_validator("email")
+    @classmethod
+    def _email(cls, v: str) -> str:
+        v = v.strip().lower()
+        if not EMAIL_RE.fullmatch(v):
+            raise ValueError("e-mail inválido")
+        return v
+
+
 class PerguntaAssistente(BaseModel):
     pergunta: str = Field(max_length=MAX_PERGUNTA)
 
@@ -116,10 +185,42 @@ def normalizar_cep(cep: str) -> str | None:
     return f"{digitos[:5]}-{digitos[5:]}"
 
 
+def rodar_expurgo(app: FastAPI) -> int:
+    with app.state.SessionLocal() as db:
+        return expurgar_pendentes(db)
+
+
+async def _expurgo_periodico(app: FastAPI) -> None:
+    while True:
+        await asyncio.sleep(INTERVALO_EXPURGO_S)
+        try:
+            await run_in_threadpool(rodar_expurgo, app)
+        except Exception:
+            log.exception("Falha no expurgo periódico")
+
+
+@asynccontextmanager
+async def ciclo_de_vida(app: FastAPI):
+    tarefa = asyncio.create_task(_expurgo_periodico(app))
+    try:
+        yield
+    finally:
+        tarefa.cancel()
+
+
 def create_app(database_url: str | None = None, seed: bool | None = None) -> FastAPI:
     settings = Settings()
-    app = FastAPI(title="Apoio Escolar Periférico — MVP", docs_url="/api/docs", redoc_url=None)
+    app = FastAPI(title="Apoio Escolar Periférico — MVP", docs_url="/api/docs", redoc_url=None, lifespan=ciclo_de_vida)
     app.state.settings = settings
+    configurar_telemetria(app)
+    configurar_auditoria(settings.secret_key)
+    app.state.cifra = Cifra(settings.fernet_key or Cifra.chave_de_desenvolvimento(settings.secret_key))
+    # Login: 10 tentativas por IP a cada 5 min; cadastros e link do responsável: limites por hora.
+    app.state.limites = {
+        "login": LimiteTentativas(10, 5 * 60),
+        "cadastro": LimiteTentativas(10, 60 * 60),
+        "responsavel": LimiteTentativas(20, 60 * 60),
+    }
     app.state.SessionLocal = make_sessionmaker(database_url or settings.database_url)
 
     app.state.assistente = Assistente(
@@ -134,6 +235,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     if settings.seed_demo if seed is None else seed:
         with app.state.SessionLocal() as db:
             seed_demo(db)
+    rodar_expurgo(app)  # cadastros vencidos enquanto o app estava parado
 
     app.add_middleware(
         SessionMiddleware,
@@ -143,10 +245,11 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         https_only=settings.https_only_cookies,
         max_age=60 * 60 * 8,
     )
+    app.add_middleware(CabecalhosSeguranca, hsts=settings.env == "production")
     app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
     def render(request: Request, nome: str, usuario: Usuario | None, status_code: int = 200, **ctx) -> HTMLResponse:
-        ctx.update(usuario=usuario, csrf_token=csrf_token(request), demo=True)
+        ctx.update(usuario=usuario, csrf_token=csrf_token(request), demo=True, aviso_versao=AVISO_VERSAO, aviso_data=AVISO_DATA)
         return templates.TemplateResponse(request, nome, ctx, status_code=status_code)
 
     @app.exception_handler(LoginNecessario)
@@ -165,11 +268,18 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
 
     @app.get("/health")
     def health():
-        return {"status": "ok"}
+        """Sondado pelo App Service (Health check) e pelo smoke test do deploy: testa o banco e informa a versão."""
+        try:
+            with app.state.SessionLocal() as db:
+                db.execute(text("SELECT 1"))
+        except Exception:
+            log.exception("Health check: banco indisponível")
+            return JSONResponse({"status": "erro", "banco": "erro", "versao": settings.versao}, status_code=503)
+        return {"status": "ok", "banco": "ok", "versao": settings.versao}
 
     @app.get("/", response_class=HTMLResponse)
-    def inicio(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
-        return render(request, "index.html", usuario, materias=MATERIAS, veio_da_peca=request.session.get("origem") in ORIGENS_VALIDAS)
+    def inicio(request: Request, conta_apagada: int = 0, usuario: Usuario | None = Depends(usuario_atual)):
+        return render(request, "index.html", usuario, materias=MATERIAS, veio_da_peca=request.session.get("origem") in ORIGENS_VALIDAS, conta_apagada=conta_apagada)
 
     # ---------- Maker Lab: QR code da peça física ----------
 
@@ -202,7 +312,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
 
     @app.get("/privacidade", response_class=HTMLResponse)
     def privacidade(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
-        return render(request, "privacidade.html", usuario)
+        return render(request, "privacidade.html", usuario, regiao=settings.regiao)
 
     @app.get("/ajuda", response_class=HTMLResponse)
     def ajuda(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
@@ -214,11 +324,14 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     def entrar_form(request: Request, proximo: str = "", usuario: Usuario | None = Depends(usuario_atual)):
         return render(request, "entrar.html", usuario, proximo=proximo)
 
-    @app.post("/entrar", dependencies=[Depends(csrf_protect)])
-    def entrar(request: Request, email: str = Form(...), senha: str = Form(...), proximo: str = Form(""), db: Session = Depends(get_db)):
-        u = db.scalar(select(Usuario).where(Usuario.email == email.strip().lower()))
+    @app.post("/entrar", dependencies=[Depends(csrf_protect), Depends(limitar("login"))])
+    def entrar(request: Request, login: str = Form(...), senha: str = Form(...), proximo: str = Form(""), db: Session = Depends(get_db)):
+        """Estudante entra com o apelido; voluntário e coordenação, com o e-mail."""
+        login = login.strip().lower()
+        campo = Usuario.email if "@" in login else Usuario.apelido
+        u = db.scalar(select(Usuario).where(campo == login))
         if u is None or not verificar_senha(senha, u.senha_hash):
-            return render(request, "entrar.html", None, status_code=400, erro="E-mail ou senha incorretos.", proximo=proximo)
+            return render(request, "entrar.html", None, status_code=400, erro="Apelido/e-mail ou senha incorretos.", proximo=proximo)
         entrar_na_sessao(request, u)
         destino = proximo if proximo.startswith("/") and not proximo.startswith("//") else destino_do_papel(u)
         return redirect(destino)
@@ -231,82 +344,200 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     @app.get("/cadastro/estudante", response_class=HTMLResponse)
     def cadastro_estudante_form(request: Request, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
         escolas = db.scalars(select(Escola).order_by(Escola.nome)).all()
-        return render(request, "cadastro_estudante.html", usuario, escolas=escolas, anos=ANOS_ESCOLARES, form={}, visao_ativa=request.app.state.visao.ativo)
+        return render(request, "cadastro_estudante.html", usuario, escolas=escolas, anos=ANOS_ESCOLARES, faixas=FAIXAS_IDADE, form={}, visao_ativa=request.app.state.visao.ativo)
 
-    @app.post("/cadastro/estudante", dependencies=[Depends(csrf_protect)])
+    @app.post("/cadastro/estudante", dependencies=[Depends(csrf_protect), Depends(limitar("cadastro"))])
     def cadastro_estudante(
         request: Request,
-        nome: str = Form(...),
-        email: str = Form(...),
+        apelido: str = Form(...),
         senha: str = Form(...),
         escola_id: int = Form(...),
         ano_escolar: str = Form(...),
+        faixa_idade: str = Form(...),
         bairro: str = Form(""),
         cep: str = Form(""),
-        consentimento: str | None = Form(None),
+        aceite_aviso: str | None = Form(None),
         db: Session = Depends(get_db),
     ):
-        email = email.strip().lower()
-        form = {"nome": nome, "email": email, "escola_id": escola_id, "ano_escolar": ano_escolar, "bairro": bairro, "cep": cep}
+        apelido = normalizar_apelido(apelido)
+        form = {"apelido": apelido, "escola_id": escola_id, "ano_escolar": ano_escolar, "faixa_idade": faixa_idade, "bairro": bairro, "cep": cep}
         erro = None
         try:
             cep_ok = normalizar_cep(cep)
         except ValueError:
             cep_ok = None
-        if not consentimento:
-            erro = "Para menores de 18 anos, precisamos do consentimento do responsável. Marque a caixa de consentimento."
+        if not apelido_valido(apelido):
+            erro = "O apelido precisa ter de 3 a 20 caracteres: letras sem acento, números, ponto, hífen ou _. Não use seu nome completo."
         elif len(senha) < 8:
             erro = "A senha precisa ter pelo menos 8 caracteres."
-        elif db.scalar(select(Usuario).where(Usuario.email == email)):
-            erro = "Este e-mail já tem cadastro. Use \"Entrar\"."
-        elif db.get(Escola, escola_id) is None or ano_escolar not in ANOS_ESCOLARES:
-            erro = "Escolha a escola e o ano escolar da lista."
+        elif db.scalar(select(Usuario).where(Usuario.apelido == apelido)):
+            erro = "Este apelido já está em uso. Escolha outro."
+        elif db.get(Escola, escola_id) is None or ano_escolar not in ANOS_ESCOLARES or faixa_idade not in FAIXAS_IDADE:
+            erro = "Escolha a escola, o ano escolar e a faixa de idade da lista."
         elif cep.strip() and cep_ok is None:
             erro = "O CEP precisa ter 8 números (ex.: 08250-000). Se não souber, deixe em branco."
+        elif not aceite_aviso:
+            erro = "Para criar a conta, leia e aceite o Aviso de Privacidade."
         if erro:
             escolas = db.scalars(select(Escola).order_by(Escola.nome)).all()
-            return render(request, "cadastro_estudante.html", None, status_code=400, erro=erro, escolas=escolas, anos=ANOS_ESCOLARES, form=form, visao_ativa=request.app.state.visao.ativo)
+            return render(request, "cadastro_estudante.html", None, status_code=400, erro=erro, escolas=escolas, anos=ANOS_ESCOLARES, faixas=FAIXAS_IDADE, form=form, visao_ativa=request.app.state.visao.ativo)
+        agora = datetime.now()
+        menor = faixa_idade != FAIXA_MAIOR
         u = Usuario(
-            nome=nome.strip(),
-            email=email,
+            apelido=apelido,
             senha_hash=hash_senha(senha),
             papel="estudante",
+            faixa_idade=faixa_idade,
             escola_id=escola_id,
             ano_escolar=ano_escolar,
             bairro=bairro.strip()[:120] or None,
             cep=cep_ok,
-            consentimento_responsavel=True,
-            consentimento_em=datetime.now(),
+            consentimento_status=CONSENTIMENTO_PENDENTE if menor else CONSENTIMENTO_NAO_EXIGIDO,
+            aviso_versao=AVISO_VERSAO,
+            aviso_aceito_em=agora,
             origem=origem_da_sessao(request),
+            criado_em=agora,
         )
+        token = gerar_link_responsavel(u, agora) if menor else None
         db.add(u)
+        db.flush()
+        auditar(db, "cadastro_estudante", u)
         db.commit()
         entrar_na_sessao(request, u)
+        if token:
+            return render(request, "link_responsavel.html", u, link=link_responsavel(request, token), novo_cadastro=True)
         return redirect("/monitorias?bemvindo=1")
+
+    def link_responsavel(request: Request, token: str) -> str:
+        base = request.app.state.settings.public_url or str(request.base_url).rstrip("/")
+        return f"{base}/responsavel/{token}"
+
+    @app.get("/minha-conta/responsavel", response_class=HTMLResponse)
+    def link_responsavel_form(request: Request, usuario: Usuario = Depends(exigir_papel("estudante"))):
+        if usuario.consentimento_status != CONSENTIMENTO_PENDENTE:
+            return redirect("/minha-conta")
+        return render(request, "link_responsavel.html", usuario, link=None)
+
+    @app.post("/minha-conta/responsavel", dependencies=[Depends(csrf_protect)])
+    def novo_link_responsavel(request: Request, db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("estudante"))):
+        """Gera um link novo (o anterior deixa de valer). O prazo de 30 dias continua contando do cadastro."""
+        if usuario.consentimento_status != CONSENTIMENTO_PENDENTE:
+            return redirect("/minha-conta")
+        token = gerar_link_responsavel(usuario)
+        auditar(db, "link_responsavel_gerado", usuario)
+        db.commit()
+        return render(request, "link_responsavel.html", usuario, link=link_responsavel(request, token))
+
+    # ---------- Responsável (sem login: o link de uso único é a credencial) ----------
+
+    @app.get("/responsavel/{token}", response_class=HTMLResponse, dependencies=[Depends(limitar("responsavel"))])
+    def responsavel_form(request: Request, token: str, db: Session = Depends(get_db)):
+        u = buscar_por_token(db, token)
+        if u is None:
+            return render(request, "responsavel.html", None, status_code=404, invalido=True)
+        return render(request, "responsavel.html", None, estudante=u, token=token)
+
+    @app.post("/responsavel/{token}", dependencies=[Depends(csrf_protect), Depends(limitar("responsavel"))])
+    def responsavel_decidir(
+        request: Request,
+        token: str,
+        decisao: str = Form(...),
+        email_responsavel: str = Form(""),
+        declaro: str | None = Form(None),
+        db: Session = Depends(get_db),
+    ):
+        u = buscar_por_token(db, token)
+        if u is None:
+            return render(request, "responsavel.html", None, status_code=404, invalido=True)
+        if decisao == "negar":
+            apagar_usuario(db, u)
+            auditar(db, "consentimento_negado_cadastro_apagado")
+            db.commit()
+            return render(request, "responsavel.html", None, concluido="negado")
+        if decisao != "autorizar":
+            raise HTTPException(400, "Escolha autorizar ou não autorizar.")
+        email_responsavel = email_responsavel.strip()
+        if not EMAIL_RE.fullmatch(email_responsavel) or len(email_responsavel) > 200 or not declaro:
+            return render(
+                request, "responsavel.html", None, status_code=400, estudante=u, token=token,
+                erro="Informe um e-mail válido e confirme que você é o responsável legal.",
+            )
+        autorizar(db, u, email_responsavel, request.app.state.cifra)
+        auditar(db, "consentimento_autorizado", u)
+        db.commit()
+        return render(request, "responsavel.html", None, concluido="autorizado")
+
+    # ---------- Minha conta: direitos do titular (LGPD art. 18) ----------
+
+    @app.get("/minha-conta", response_class=HTMLResponse)
+    def minha_conta(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
+        if usuario is None:
+            raise LoginNecessario("/minha-conta")
+        return render(request, "minha_conta.html", usuario, faixa_maior=FAIXA_MAIOR)
+
+    @app.get("/minha-conta/dados.json")
+    def meus_dados(request: Request, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
+        if usuario is None:
+            raise LoginNecessario("/minha-conta")
+        dados = exportar_dados(db, usuario, request.app.state.cifra)
+        auditar(db, "dados_exportados", usuario)
+        db.commit()
+        return JSONResponse(dados, headers={"Content-Disposition": 'attachment; filename="meus-dados-apoio-escolar.json"', "Cache-Control": "no-store"})
+
+    @app.post("/minha-conta/apagar", dependencies=[Depends(csrf_protect)])
+    def apagar_conta(request: Request, senha: str = Form(...), db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
+        if usuario is None:
+            raise LoginNecessario("/minha-conta")
+        if usuario.papel == "coordenacao":
+            raise HTTPException(400, "Conta da coordenação é removida pela equipe do projeto.")
+        if not verificar_senha(senha, usuario.senha_hash):
+            return render(request, "minha_conta.html", usuario, status_code=400, faixa_maior=FAIXA_MAIOR, erro="Senha incorreta. A conta não foi apagada.")
+        auditar(db, "conta_apagada_pelo_titular", usuario)
+        apagar_usuario(db, usuario)
+        db.commit()
+        request.session.clear()
+        return redirect("/?conta_apagada=1")
 
     @app.get("/cadastro/voluntario", response_class=HTMLResponse)
     def cadastro_voluntario_form(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
         return render(request, "cadastro_voluntario.html", usuario, form={})
 
-    @app.post("/cadastro/voluntario", dependencies=[Depends(csrf_protect)])
+    @app.post("/cadastro/voluntario", dependencies=[Depends(csrf_protect), Depends(limitar("cadastro"))])
     def cadastro_voluntario(
         request: Request,
         nome: str = Form(...),
         email: str = Form(...),
         senha: str = Form(...),
         formacao: str = Form(""),
+        aceite_aviso: str | None = Form(None),
         db: Session = Depends(get_db),
     ):
         email = email.strip().lower()
         erro = None
-        if len(senha) < 8:
+        if not nome.strip() or not EMAIL_RE.fullmatch(email):
+            erro = "Informe seu nome e um e-mail válido."
+        elif len(senha) < 8:
             erro = "A senha precisa ter pelo menos 8 caracteres."
         elif db.scalar(select(Usuario).where(Usuario.email == email)):
             erro = "Este e-mail já tem cadastro. Use \"Entrar\"."
+        elif not aceite_aviso:
+            erro = "Para criar a conta, leia e aceite o Aviso de Privacidade."
         if erro:
             return render(request, "cadastro_voluntario.html", None, status_code=400, erro=erro, form={"nome": nome, "email": email, "formacao": formacao})
-        u = Usuario(nome=nome.strip(), email=email, senha_hash=hash_senha(senha), papel="voluntario", formacao=formacao.strip() or None, origem=origem_da_sessao(request))
+        u = Usuario(
+            nome=nome.strip()[:120],
+            email=email,
+            senha_hash=hash_senha(senha),
+            papel="voluntario",
+            formacao=formacao.strip()[:200] or None,
+            origem=origem_da_sessao(request),
+            aprovado=False,  # a coordenação aprova antes de o voluntário ver estudantes
+            aviso_versao=AVISO_VERSAO,
+            aviso_aceito_em=datetime.now(),
+        )
         db.add(u)
+        db.flush()
+        auditar(db, "cadastro_voluntario", u)
         db.commit()
         entrar_na_sessao(request, u)
         return redirect("/voluntario?bemvindo=1")
@@ -344,6 +575,8 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         db: Session = Depends(get_db),
         usuario: Usuario = Depends(exigir_papel("estudante")),
     ):
+        if not usuario.pode_agendar:
+            raise HTTPException(403, "Sua conta está esperando a autorização do seu responsável. Envie o link em \"Minha conta\".")
         h = db.get(Horario, horario_id)
         if h is None or h.inicio <= datetime.now():
             raise HTTPException(404, "Este horário não está mais disponível.")
@@ -427,10 +660,12 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
     ):
         """Cria um horário único (sem dias marcados) ou uma grade semanal:
         os dias da semana marcados, a partir da data informada, por N semanas."""
+        if not usuario.aprovado:
+            raise HTTPException(403, "Seu cadastro ainda está em análise pela coordenação.")
         try:
             primeiro = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
         except ValueError:
-            raise HTTPException(400, "Data ou hora inválida.")
+            raise HTTPException(400, "Data ou hora inválida.") from None
         if materia not in MATERIAS or modalidade not in ("online", "presencial"):
             raise HTTPException(400, "Matéria ou modalidade inválida.")
         if any(d not in range(7) for d in dias):
@@ -503,7 +738,37 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         escolas = db.scalars(select(Escola).order_by(Escola.indice_prioridade.desc().nulls_last(), Escola.nome)).all()
         return render(request, "impacto.html", usuario, k=calcular_impacto(db), escolas=escolas)
 
+    # ---------- Coordenação: aprovação de voluntários ----------
+
+    @app.get("/coordenacao/voluntarios", response_class=HTMLResponse)
+    def coord_voluntarios(request: Request, db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("coordenacao"))):
+        pendentes = db.scalars(select(Usuario).where(Usuario.papel == "voluntario", Usuario.aprovado.is_(False)).order_by(Usuario.criado_em)).all()
+        aprovados = db.scalar(select(func.count()).select_from(Usuario).where(Usuario.papel == "voluntario", Usuario.aprovado.is_(True))) or 0
+        return render(request, "coordenacao_voluntarios.html", usuario, pendentes=pendentes, aprovados=aprovados)
+
+    @app.post("/coordenacao/voluntarios/{vid}", dependencies=[Depends(csrf_protect)])
+    def coord_decidir(vid: int, decisao: str = Form(...), db: Session = Depends(get_db), usuario: Usuario = Depends(exigir_papel("coordenacao"))):
+        v = db.get(Usuario, vid)
+        if v is None or v.papel != "voluntario" or v.aprovado:
+            raise HTTPException(404, "Cadastro não encontrado.")
+        if decisao == "aprovar":
+            v.aprovado = True
+            auditar(db, "voluntario_aprovado", usuario)
+        elif decisao == "recusar":
+            apagar_usuario(db, v)
+            auditar(db, "voluntario_recusado", usuario)
+        else:
+            raise HTTPException(400, "Decisão inválida.")
+        db.commit()
+        return redirect("/coordenacao/voluntarios")
+
     # ---------- API de integração ----------
+
+    @app.post("/api/v1/manutencao/expurgo", dependencies=[Depends(exigir_api_key)])
+    def api_expurgo():
+        """Apaga agora os cadastros de menores sem autorização do responsável há mais de 30 dias
+        (o app também faz isso sozinho na subida e a cada hora)."""
+        return {"apagados": rodar_expurgo(app)}
 
     @app.post("/api/v1/assistente", dependencies=[Depends(csrf_header)])
     def api_assistente(dados: PerguntaAssistente, request: Request):
@@ -515,7 +780,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         try:
             assistente.registrar_uso(request.client.host if request.client else "desconhecido")
         except LimiteExcedido:
-            raise HTTPException(429, "Muitas perguntas em pouco tempo. Espere um minuto e tente de novo.")
+            raise HTTPException(429, "Muitas perguntas em pouco tempo. Espere um minuto e tente de novo.") from None
         return assistente.responder(dados.pergunta)
 
     @app.post("/api/v1/visao/endereco", dependencies=[Depends(csrf_header)])
@@ -534,11 +799,11 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
         try:
             leitor.registrar_uso(request.client.host if request.client else "desconhecido")
         except LimiteVisao:
-            raise HTTPException(429, "Muitas leituras em pouco tempo. Espere um minuto ou digite o bairro e o CEP.")
+            raise HTTPException(429, "Muitas leituras em pouco tempo. Espere um minuto ou digite o bairro e o CEP.") from None
         try:
             return leitor.ler(dados)
         except ArquivoInvalido as e:
-            raise HTTPException(422, str(e))
+            raise HTTPException(422, str(e)) from e
         finally:
             del dados
 
@@ -581,6 +846,65 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
             atualizadas += 1
         db.commit()
         return {"atualizadas": atualizadas}
+
+    @app.post("/api/v1/integracao/voluntarios", status_code=201, dependencies=[Depends(exigir_api_key)])
+    def api_voluntarios_rpa(itens: list[object], db: Session = Depends(get_db)):
+        """Contrato para o robô de RPA (UiPath) devolver os voluntários credenciados no SICREV.
+
+        Cada voluntário entra como pendente de aprovação (`aprovado = False`) e a coordenação aprova
+        em `/coordenacao/voluntarios`. Idempotente: apelido ou e-mail já existente volta em
+        `rejeitados`, nada é duplicado. Um item inválido não derruba o lote.
+        """
+        if len(itens) > MAX_LOTE_RPA:
+            raise HTTPException(413, f"Lote acima de {MAX_LOTE_RPA} voluntários. Divida o envio.")
+        criados: list[str] = []
+        rejeitados: list[str] = []
+        motivos: dict[str, str] = {}
+        vistos: set[str] = set()
+
+        def rejeitar(rotulo: str, motivo: str) -> None:
+            rejeitados.append(rotulo)
+            motivos[rotulo] = motivo
+
+        for i, bruto in enumerate(itens):
+            rotulo = str(bruto.get("apelido", "")).strip()[:30] if isinstance(bruto, dict) else ""
+            rotulo = rotulo or f"item_{i}"
+            try:
+                v = VoluntarioRPA.model_validate(bruto)
+            except ValidationError as e:
+                campos = sorted({str(err["loc"][0]) for err in e.errors() if err["loc"]})
+                rejeitar(rotulo, "dados inválidos: " + ", ".join(campos) if campos else "dados inválidos")
+                continue
+            chave = v.apelido.lower()
+            if chave in vistos or v.email in vistos:
+                rejeitar(v.apelido, "repetido no lote")
+                continue
+            vistos.update({chave, v.email})
+            if db.scalar(select(Usuario.id).where(func.lower(Usuario.apelido) == chave)):
+                rejeitar(v.apelido, "apelido já cadastrado")
+                continue
+            if db.scalar(select(Usuario.id).where(Usuario.email == v.email)):
+                rejeitar(v.apelido, "e-mail já cadastrado")
+                continue
+            db.add(
+                Usuario(
+                    apelido=v.apelido,
+                    email=v.email,
+                    bairro=v.bairro.strip() or None,
+                    aceita_boletim=v.aceita_boletim,
+                    papel="voluntario",
+                    aprovado=False,
+                    origem=ORIGEM_RPA,
+                    # Sem senha utilizável: a conta só serve à coordenação até o voluntário definir a sua.
+                    senha_hash="!rpa",
+                )
+            )
+            criados.append(v.apelido)
+        if criados:
+            auditar(db, "voluntarios_rpa", None, quantidade=len(criados))
+        db.commit()
+        log.info("integracao RPA: enviados=%d criados=%d rejeitados=%d", len(itens), len(criados), len(rejeitados))
+        return {"criados": criados, "rejeitados": rejeitados, "motivos": motivos}
 
     @app.get("/api/v1/agendamentos.csv", dependencies=[Depends(exigir_api_key)])
     def api_agendamentos_csv(db: Session = Depends(get_db)):

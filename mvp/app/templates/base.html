@@ -21,13 +21,15 @@
           <li><a href="/monitorias">Monitorias</a></li>
           {% if usuario and usuario.papel == 'estudante' %}<li><a href="/minhas-monitorias">Minhas monitorias</a></li>{% endif %}
           {% if usuario and usuario.papel == 'voluntario' %}<li><a href="/voluntario">Meus horários</a></li>{% endif %}
+          {% if usuario and usuario.papel == 'coordenacao' %}<li><a href="/coordenacao/voluntarios">Voluntários</a></li>{% endif %}
           <li><a href="/impacto">Impacto</a></li>
           <li><a href="/ajuda">Ajuda</a></li>
           {% if usuario %}
+          <li><a href="/minha-conta">Minha conta</a></li>
           <li>
             <form method="post" action="/sair" class="inline">
               <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-              <button type="submit" class="link">Sair ({{ usuario.nome.split(' ')[0] }})</button>
+              <button type="submit" class="link">Sair ({{ usuario.exibicao }})</button>
             </form>
           </li>
           {% else %}

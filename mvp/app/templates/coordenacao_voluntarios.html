@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Aprovar voluntários · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Aprovar voluntários</h1>
+<p class="lead">Voluntários só publicam horários (e só veem estudantes) depois de aprovados. Confira os dados antes de aprovar. {{ aprovados }} voluntário{{ '' if aprovados == 1 else 's' }} aprovado{{ '' if aprovados == 1 else 's' }}.</p>
+{% if not pendentes %}
+<p class="cartao">Nenhum cadastro esperando aprovação.</p>
+{% endif %}
+<ul class="lista-horarios">
+  {% for v in pendentes %}
+  <li class="cartao">
+    <p class="horario-materia">{{ v.nome or v.apelido }}</p>
+    <p class="horario-quando">{{ v.email }}{% if v.bairro %} · {{ v.bairro }}{% endif %}{% if v.formacao %} · {{ v.formacao }}{% endif %} · cadastrado em {{ v.criado_em.strftime('%d/%m/%Y') }}</p>
+    {% if v.origem == 'rpa_sicrev' %}<p class="ajuda">Já credenciado no SICREV pelo robô de RPA{% if v.aceita_boletim %} · aceita receber o boletim{% endif %}.</p>{% endif %}
+    <form method="post" action="/coordenacao/voluntarios/{{ v.id }}" class="acoes">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button class="botao botao-pq" type="submit" name="decisao" value="aprovar">Aprovar</button>
+      <button class="botao botao-sec botao-pq" type="submit" name="decisao" value="recusar">Recusar e apagar cadastro</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block titulo %}Minha conta · Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<section class="estreito">
+  <h1>Minha conta</h1>
+  {% if erro %}<p class="alerta" role="alert">{{ erro }}</p>{% endif %}
+
+  {% if usuario.papel == 'estudante' and usuario.consentimento_status == 'pendente' %}
+  <div class="cartao aviso-pendente" role="status">
+    <p><strong>Esperando a autorização do seu responsável.</strong> Enquanto isso, você não consegue agendar.</p>
+    <a class="botao botao-pq" href="/minha-conta/responsavel">Mandar o link de novo</a>
+  </div>
+  {% endif %}
+  {% if usuario.papel == 'voluntario' and not usuario.aprovado %}
+  <p class="cartao aviso-pendente" role="status"><strong>Cadastro em análise pela coordenação.</strong> Assim que for aprovado, você pode publicar horários.</p>
+  {% endif %}
+
+  <h2>Seus dados</h2>
+  <dl class="dados">
+    {% if usuario.papel == 'estudante' %}
+    <dt>Apelido</dt><dd>{{ usuario.apelido }}</dd>
+    <dt>Escola</dt><dd>{{ usuario.escola.nome if usuario.escola else '—' }}</dd>
+    <dt>Ano escolar</dt><dd>{{ usuario.ano_escolar }}</dd>
+    <dt>Faixa de idade</dt><dd>{{ usuario.faixa_idade or '—' }}</dd>
+    <dt>Bairro e CEP</dt><dd>{{ usuario.bairro or '—' }} {{ usuario.cep or '' }}</dd>
+    <dt>Autorização do responsável</dt>
+    <dd>{% if usuario.consentimento_status == 'autorizado' %}Autorizado em {{ usuario.consentimento_em.strftime('%d/%m/%Y') }}{% elif usuario.consentimento_status == 'nao_exigido' %}Não é necessária (18 anos ou mais){% else %}Pendente{% endif %}</dd>
+    {% else %}
+    <dt>Nome</dt><dd>{{ usuario.nome }}</dd>
+    <dt>E-mail</dt><dd>{{ usuario.email }}</dd>
+    {% if usuario.formacao %}<dt>Formação</dt><dd>{{ usuario.formacao }}</dd>{% endif %}
+    {% endif %}
+    <dt>Aviso de Privacidade</dt><dd>{% if usuario.aviso_versao %}versão {{ usuario.aviso_versao }}, aceito em {{ usuario.aviso_aceito_em.strftime('%d/%m/%Y') }}{% else %}—{% endif %}</dd>
+  </dl>
+
+  <h2>Seus direitos (LGPD)</h2>
+  <div class="cartao">
+    <h3>Baixar meus dados</h3>
+    <p class="ajuda">Um arquivo com tudo o que a plataforma guarda sobre você: cadastro, agendamentos e dúvidas{% if usuario.papel == 'voluntario' %}, e os horários que você publicou{% endif %}.</p>
+    <a class="botao botao-sec" href="/minha-conta/dados.json" download>Baixar meus dados (JSON)</a>
+  </div>
+
+  {% if usuario.papel != 'coordenacao' %}
+  <div class="cartao">
+    <h3>Apagar minha conta</h3>
+    <p class="ajuda">Apaga de vez o seu cadastro e {% if usuario.papel == 'voluntario' %}os seus horários, com os agendamentos deles{% else %}os seus agendamentos{% endif %}. Não dá para desfazer.</p>
+    <form method="post" action="/minha-conta/apagar" class="form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label for="senha">Confirme com a sua senha</label>
+      <input id="senha" name="senha" type="password" required autocomplete="current-password">
+      <button class="botao botao-perigo" type="submit">Apagar minha conta</button>
+    </form>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
