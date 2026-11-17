@@ -3,6 +3,6 @@
 # O índice abaixo traz o PyTorch só para CPU (o do PyPI no Linux puxa as bibliotecas CUDA, vários GB).
 -r requirements.txt
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.15.0
+torch==2.15.0+cpu
 torchvision==0.29.2
 easyocr==1.7.2
