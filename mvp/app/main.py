@@ -23,6 +23,7 @@ from .assistente import FAQ, MAX_PERGUNTA, NOME_ASSISTENTE, Assistente, LimiteEx
 from .config import Settings
 from .db import Base, adicionar_colunas_novas, get_db, make_sessionmaker
 from .kpis import calcular_impacto
+from .maker import ORIGEM_MAKER, ORIGENS_VALIDAS, PECA, qr_svg, url_do_qr
 from .models import ANOS_ESCOLARES, MATERIAS, TURNOS, Agendamento, Escola, Horario, Usuario
 from .security import (
     LoginNecessario,
@@ -99,6 +100,12 @@ class PerguntaAssistente(BaseModel):
         return v
 
 
+def origem_da_sessao(request: Request) -> str | None:
+    """Canal de chegada marcado na sessão (ex.: QR code da peça do Maker Lab), se for um valor conhecido."""
+    origem = request.session.get("origem")
+    return origem if origem in ORIGENS_VALIDAS else None
+
+
 def normalizar_cep(cep: str) -> str | None:
     """"01234567", "01234-567" ou "01.234-567" → "01234-567". Vazio → None. Inválido → ValueError."""
     digitos = re.sub(r"\D", "", cep or "")
@@ -162,7 +169,36 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
 
     @app.get("/", response_class=HTMLResponse)
     def inicio(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
-        return render(request, "index.html", usuario, materias=MATERIAS)
+        return render(request, "index.html", usuario, materias=MATERIAS, veio_da_peca=request.session.get("origem") in ORIGENS_VALIDAS)
+
+    # ---------- Maker Lab: QR code da peça física ----------
+
+    def base_publica(request: Request) -> str:
+        return request.app.state.settings.public_url or str(request.base_url).rstrip("/")
+
+    @app.get("/qr")
+    def qr_da_peca(request: Request):
+        """Destino do QR code do suporte de tablet. Marca a origem na sessão e leva ao início."""
+        if "uid" not in request.session:
+            request.session["origem"] = ORIGEM_MAKER
+        return redirect("/")
+
+    @app.get("/maker", response_class=HTMLResponse)
+    def pagina_maker(request: Request, db: Session = Depends(get_db), usuario: Usuario | None = Depends(usuario_atual)):
+        destino = url_do_qr(base_publica(request))
+        k = calcular_impacto(db)
+        return render(request, "maker.html", usuario, peca=PECA, destino=destino, qr=qr_svg(destino), cadastros=k["cadastros_via_peca_maker"])
+
+    @app.get("/maker/qrcode.svg")
+    def qrcode_svg(request: Request, tamanho_mm: int = 40):
+        """QR vetorial no tamanho da etiqueta (padrão 40 mm), para imprimir ou gravar a laser."""
+        tamanho_mm = min(max(tamanho_mm, 15), 200)
+        svg = qr_svg(url_do_qr(base_publica(request)), tamanho_mm=tamanho_mm)
+        return PlainTextResponse(
+            svg,
+            media_type="image/svg+xml",
+            headers={"Content-Disposition": 'inline; filename="qrcode_suporte_tablet.svg"'},
+        )
 
     @app.get("/privacidade", response_class=HTMLResponse)
     def privacidade(request: Request, usuario: Usuario | None = Depends(usuario_atual)):
@@ -241,6 +277,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
             cep=cep_ok,
             consentimento_responsavel=True,
             consentimento_em=datetime.now(),
+            origem=origem_da_sessao(request),
         )
         db.add(u)
         db.commit()
@@ -268,7 +305,7 @@ def create_app(database_url: str | None = None, seed: bool | None = None) -> Fas
             erro = "Este e-mail já tem cadastro. Use \"Entrar\"."
         if erro:
             return render(request, "cadastro_voluntario.html", None, status_code=400, erro=erro, form={"nome": nome, "email": email, "formacao": formacao})
-        u = Usuario(nome=nome.strip(), email=email, senha_hash=hash_senha(senha), papel="voluntario", formacao=formacao.strip() or None)
+        u = Usuario(nome=nome.strip(), email=email, senha_hash=hash_senha(senha), papel="voluntario", formacao=formacao.strip() or None, origem=origem_da_sessao(request))
         db.add(u)
         db.commit()
         entrar_na_sessao(request, u)

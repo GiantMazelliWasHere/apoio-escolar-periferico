@@ -12,7 +12,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)) e integrada ao cadastro do núcleo; testada com EasyOCR real |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | ⬜ aguardando entrega |
 | `.github/workflows/` + Azure | Secure DevOps Tools & Cloud Computing | Miguel Garcez | 🟡 CI pronto; deploy em modelo |
-| `maker/` | Project-Based Maker Lab | Vinicius Souza | ⬜ aguardando entrega |
+| `maker/` | Project-Based Maker Lab | Vinicius Souza | ✅ entrega copiada (suporte de tablet: CAD, 3MF e DXF) e integrada ao núcleo pelo QR code: `/qr` marca a origem, o cadastro grava e o `/impacto` conta |
 | `docs/business/` | BI & Startup Development | Eduardo Mazelli | ✅ |
 
 ## Contratos já disponíveis no núcleo
@@ -117,11 +117,22 @@ Resposta:
 - **Falhas e limites:** arquivo de até 8 MB (`413`), só JPG, PNG, WebP ou PDF (`415`), arquivo ilegível (`422`), 6 leituras por minuto por cliente e 120 por hora no total (`429`). Se o OCR quebrar, a resposta vem com `"fonte": "erro"` e campos vazios; o erro fica só no log.
 - **README de `visao/`:** é a documentação da entrega como foi avaliada pelo professor de Visão Computacional (usa outro nome de produto e um hub web próprio em Flask). A referência do produto integrado é este repositório.
 
+### Peça física (Maker Lab) → núcleo: QR code do suporte de tablet
+`GET /qr` (público; é a URL gravada no QR da etiqueta)
+
+Marca a sessão com `origem = "peca_maker"` (só se a pessoa não estiver logada) e redireciona para `/`, que mostra o aviso "Você chegou pelo QR code do suporte de estudo". Se a pessoa se cadastrar (estudante ou voluntário) na mesma visita, a conta grava `usuarios.origem = "peca_maker"` (coluna adicionada automaticamente em bancos antigos). O indicador `cadastros_via_peca_maker` aparece em `/impacto` e em `GET /api/v1/impacto`.
+
+- **Origem da peça:** a pasta [`maker/`](../maker/) traz a entrega da disciplina (zip do Vinicius): projeto no Fusion 360 (`.f3d`), STEP, FBX, 3MF para impressão 3D, DXF do apoio traseiro para corte a laser e renders. Duas placas de 220 × 140 × 3 mm; a da frente tem a aba que segura o tablet. Detalhes em [`maker/README.md`](../maker/README.md).
+- **Etiqueta:** `GET /maker` mostra a peça e o QR; `GET /maker/qrcode.svg?tamanho_mm=40` baixa o QR vetorial no tamanho físico (15 a 200 mm), para imprimir ou gravar a laser. O QR é gerado pelo OpenCV, que o núcleo já instala para a Visão (sem dependência nova).
+- **Configuração:** `PUBLIC_URL` (ex.: `https://<app>.azurewebsites.net`). O QR aponta para `PUBLIC_URL` + `/qr`. Sem ela, usa o endereço da requisição, o que só serve para teste local: gerar a etiqueta definitiva depois do deploy.
+- **Privacidade:** só o rótulo do canal fica gravado, sem localização nem dados do aparelho (descrito em `/privacidade`). Valores fora da lista do servidor são ignorados.
+- **Testes:** [`mvp/tests/test_maker.py`](../mvp/tests/test_maker.py) gera o QR, lê de volta com o detector do OpenCV e percorre QR → cadastro → indicador.
+
 ## Contratos a criar quando as entregas chegarem
 
 | Componente | Ponto de encaixe sugerido | O que o núcleo precisa |
 |---|---|---|
-| **Maker Lab** | QR code na peça fabricada | Só a URL pública do MVP |
+| **RPA** | `GET /api/v1/agendamentos.csv` (já disponível, acima) | Só a `INTEGRATION_API_KEY` |
 
 ## Executar o núcleo localmente
 
@@ -141,6 +152,7 @@ Abrir http://localhost:8000. No Linux/macOS, use `.venv/bin/python`.
    - `APP_ENV=production`
    - `SECRET_KEY=<valor longo e aleatório>`
    - `INTEGRATION_API_KEY=<outro valor aleatório>`
+   - `PUBLIC_URL=https://<app>.azurewebsites.net` (vai no QR code do suporte do Maker Lab)
    - `OPENROUTER_API_KEY=<chave do OpenRouter>` (assistente da tela "Ajuda"; sem ela, só as perguntas frequentes)
    - Leitura da foto da conta (opcional): o build instala só o `requirements.txt`, então o OCR fica desligado. Para ligar, publicar com o `requirements-visao.txt` e usar um plano com pelo menos 3,5 GB de RAM (B2 ou P1v3): o EasyOCR ocupa ~1 GB de RAM e o B1 tem 1,75 GB
    - `DATABASE_URL=sqlite:////home/data/apoio.db` (o `/home` é persistente no App Service; para produção real, usar PostgreSQL)

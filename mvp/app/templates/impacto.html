@@ -26,6 +26,7 @@
     <tr><td>Horas de reforço</td><td>{{ k.horas_reforco | string | replace('.', ',') }}</td><td>Soma da duração das monitorias realizadas</td></tr>
     <tr><td>Voluntários cadastrados</td><td>{{ k.voluntarios_cadastrados }}</td><td>Contas de voluntário</td></tr>
     <tr><td>Voluntários ativos (30 dias)</td><td>{{ k.voluntarios_ativos_30d }}</td><td>Voluntários com horário nos últimos ou próximos 30 dias</td></tr>
+    <tr><td>Cadastros vindos da peça Maker Lab</td><td>{{ k.cadastros_via_peca_maker }}</td><td>Contas criadas depois de ler o QR code do <a href="/maker">suporte de estudo</a></td></tr>
     <tr><td>Oportunidades abertas</td><td>{{ k.oportunidades_abertas }}</td><td>Horários futuros publicados</td></tr>
   </tbody>
 </table>

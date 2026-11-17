@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block conteudo %}
+{% if veio_da_peca and not usuario %}
+<p class="cartao aviso-peca" role="status">Você chegou pelo QR code do <a href="/maker">suporte de estudo</a>. Cadastre-se e agende sua primeira monitoria: é grátis.</p>
+{% endif %}
 <section class="hero">
   <h1>Reforço escolar gratuito, com monitor de verdade.</h1>
   <p class="lead">Para estudantes de escolas públicas da periferia. Escolha a matéria, agende no seu horário e tire suas dúvidas com um voluntário.</p>

@@ -78,6 +78,8 @@ class Usuario(Base):
     cep: Mapped[str | None] = mapped_column(String(9), nullable=True)
     consentimento_responsavel: Mapped[bool] = mapped_column(Boolean, default=False)
     consentimento_em: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    # Canal de chegada: "peca_maker" quando a pessoa veio pelo QR code do suporte do Maker Lab.
+    origem: Mapped[str | None] = mapped_column(String(30), nullable=True)
 
     # Voluntário
     formacao: Mapped[str | None] = mapped_column(String(200), nullable=True)
