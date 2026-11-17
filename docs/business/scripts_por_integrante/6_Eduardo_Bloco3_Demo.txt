@@ -17,7 +17,7 @@ Duração: *90 segundos* (de 1:30 a 3:00). Gravação de *tela*, com sua voz por
 "A escola dela está num território prioritário, apontado pelo nosso pipeline de dados públicos do INEP e do IBGE."
 
 [2:15 · monitorias → agendar]
-"Ela escolhe matemática, à noite, e agenda com um monitor para quinta, às dezenove horas. Confirmado."
+"Ela escolhe matemática, à noite, e agenda com um monitor para sexta, às dezenove horas. Confirmado."
 
 [2:28 · Ajuda → assistente]
 "Se travar no site, ela pergunta à assistente: 'como cancelo minha monitoria?', e recebe o passo a passo."
@@ -36,10 +36,13 @@ Duração: *90 segundos* (de 1:30 a 3:00). Gravação de *tela*, com sua voz por
 • No cadastro: faixa "13 a 15 anos", 9º ano EF, uma escola de território prioritário.
 • O trecho da foto da conta é gravado no *MVP local* (o OCR não roda no plano B1 da Azure). A edição coloca a legenda "Leitura da foto: ambiente local". O resto é na *URL pública*, com a barra de endereço visível.
 • No /impacto, "menos de 5" é proposital (LGPD esconde grupos pequenos). Não é erro: não precisa explicar.
+• No /impacto, mostre a linha "Monitorias agendadas (a realizar)": ela conta sessões, não pessoas, e sobe na hora depois do seu agendamento.
+• A coordenação cai no /impacto depois do login: clique em "Voluntários" no menu para aprovar.
+• Na tela Entrar, não abra a caixa "Contas de demonstração" durante a gravação (ela mostra senhas).
 • Estourou 90 s? Encurte as pausas de navegação primeiro; se ainda passar, corte a frase da assistente.
 
 *ANTES DE GRAVAR (checklist)*
-• Voluntário aprovado com horário de matemática à noite (quinta, 19h).
+• Voluntário aprovado com horário de matemática à noite (sexta, 19h; já existe nos horários de demonstração).
 • Pelo menos um voluntário enviado pelo robô de RPA, ainda pendente de aprovação.
 • Pipeline de Dados rodado (DAG ou dados/rodar_local.py).
 • Chave do OpenRouter configurada (assistente responde).
