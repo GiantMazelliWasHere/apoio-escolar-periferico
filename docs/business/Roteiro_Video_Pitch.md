@@ -79,32 +79,39 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 **Objetivo:** mostrar o fluxo central **funcionando de verdade na URL pública**, do primeiro clique ao resultado.
 **Na tela:** gravação de tela **contínua** (sem cortes no meio do fluxo), barra de endereço visível com a URL pública e cursor destacado. Rosto de quem fala num canto (opcional).
 
-**Mínimo obrigatório:** passos 1, 2 e 4 (acesso → cadastro → monitoria agendada). Os outros passos só entram se estiverem no ar.
+**Mínimo obrigatório:** acesso → cadastro → autorização do responsável → monitoria agendada. Os outros passos só entram se estiverem no ar.
 
-> **[1:30 — Acesso]** "Esta é a plataforma no ar, nesta URL pública. Vou entrar como a estudante que acabamos de conhecer."
+> **[1:30 — Acesso e cadastro]** "Esta é a plataforma no ar. Vou me cadastrar como a estudante que acabamos de conhecer: só um apelido, sem nome e sem e-mail."
+> [Apelido sintético, faixa "13 a 15 anos", 9º ano EF, escola de território prioritário.]
 >
-> **[1:40 — Cadastro com Visão Computacional]** "No cadastro, ela envia a foto de uma conta de consumo como comprovante de endereço. O sistema identifica o documento, corrige a imagem e extrai o endereço. Ela só confere e confirma. Nenhum dado é salvo sem confirmação."
-> [A Visão está integrada ao cadastro do MVP. Gravem num ambiente com o OCR instalado (`requirements-visao.txt`) e usem uma conta do **dataset sintético** (`visao/dataset_sintetico`), nunca uma conta real.]
+> **[1:38 — Visão Computacional]** "Para o endereço, ela fotografa uma conta de consumo. O sistema lê a conta e preenche o endereço. Ela só confere e confirma."
+> [No plano B1 da Azure o OCR fica desligado: gravar este trecho no MVP local com `requirements-visao.txt` e uma conta do **dataset sintético** (`visao/dataset_sintetico`), nunca uma conta real. Na edição, legenda na tela: "Leitura da foto: ambiente local".]
 >
-> **[2:00 — Território e Dados]** "Pela escola dela, a plataforma reconhece que ela estuda num território prioritário, definido pelo nosso pipeline de dados públicos do INEP e do IBGE."
-> [O pipeline de Dados alimenta o MVP. Rodem a DAG (ou `dados/rodar_local.py`) antes de gravar e mostrem, em `/impacto`, a tabela "Prioridade territorial das escolas" com origem "Pipeline INEP/IBGE". As escolas são fictícias.]
+> **[1:52 — Autorização do responsável (LGPD)]** "Como ela é menor de idade, o responsável precisa autorizar. O link vai pelo WhatsApp, a mãe abre e autoriza. Pronto: agendamento liberado."
+> [Copiar o link da tela "Peça a autorização", abrir numa **aba anônima**, clicar em Autorizar com um e-mail sintético e voltar à aba da estudante.]
 >
-> **[2:15 — Monitoria: valor principal]** "Ela escolhe 'matemática' e o turno da noite, vê os monitores disponíveis nesta semana e agenda para quinta, às dezenove horas. Pronto: confirmação na tela."
+> **[2:05 — Território e Dados]** "A escola dela está num território prioritário, apontado pelo nosso pipeline de dados públicos do INEP e do IBGE."
+> [Rodar a DAG (ou `dados/rodar_local.py`) antes de gravar e mostrar em `/impacto` a tabela "Prioridade territorial das escolas" com origem "Pipeline INEP/IBGE". As escolas são fictícias.]
 >
-> **[2:35 — Assistente de IA]** "Ficou com dúvida sobre como remarcar? Ela pergunta ao assistente: 'como cancelo minha monitoria?'. Ele explica o passo a passo. E quando a dúvida é de matéria, ele indica agendar com um monitor."
-> [Ajustar ao que a disciplina de IA Generativa entregar.]
+> **[2:15 — Monitoria: valor principal]** "Ela escolhe matemática, à noite, e agenda com um monitor para quinta, às dezenove horas. Confirmado."
 >
-> **[2:45 — Automação e impacto]** "Do outro lado, nosso robô de automação registra a presença e monta o relatório de impacto do patrocinador, sem planilha manual."
-> [Mostrar o relatório gerado de verdade.]
+> **[2:28 — Assistente de IA]** "Se travar no site, ela pergunta à assistente: 'como cancelo minha monitoria?', e recebe o passo a passo."
 >
-> **[2:55]** "Do primeiro clique à monitoria agendada: no nosso teste, pouco mais de um minuto."
-> [Dado real: 5 estudantes, entre 55 s e 1m45s, média ≈ 1m14s (§9.2 da entrega).]
+> **[2:38 — RPA: credenciamento de voluntários]** "Do lado da coordenação, nosso robô já credenciou os voluntários no portal de credenciamento e mandou os cadastros para cá. A coordenação só confere e aprova."
+> [Entrar como coordenação em `/coordenacao/voluntarios`: o cartão mostra "Já credenciado no SICREV pelo robô de RPA". Clicar em Aprovar.]
+>
+> **[2:52 — Impacto]** "E cada monitoria realizada vira indicador no painel de impacto do patrocinador."
+> [Mostrar `/impacto` como está. Indicadores com menos de 5 pessoas aparecem como "menos de 5" de propósito (LGPD); não é erro.]
 
-**Preparação para a demo mostrar o painel de impacto mudando ao vivo:** a presença só pode ser registrada a partir de 1 hora antes da monitoria. Isso é proposital, para não inflar os indicadores. Antes de gravar, um voluntário cria um horário que comece em cerca de 30 minutos; na gravação, a estudante agenda esse horário, o voluntário marca "Realizada" e o painel `/impacto` atualiza na hora.
+**Preparação antes de gravar:**
+- Um voluntário aprovado com horário de matemática à noite (quinta, 19h).
+- Pelo menos um voluntário enviado pelo robô (ou por `POST /api/v1/integracao/voluntarios` com `X-API-Key`), ainda pendente de aprovação.
+- Pipeline de Dados rodado e a chave do OpenRouter configurada.
+- Duas abas: a da estudante e uma anônima para o responsável.
 
-**Se algum passo for cortado:** usem o tempo que sobrar para mostrar com mais calma o passo da monitoria e a confirmação aparecendo também no painel do monitor ou da coordenação.
+**Se algum passo for cortado:** usem o tempo que sobrar para mostrar com mais calma a autorização do responsável e a monitoria confirmada.
 
-**Transição:** do painel de impacto para o bloco 4: "Esse impacto medido é exatamente o que paga a conta." (a frase funciona com ou sem o relatório do RPA)
+**Transição:** do painel de impacto para o bloco 4: "Esse impacto medido é exatamente o que paga a conta."
 
 ---
 

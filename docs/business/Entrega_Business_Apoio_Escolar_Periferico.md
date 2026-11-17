@@ -45,16 +45,16 @@ Metade da nota (7 pontos) depende de o MVP funcionar e de existir evidência de 
 ### 1.1 Pontos fortes
 1. **Problema aderente ao briefing.** "Estudante" é um dos cidadãos listados no slide 7, "Educação" é uma das áreas do slide 8 e "ferramentas de capacitação e inclusão produtiva" aparecem no slide 13. ODS 4 e ODS 10 estão na lista oficial (slide 14). [FATO]
 2. **O estudante não paga.** Isso responde direto à pergunta do slide 17 ("sem quem pague a conta"): quem paga são empresas (ESG), fundos e instituições.
-3. **Integração natural com as disciplinas técnicas.** O pipeline de Dados prioriza territórios, a Visão facilita o cadastro e o RPA gera os relatórios que os patrocinadores pagam para receber.
+3. **Integração natural com as disciplinas técnicas.** O pipeline de Dados prioriza territórios, a Visão facilita o cadastro, o RPA credencia os voluntários sem digitação manual e o painel de impacto mostra ao patrocinador o que ele financiou.
 
 ### 1.2 Riscos e lacunas que afetam a nota
 | # | Risco | Impacto na rubrica | Ação recomendada até 19/11 |
 |---|---|---|---|
 | R1 | Validação é **qualitativa e pequena** (10 entrevistas em 14/11/2026, [roteiro e planilha](Roteiro_Entrevistas_Validacao.md)); não é prova estatística | Lean Canvas (2,0) e Valor evidenciado (3,5) | Apresentar como "validação qualitativa inicial", anexar a planilha ao PDF e citar só os números obtidos (§9.2) |
-| R2 | O MVP está no repositório (fluxo central com 63 testes automatizados), mas **ainda não está em URL pública** | Demo (3,5) | Publicar no Azure, congelar o **fluxo central** (§9.1) e cortar do pitch tudo o que não estiver no ar |
+| R2 | O MVP está no repositório (111 testes automatizados, 92% de cobertura, pipeline de CI/CD com verificações de segurança), mas **ainda não está em URL pública** | Demo (3,5) | Publicar no Azure, congelar o **fluxo central** (§9.1) e cortar do pitch tudo o que não estiver no ar |
 | R3 | Lado da oferta: sem voluntários, não há monitoria | Modelo de negócio | Tratar o voluntário como segundo usuário, com valor próprio (certificado de horas, extensão universitária) |
 | R4 | Receita depende de patrocínio, que não é garantido | "A conta fecha" (2,5) | Mostrar ponto de equilíbrio, capital de ponte do ano 1 e **editais fora da receita-base** (§5) |
-| R5 | Dados de menores de idade (LGPD art. 14) | Princípios de engenharia (slide 21) | Consentimento do responsável, minimização, nada de nota escolar sem convênio com a escola |
+| R5 | Dados de menores de idade (LGPD art. 14) | Princípios de engenharia (slide 21) | **No MVP:** estudante se cadastra só com apelido (sem nome nem e-mail); menor de 18 fica pendente até o responsável autorizar por link de uso único (sem resposta em 30 dias, o cadastro é apagado); e-mail do responsável cifrado; baixar e apagar a própria conta; painel esconde grupos com menos de 5 pessoas. Nada de nota escolar sem convênio com a escola |
 | R6 | Disciplinas cujo enunciado diverge da ideia original (Maker Lab, Visão, GenAI) | Coerência do produto | Integrações propostas em §10 |
 
 ### 1.3 Tese do negócio (uma frase)
@@ -209,7 +209,7 @@ Empresas no **Simples ou no lucro presumido não deduzem** doações nem FIA. Po
 **4. Outros pontos jurídicos que o modelo depende**
 
 - **Voluntários:** a **Lei 9.608/1998** (Lei do Voluntariado) exige um **termo de adesão** e garante que não há vínculo empregatício. O cadastro do voluntário no MVP deve incluir esse termo.
-- **Dados de menores:** LGPD, art. 14, com consentimento do responsável (já tratado no MVP, ver §1.2, risco R5).
+- **Dados de menores:** LGPD, art. 14, com consentimento do responsável. Já implementado no MVP: cadastro por apelido, autorização do responsável por link, e-mail cifrado, exportação e exclusão da conta e expurgo em 30 dias (ver §1.2, risco R5, e [seguranca-lgpd.md](../seguranca-lgpd.md)).
 - **Certificado de horas:** a validade como atividade complementar ou de extensão depende de cada universidade. Isso é validado nas entrevistas (roteiro C).
 
 **Próximo passo real:** levar esta seção a um contador (escritórios-modelo de faculdades de Ciências Contábeis costumam atender de graça) e a um advogado do terceiro setor antes de formalizar.
@@ -219,7 +219,7 @@ Empresas no **Simples ou no lucro presumido não deduzem** doações nem FIA. Po
 ## 4. Estrutura de custos
 
 ### 4.1 Custos durante a GS [FATO / PROJEÇÃO]
-O MVP roda com créditos de estudante na Azure e ferramentas gratuitas. O custo de nuvem exigido pela disciplina de DevOps deve ser **o mesmo número** usado aqui [PREENCHER com a estimativa do PDF de DevOps].
+O MVP roda com créditos de estudante na Azure e ferramentas gratuitas. O custo de nuvem é o **mesmo número** da disciplina de DevOps: **cerca de US$ 13 por mês** (App Service Linux B1 + Key Vault + Application Insights e alertas, dentro das franquias), coberto pelos créditos de estudante ([DEVOPS.md](../DEVOPS.md#custo-estimado-usmês)). Nesse plano a leitura da foto (OCR) fica desligada; ela exige um plano com mais memória.
 
 ### 4.2 Custos fixos mensais em operação (pós-GS) [PROJEÇÃO]
 
@@ -228,7 +228,7 @@ O MVP roda com créditos de estudante na Azure e ferramentas gratuitas. O custo 
 | Desenvolvimento e manutenção (1 dev full-stack, PJ) | R$ 7.000 | Manutenção, melhorias, segurança |
 | Coordenação pedagógica e de voluntários (1 pessoa) | R$ 5.000 | Curadoria, onboarding de voluntários, suporte a escolas |
 | Parcerias e gestão (1 sócio, pró-labore) | R$ 4.000 | Venda B2B, relacionamento com patrocinadores e editais |
-| Infraestrutura Azure base (App Service, banco, storage, monitoramento) | R$ 600 | [PREENCHER com a estimativa de DevOps] |
+| Infraestrutura Azure base (App Service, banco, storage, monitoramento) | R$ 600 | Hoje o MVP custa ~US$ 13/mês (§4.1). Os R$ 600 preveem a operação real: banco gerenciado (PostgreSQL), região Brasil Sul (dados de menores no país), plano com memória para o OCR e backups |
 | Ferramentas (domínio, e-mail, RPA, design) | R$ 300 | Usar planos gratuitos/comunitários quando elegíveis |
 | Segurança e LGPD (consultoria/DPO terceirizado, backups) | R$ 500 | Dados de menores exigem cuidado redobrado |
 | Contabilidade | R$ 500 | Simples Nacional |
@@ -354,7 +354,7 @@ Classificação: **A** = atividade (o que fazemos) · **R** = resultado (o que m
 | Continuidade nos estudos | I | Longo prazo | % de egressos do Ensino Médio matriculados em ensino técnico/superior (pesquisa opt-in) | Anual | Linha de base no ano 1 | Impacto de longo prazo; requer acompanhamento |
 
 ### 6.3 Como os KPIs viram argumento de venda
-O **relatório de impacto** do patrocinador (gerado automaticamente pelo RPA, ver §10) traz: EAM, monitorias, horas, presença, evolução pré/pós, % em territórios vulneráveis e custo por estudante. Cada número tem a fórmula ao lado. Isso é a "prova" que a área de ESG precisa para o relatório de sustentabilidade dela.
+O **relatório de impacto** do patrocinador (painel `/impacto`, calculado pela própria plataforma) traz: EAM, monitorias, horas, presença, evolução pré/pós, % em territórios vulneráveis e custo por estudante. Cada número tem a fórmula ao lado. Isso é a "prova" que a área de ESG precisa para o relatório de sustentabilidade dela.
 
 ---
 
@@ -416,8 +416,8 @@ O roteiro completo, com falas, elenco, tempos, telas e transições, está em um
 A sequência de cenas, as dicas de gravação e o checklist de publicação estão no [roteiro](Roteiro_Video_Pitch.md#plano-de-gravação).
 
 ### 9.1 Fluxo central a congelar até a gravação
-1. Abrir URL pública → 2. cadastro (com a leitura do endereço pela foto da conta, se o OCR estiver instalado no ambiente) → 3. busca de monitoria por matéria → 4. agendamento confirmado → 5. assistente AI Bits na tela Ajuda (só com a chave do OpenRouter configurada) → 6. voluntário registra a presença e o painel `/impacto` atualiza (relatório do robô RPA só se ele for entregue).
-O **mínimo** para a nota de demo é 1→4 funcionando de verdade. Os passos 5 e 6 só entram se estiverem no ar.
+1. Abrir URL pública → 2. cadastro só com apelido (com a leitura do endereço pela foto da conta, gravada no ambiente local porque o OCR não roda no plano B1) → 3. autorização do responsável pelo link (LGPD, menor de idade) → 4. busca de monitoria por matéria → 5. agendamento confirmado → 6. assistente AI Bits na tela Ajuda (só com a chave do OpenRouter configurada) → 7. coordenação aprova um voluntário credenciado pelo robô de RPA → 8. painel `/impacto` (grupos com menos de 5 pessoas aparecem como "menos de 5").
+O **mínimo** para a nota de demo é 1→5 funcionando de verdade. Os passos 6 a 8 só entram se estiverem no ar.
 
 ### 9.2 Evidência de valor (rubrica: 3,5 pontos) — teste de usabilidade em 2 dias
 Esta é a ação de maior retorno até 19/11.
@@ -452,10 +452,10 @@ Durante as entrevistas, quando um entrevistado mencionava uma necessidade, a equ
 | Disciplina | O que o PDF oficial exige [FATO] | Ideia original do time | Divergência? | Integração coerente proposta | Contribuição para o negócio |
 |---|---|---|---|---|---|
 | **Dados** (Ana Machado) | Pipeline orquestrado (Airflow) ETL/ELT que alimenta o MVP; diagrama e dicionário de dados | Indicadores educacionais para priorizar regiões | **Não** | ✅ **Integrada:** DAG que ingere IDEB/Censo Escolar (INEP) + dados IBGE (simulados), calcula o Índice de Prioridade Educacional e o envia ao núcleo (`PUT /api/v1/escolas/prioridade`); o painel de impacto mostra a prioridade de cada escola e a origem "Pipeline INEP/IBGE" | Escolha do território piloto; argumento de venda ("onde o investimento rende mais"); KPI de % em territórios vulneráveis |
-| **IA Generativa** (Reinaldo Ramos) | Enunciado enviado pelo professor: aplicação que integra um LLM via API (ex.: OpenRouter) com escolha e configuração do modelo; engenharia de prompts com contexto; **saída estruturada (JSON)** e tratamento de falhas; README com problema, arquitetura, exemplos de prompts/saídas, limitações e ética; evidências de execução. Sugestão do professor: um *helper* que tira dúvidas sobre o software da equipe | Tutor virtual | **Parcial**: a sugestão é um assistente sobre o uso do software, não um tutor de matérias | **Assistente da plataforma**: responde, em linguagem simples, dúvidas sobre como se cadastrar, agendar, cancelar, privacidade e erros comuns, usando a documentação do MVP como contexto. Devolve JSON (`resposta`, `categoria`, `encaminhar_humano`). Dúvida de matéria → orienta a agendar com um monitor ("pessoa no circuito", slide 21) | Menos suporte manual para coordenação e voluntários; custo variável de §4.3 |
+| **IA Generativa** (Reinaldo Ramos) | Enunciado enviado pelo professor: aplicação que integra um LLM via API (ex.: OpenRouter) com escolha e configuração do modelo; engenharia de prompts com contexto; **saída estruturada (JSON)** e tratamento de falhas; README com problema, arquitetura, exemplos de prompts/saídas, limitações e ética; evidências de execução. Sugestão do professor: um *helper* que tira dúvidas sobre o software da equipe | Tutor virtual | **Parcial**: a sugestão é um assistente sobre o uso do software, não um tutor de matérias | ✅ **Integrada:** **assistente da plataforma** responde, em linguagem simples, dúvidas sobre como se cadastrar, agendar, cancelar, privacidade e erros comuns, usando a documentação do MVP como contexto. Devolve JSON (`resposta`, `categoria`, `encaminhar_humano`). Dúvida de matéria → orienta a agendar com um monitor ("pessoa no circuito", slide 21) | Menos suporte manual para coordenação e voluntários; custo variável de §4.3 |
 | **Visão Computacional** (Wilians Souza) | Extração automática de **endereço** em fotos de faturas de 3 empresas (ex.: Enel, Sabesp, Claro), com confirmação pelo usuário; documentos sintéticos | "Processamento de documentos no cadastro" | **Parcial**: o escopo é especificamente endereço em contas de consumo | ✅ **Integrada:** extração no **cadastro do estudante** (comprovante de residência) → endereço alimenta a verificação de território prioritário | Cadastro mais rápido; comprova que o recurso chega ao território financiado |
-| **RPA** (Cibele Ribeiro) | Analisar gargalo, decidir RPA vs. API, BPM As-Is/To-Be, robô UiPath integrado ao MVP, vídeo de até 3 min | Automatizar processos administrativos | **Não** | Processo sugerido: **consolidação de presenças + geração e envio do relatório de impacto ao patrocinador + emissão de certificados de voluntários**, que hoje seria manual (planilhas de ONG/escola sem API). Justificar no assessment se é RPA ou API | Reduz custo de operação (coordenação); é a "entrega" que o patrocinador paga para receber |
-| **DevOps & Cloud** (Gabriel Arcanjo) | Azure App Service, HTTPS, GitHub Actions, segredos fora do código, acesso por papel, monitoramento com alerta, **estimativa de custo** | Disponibilidade, segurança, escalabilidade | **Não** | Papéis: estudante, voluntário, coordenação, patrocinador (painel). **Usar a mesma estimativa de custo de nuvem em §4.2** | Confiabilidade para patrocinadores; LGPD; custo de infra do modelo financeiro |
+| **RPA** (Cibele Ribeiro) | Analisar gargalo, decidir RPA vs. API, BPM As-Is/To-Be, robô UiPath integrado ao MVP, vídeo de até 3 min | Automatizar processos administrativos | **Parcial**: a ideia inicial era o relatório de impacto; o assessment (92%) escolheu o credenciamento de voluntários, que depende de um portal sem API | ✅ **Integrada:** robô UiPath faz a triagem das inscrições (9 regras), credencia os voluntários no portal SICREV (sem API, por automação de interface) e os envia ao núcleo (`POST /api/v1/integracao/voluntarios`); eles entram pendentes e a coordenação aprova ([rpa/](../../rpa/README.md)) | Reduz custo de coordenação: o onboarding de voluntários escala sem digitação manual |
+| **DevOps & Cloud** (Gabriel Arcanjo) | Azure App Service, HTTPS, GitHub Actions, segredos fora do código, acesso por papel, monitoramento com alerta, **estimativa de custo** | Disponibilidade, segurança, escalabilidade | **Não** | ✅ **Integrada no repositório:** pipeline único de CI/CD (lint com regras de segurança, testes com cobertura mínima de 80%, bandit, pip-audit, gitleaks, CodeQL) com deploy por OIDC e smoke test; segredos no Key Vault; papéis estudante, voluntário e coordenação; Application Insights com 3 alertas e orçamento; custo de **~US$ 13/mês**, o mesmo de §4.1 ([DEVOPS.md](../DEVOPS.md)). ⬜ Publicação na URL pública | Confiabilidade para patrocinadores; LGPD; custo de infra do modelo financeiro |
 | **Maker Lab** (Caio Sousa) | Redesign de um **objeto real do espaço público** que funciona mal (ex.: botão do semáforo, bebedouro, corrimão, assento do ponto); CAD, laser + 3D, publicação no MakerWorld | "Solução física integrada à plataforma" | **Parcial**: o enunciado pede redesign de mobiliário urbano; a peça entregue é um objeto de estudo | ✅ **Integrada:** **suporte de tablet para estudo** (desenho técnico rev. C, peça única de chapa dobrada impressa em 3D) com etiqueta de **QR code** para a plataforma. O QR marca a origem do acesso, o cadastro grava `peca_maker` e o painel de impacto mostra "Cadastros vindos da peça Maker Lab" ([maker/](../../maker/README.md)) | Canal de aquisição local e **mensurável** (cadastros por QR); a peça pode ir junto no kit do núcleo escolar patrocinado |
 
 > **Não afirmar no pitch ou no PDF** que alguma dessas integrações foi feita até que esteja no repositório e funcionando.
@@ -475,15 +475,15 @@ A ficha (slide 20) está em um arquivo separado, pronta para abrir o README do r
 | 3 | Proposta de valor por participante | Modelo 2,5 | ✅ §3.1 |
 | 4 | Fontes de receita, preço e canais de entrada | Modelo 2,5 | ✅ §3.2–3.4 |
 | 5 | Métricas-chave + "a conta fecha" (equilíbrio e capital de ponte) | Modelo 2,5 | ✅ §5, §6 |
-| 6 | Custo de nuvem igual ao do PDF de DevOps | Coerência | ⬜ |
+| 6 | Custo de nuvem igual ao do PDF de DevOps | Coerência | ✅ ~US$ 13/mês em §4.1 e no [DEVOPS.md](../DEVOPS.md) |
 | 6b | Enquadramento fiscal e jurídico, com aviso de "gerado por IA / simulado" | Modelo 2,5 | ✅ §3.5 (sem revisão de contador) |
 | 7 | Pitch com começo, meio e fim, ≤ 5:00, **5 integrantes falando** | Narrativa 2,5 | ✅ [roteiro](Roteiro_Video_Pitch.md) · ⬜ gravar e cronometrar |
-| 8 | Dado do problema verificado com fonte (bloco 1) | Narrativa | ⬜ |
+| 8 | Dado do problema verificado com fonte (bloco 1) | Narrativa | ✅ QEdu, Saeb 2023 (§7.3) |
 | 9 | Demo **na URL pública**, fluxo do primeiro clique ao resultado, sem telas falsas | Demo 3,5 | ⬜ depende do MVP |
-| 10 | Falas da demo ajustadas ao que existe | Demo 3,5 | ⬜ |
+| 10 | Falas da demo ajustadas ao que existe | Demo 3,5 | ✅ bloco 3 do [roteiro](Roteiro_Video_Pitch.md) (consentimento, RPA, painel) |
 | 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ✅ §9.2: 5 estudantes + 2 voluntários, com tempos e notas · planilha anexa ao PDF |
 | 12 | ODS identificados e contribuição explicada | Slide 14 (obrigatório) | ✅ roteiro bloco 5, ficha técnica |
-| 13 | LGPD e acessibilidade mencionadas (menores, consentimento, legendas) | Slide 21 | ✅ §1.2, ficha técnica, roteiro |
+| 13 | LGPD e acessibilidade mencionadas (menores, consentimento, legendas) | Slide 21 | ✅ §1.2, §4, ficha técnica, roteiro; implementada no MVP ([seguranca-lgpd.md](../seguranca-lgpd.md)) |
 | 14 | Ficha Técnica do MVP no README | Entregável | ✅ ficha no README e em [arquivo próprio](../FICHA_TECNICA_MVP.md), com o repositório · ⬜ URL do MVP |
 | 15 | **PDF único** com Lean Canvas + modelo + links clicáveis (vídeo, MVP, repo) | Formato | ⬜ |
 | 16 | Links públicos funcionando durante a correção (até 1 semana após 19/11) | Regras da GS | ⬜ |
