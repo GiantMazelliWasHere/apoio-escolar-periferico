@@ -93,7 +93,7 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 > **[2:05 — Território e Dados]** "A escola dela está num território prioritário, apontado pelo nosso pipeline de dados públicos do INEP e do IBGE."
 > [Rodar a DAG (ou `dados/rodar_local.py`) antes de gravar e mostrar em `/impacto` a tabela "Prioridade territorial das escolas" com origem "Pipeline INEP/IBGE". As escolas são fictícias.]
 >
-> **[2:15 — Monitoria: valor principal]** "Ela escolhe matemática, à noite, e agenda com um monitor para quinta, às dezenove horas. Confirmado."
+> **[2:15 — Monitoria: valor principal]** "Ela escolhe matemática, à noite, e agenda com um monitor para sexta, às dezenove horas. Confirmado."
 >
 > **[2:28 — Assistente de IA]** "Se travar no site, ela pergunta à assistente: 'como cancelo minha monitoria?', e recebe o passo a passo."
 >
@@ -101,10 +101,10 @@ A estrutura segue a página 34 do PDF oficial (seis blocos em cinco minutos). Di
 > [Entrar como coordenação em `/coordenacao/voluntarios`: o cartão mostra "Já credenciado no SICREV pelo robô de RPA". Clicar em Aprovar.]
 >
 > **[2:52 — Impacto]** "E cada monitoria realizada vira indicador no painel de impacto do patrocinador."
-> [Mostrar `/impacto` como está. Indicadores com menos de 5 pessoas aparecem como "menos de 5" de propósito (LGPD); não é erro.]
+> [Mostrar `/impacto` como está. Indicadores com menos de 5 pessoas aparecem como "menos de 5" de propósito (LGPD); não é erro. A linha "Monitorias agendadas (a realizar)" conta sessões, não pessoas, e sobe na hora depois do agendamento: vale mostrar.]
 
 **Preparação antes de gravar:**
-- Um voluntário aprovado com horário de matemática à noite (quinta, 19h).
+- Um voluntário aprovado com horário de matemática à noite (sexta, 19h; já existe nos horários de demonstração).
 - Pelo menos um voluntário enviado pelo robô (ou por `POST /api/v1/integracao/voluntarios` com `X-API-Key`), ainda pendente de aprovação.
 - Pipeline de Dados rodado e a chave do OpenRouter configurada.
 - Duas abas: a da estudante e uma anônima para o responsável.
