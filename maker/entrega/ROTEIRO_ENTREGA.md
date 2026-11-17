@@ -8,7 +8,7 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 | 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ✅ PETG, Creality Ender 3, 5 h, 90 g |
 | 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ✅ [publicado](https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code) |
 | 3 | Pasta de arquivos com link público | Equipe | — | ✅ repositório público, `maker/` organizada |
-| 4 | PDF único no portal | Vinicius | 10 min | 🟡 gerado com fotos, modelo e link do MakerWorld; falta só o crédito do bônus |
+| 4 | PDF único no portal | Vinicius | 10 min | ✅ completo (crédito do bônus: não se aplica); falta enviar no portal |
 
 ---
 
@@ -118,7 +118,7 @@ Ordem do PDF: capa (disciplina, título, integrantes) → **links clicáveis em 
 1. Abra `maker/entrega/gerar_entrega.py` e preencha no topo:
    - `LINKS["Publicação no MakerWorld"]`: link do passo 2
    - `IMPRESSAO`: ✅ já preenchido (PETG, Ender 3, 5 h, 90 g)
-   - `CREDITO_BONUS`: link da peça de origem, ou `"não se aplica"`
+   - `CREDITO_BONUS`: ✅ `"não se aplica"` (a peça é projeto próprio)
 2. Fotos em `maker/imagens/fotos/`.
 3. Rode (só precisa do Python e do Edge):
 

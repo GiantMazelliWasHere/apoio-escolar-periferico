@@ -38,7 +38,7 @@ LINKS = {
 # Como o protótipo foi impresso de verdade.
 IMPRESSAO = "PETG, Creality Ender 3 (mesa 220 × 220 mm), perfil deitado, sem suporte, com brim: 5 horas e 90 g de filamento"
 # Link de crédito da peça baixada usada no bônus (deixe "não se aplica" se não usou nenhuma).
-CREDITO_BONUS = ""
+CREDITO_BONUS = "não se aplica"
 # ---------------------------------------------------------------------------
 
 # Legendas pelo nome do arquivo (sem extensão). Arquivo sem legenda aqui sai com uma genérica.
