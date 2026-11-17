@@ -29,6 +29,7 @@ LINKS = {
     "Vídeo-pitch (YouTube, não listado)": "",
     "MVP (URL pública)": "https://app-apoioescolar-mvp-6e7462.azurewebsites.net",
     "Repositório": REPO_URL,
+    "Peça Maker Lab no MakerWorld": "https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code",
     "Ficha Técnica do MVP": f"{REPO_URL}/blob/main/docs/FICHA_TECNICA_MVP.md",
 }
 
