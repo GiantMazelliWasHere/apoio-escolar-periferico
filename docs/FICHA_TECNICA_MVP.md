@@ -31,7 +31,7 @@
 | **Arquitetura: componentes** | Ver a tabela "Componentes por disciplina" abaixo e o diagrama. | 🟡 |
 | **Fontes de dados** | Públicas: INEP (IDEB, Censo Escolar, SAEB) e IBGE (dados socioeconômicos por território). Operacionais: cadastros, agendamentos e presenças gerados pelo próprio MVP. Simulados: estudantes, voluntários e monitorias **sintéticos**, com geração documentada (sem dados pessoais reais). Visão: documentos sintéticos de contas de consumo com gabarito. Dados: o pipeline simula a extração INEP/IBGE para as 6 escolas fictícias do seed (código INEP com prefixo 99). | 🟡 |
 | **Modelos de IA utilizados** | Visão Computacional: detecção do documento, correção de perspectiva, pré-processamento e OCR para extrair o endereço. IA Generativa: assistente da plataforma, com LLM via API (OpenRouter, modelo configurável), prompt com o contexto da documentação do MVP e saída estruturada em JSON. Modelo padrão: `google/gemini-2.5-flash` (configurável por `GENAI_MODEL_NAME`). | ✅ Visão (integrada ao cadastro, testada com EasyOCR real no dataset sintético) · ✅ GenAI (integrado e testado com a chave real) |
-| **URL do MVP e repositório** | MVP: [PREENCHER — URL pública no Azure App Service, com HTTPS]. Repositório principal: https://github.com/GiantMazelliWasHere/apoio-escolar-periferico. | ⬜ |
+| **URL do MVP e repositório** | MVP: https://app-apoioescolar-mvp-6e7462.azurewebsites.net (Azure App Service, só HTTPS). Repositório principal: https://github.com/GiantMazelliWasHere/apoio-escolar-periferico. | ✅ |
 | **Indicadores de impacto** | Monitorias realizadas · horas de reforço entregues · taxa de presença · evolução no diagnóstico pré/pós · % de estudantes em territórios vulneráveis · estudantes ativos mensais · custo por estudante ativo. *Metas sugeridas, não resultados alcançados.* | ✅ definidos |
 | **ODS conectados** | **ODS 4: Educação de Qualidade** (meta 4.1: ensino fundamental e médio de qualidade; meta 4.4: competências digitais para o trabalho). **ODS 10: Redução das Desigualdades** (meta 10.2: inclusão social e econômica de todos), porque o reforço chega aos territórios mais vulneráveis. | ✅ |
 
@@ -113,7 +113,7 @@ Fundo off-white e texto quase preto (sem preto ou branco puros) reduzem o brilho
 ## Links da entrega
 | Item | Link |
 |---|---|
-| MVP (URL pública) | [PREENCHER] |
+| MVP (URL pública) | https://app-apoioescolar-mvp-6e7462.azurewebsites.net |
 | Repositório principal | https://github.com/GiantMazelliWasHere/apoio-escolar-periferico |
 | Repositório de Visão Computacional | https://github.com/EdLeo0708/Applied-Computer-Vision |
 | Vídeo-pitch | [PREENCHER] |
