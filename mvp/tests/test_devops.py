@@ -122,3 +122,15 @@ def test_limite_tentativas_libera_depois_da_janela(monkeypatch):
 def test_telemetria_desligada_sem_connection_string(monkeypatch):
     monkeypatch.delenv("APPLICATIONINSIGHTS_CONNECTION_STRING", raising=False)
     assert configurar_telemetria(object()) is False
+
+
+@pytest.mark.parametrize(
+    ("codigo", "nome", "no_brasil"),
+    [("westus3", "West US 3 (Arizona, EUA)", False), ("brazilsouth", "Brazil South (São Paulo)", True), ("Brazil South", "Brazil South (São Paulo)", True)],
+)
+def test_aviso_de_privacidade_mostra_regiao_legivel(tmp_path, monkeypatch, codigo, nome, no_brasil):
+    monkeypatch.setenv("REGION_NAME", codigo)
+    app = create_app(database_url=f"sqlite:///{tmp_path / 'teste.db'}", seed=False)
+    html = TestClient(app).get("/privacidade").text
+    assert f"<strong>{nome}</strong>" in html
+    assert ("fica fora do Brasil" in html) is (not no_brasil)

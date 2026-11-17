@@ -19,11 +19,11 @@ A impressão já está fotografada (Creality, mesa de 220 × 220 mm, perfil deit
 Falta **uma ou duas fotos da peça pronta**, que valem mais que as da impressão, principalmente para a capa do MakerWorld:
 
 - `07_pronta_com_tablet.jpg`: tirada a peça da mesa e removido o brim, com um tablet ou celular apoiado, de frente
-- `08_qr.jpg`: a etiqueta QR provisória de 30 mm (gerada em `/maker` do MVP rodando local), colada no canto inferior da face de trás da perna traseira
+- `08_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
 
 Salvem em `maker/imagens/fotos/` com esses nomes e adicionem a legenda em `LEGENDAS` no topo de `gerar_entrega.py`. Sem legenda, a foto sai com uma genérica.
 
-> A etiqueta definitiva é gerada quando o MVP for publicado (o QR depende da URL pública).
+> A etiqueta definitiva já está pronta: `maker/fabricacao/etiqueta_qr_30mm.svg`, gerada no MVP publicado e apontando para `https://app-apoioescolar-mvp-6e7462.azurewebsites.net/qr`. Imprima em 100% (sem "ajustar à página") em papel adesivo e confira com a câmera do celular antes de colar.
 
 ## 1. Dados reais da impressão
 

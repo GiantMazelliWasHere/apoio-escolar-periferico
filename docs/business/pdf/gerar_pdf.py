@@ -27,7 +27,7 @@ BLOB = f"{REPO_URL}/blob/main/docs/business/"
 # Preencha quando existirem. Ficam em destaque amarelo enquanto estiverem vazios.
 LINKS = {
     "Vídeo-pitch (YouTube, não listado)": "",
-    "MVP (URL pública)": "",
+    "MVP (URL pública)": "https://app-apoioescolar-mvp-6e7462.azurewebsites.net",
     "Repositório": REPO_URL,
     "Ficha Técnica do MVP": f"{REPO_URL}/blob/main/docs/FICHA_TECNICA_MVP.md",
 }

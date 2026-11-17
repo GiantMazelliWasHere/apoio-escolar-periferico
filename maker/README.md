@@ -88,7 +88,9 @@ Etiqueta QR na peça ──► GET /qr ──► sessão marcada "peca_maker" �
 
 ## Como produzir a etiqueta
 
-1. Com o MVP publicado e `PUBLIC_URL` configurada, abra `https://<app>/maker`.
+A etiqueta definitiva já está em [`fabricacao/etiqueta_qr_30mm.svg`](fabricacao/etiqueta_qr_30mm.svg), baixada do MVP publicado e apontando para `https://app-apoioescolar-mvp-6e7462.azurewebsites.net/qr`. Para gerar de novo (por exemplo, se a URL mudar):
+
+1. Abra [`https://app-apoioescolar-mvp-6e7462.azurewebsites.net/maker`](https://app-apoioescolar-mvp-6e7462.azurewebsites.net/maker).
 2. Clique em **Baixar QR (30 mm, SVG)**.
 3. Imprima em 100% (sem "ajustar à página") em papel adesivo e cole no canto inferior da face de trás da perna traseira.
 4. Teste com a câmera do celular: deve abrir a página inicial com o aviso "Você chegou pelo QR code do suporte de estudo".
@@ -102,4 +104,4 @@ Passo a passo (fotos, dados da impressão, MakerWorld, pasta pública e PDF úni
 - [ ] Publicar o projeto no MakerWorld e colocar o link na [Ficha Técnica](../docs/FICHA_TECNICA_MVP.md#links-da-entrega)
 - [x] Fotos da impressão (`imagens/fotos/`)
 - [ ] Foto da peça pronta com tablet e etiqueta QR colada
-- [ ] Gerar a etiqueta definitiva depois que a URL pública do MVP existir
+- [x] Etiqueta definitiva gerada no MVP publicado (`fabricacao/etiqueta_qr_30mm.svg`)

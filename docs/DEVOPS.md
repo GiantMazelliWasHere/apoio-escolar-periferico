@@ -96,7 +96,7 @@ O que ele cria, tudo no Resource Group `rg-apoioescolar` com tags (`projeto`, `d
   | `alerta-lentidao` | Tempo médio de resposta > 3 s | 2 (aviso) |
 
 - **Orçamento** mensal no RG (padrão 150 na moeda da conta) com aviso por e-mail em 80%.
-- **App registration do GitHub** com credencial federada (`repo:<repo>:environment:production`) e papel **Website Contributor só no Web App**.
+- **Identidade gerenciada do GitHub** (`id-github-deploy`, user-assigned, sem segredo e sem precisar de permissão no Entra ID) com credenciais federadas para os dois formatos de *subject* que o GitHub pode enviar: `repo:<dono>/<repo>:environment:production` e, com IDs fixos, `repo:<dono>@<id>/<repo>@<id>:environment:production` (os IDs vêm do `gh`). Papel **Website Contributor só no Web App**.
 - No fim, grava as variáveis `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` e `AZURE_WEBAPP_NAME` no repositório com o `gh` (se estiver logado) ou imprime os comandos. Nenhuma delas é segredo.
 
 Depois: push na `main` (ou **Actions > CI/CD > Run workflow**) publica o MVP. Para apagar tudo após a correção: `CONFIRMAR=sim ./infra/remover.sh`.
@@ -141,6 +141,6 @@ Com `SKU=F1` o custo vai a zero (sem Always On, o primeiro acesso depois de um t
 
 1. `/health` na URL pública mostrando `versao` igual ao hash do último commit.
 2. Execução do workflow com `qualidade`, `segredos`, `pipeline-dados`, `pacote` e `deploy` verdes, e o log do smoke test.
-3. Portal: Resource Group com tags; Web App > Configuração (HTTPS Only, TLS 1.2, FTP desligado); Configurações de aplicativo como referências ao Key Vault (ícone verde); Key Vault > Segredos (só os nomes); IAM do Key Vault, do Web App e do RG; App registration > Credenciais federadas.
+3. Portal: Resource Group com tags; Web App > Configuração (HTTPS Only, TLS 1.2, FTP desligado); Configurações de aplicativo como referências ao Key Vault (ícone verde); Key Vault > Segredos (só os nomes); IAM do Key Vault, do Web App e do RG; Identidade gerenciada do GitHub > Credenciais federadas.
 4. Application Insights com tráfego; Alertas > Regras; e-mail de um alerta disparado e resolvido (parar e religar o Web App provoca o `alerta-health-check`/`alerta-lentidao`).
 5. Cost Management > Orçamentos.
