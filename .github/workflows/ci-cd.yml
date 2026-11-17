@@ -102,7 +102,7 @@ jobs:
           find pacote -name "__pycache__" -type d -prune -exec rm -rf {} +
           (cd pacote && zip -qr ../mvp.zip .)
           unzip -l mvp.zip | tail -1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mvp
           path: mvp.zip
