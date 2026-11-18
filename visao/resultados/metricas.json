@@ -1,0 +1,727 @@
+{
+  "data": "2026-11-18",
+  "maquina": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD (CPU, sem GPU)",
+  "ocr": "EasyOCR (pt, en)",
+  "cenarios": {
+    "plana": {
+      "geral": {
+        "empresa": 15,
+        "logradouro": 3,
+        "numero": 15,
+        "bairro": 10,
+        "cep": 15,
+        "uf": 11,
+        "total": 15
+      },
+      "por_empresa": {
+        "ENEL": {
+          "empresa": 5,
+          "logradouro": 2,
+          "numero": 5,
+          "bairro": 3,
+          "cep": 5,
+          "uf": 5,
+          "total": 5
+        },
+        "SABESP": {
+          "empresa": 5,
+          "logradouro": 0,
+          "numero": 5,
+          "bairro": 3,
+          "cep": 5,
+          "uf": 1,
+          "total": 5
+        },
+        "CLARO": {
+          "empresa": 5,
+          "logradouro": 1,
+          "numero": 5,
+          "bairro": 4,
+          "cep": 5,
+          "uf": 5,
+          "total": 5
+        }
+      },
+      "tempo_medio_s": 10.9,
+      "contas_com_endereco_completo": 2
+    },
+    "foto": {
+      "geral": {
+        "empresa": 14,
+        "logradouro": 1,
+        "numero": 11,
+        "bairro": 10,
+        "cep": 15,
+        "uf": 14,
+        "total": 15
+      },
+      "por_empresa": {
+        "ENEL": {
+          "empresa": 5,
+          "logradouro": 1,
+          "numero": 2,
+          "bairro": 2,
+          "cep": 5,
+          "uf": 5,
+          "total": 5
+        },
+        "SABESP": {
+          "empresa": 5,
+          "logradouro": 0,
+          "numero": 5,
+          "bairro": 3,
+          "cep": 5,
+          "uf": 4,
+          "total": 5
+        },
+        "CLARO": {
+          "empresa": 4,
+          "logradouro": 0,
+          "numero": 4,
+          "bairro": 5,
+          "cep": 5,
+          "uf": 5,
+          "total": 5
+        }
+      },
+      "tempo_medio_s": 11.3,
+      "contas_com_endereco_completo": 0
+    }
+  },
+  "detalhe": {
+    "plana": [
+      {
+        "arquivo": "enel_01.png",
+        "empresa": "ENEL",
+        "tempo_s": 11.51,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": null,
+          "numero": "1895",
+          "bairro": "Itaquera",
+          "cep": "06685-434",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_02.png",
+        "empresa": "ENEL",
+        "tempo_s": 11.14,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Rua Boa Vista Nl",
+          "numero": "2089",
+          "bairro": "Capporedondo",
+          "cep": "01929-465",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_03.png",
+        "empresa": "ENEL",
+        "tempo_s": 10.79,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Avenida Principal",
+          "numero": "3087",
+          "bairro": "Capporedondo",
+          "cep": "07189-712",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": true,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_04.png",
+        "empresa": "ENEL",
+        "tempo_s": 11.14,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Rua Dasflores",
+          "numero": "692",
+          "bairro": "Brasilandia",
+          "cep": "07825-441",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_05.png",
+        "empresa": "ENEL",
+        "tempo_s": 10.84,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Avenida Principal",
+          "numero": "603",
+          "bairro": "Itaquera",
+          "cep": "09624-902",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": true,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "sabesp_01.png",
+        "empresa": "SABESP",
+        "tempo_s": 10.75,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruaboavista",
+          "numero": "738",
+          "bairro": "Cidade Tiradentes",
+          "cep": "06942-714",
+          "uf": null
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": false
+        }
+      },
+      {
+        "arquivo": "sabesp_02.png",
+        "empresa": "SABESP",
+        "tempo_s": 10.86,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruadospalmares",
+          "numero": "141",
+          "bairro": "Grajau",
+          "cep": "07657-532",
+          "uf": null
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": false
+        }
+      },
+      {
+        "arquivo": "sabesp_03.png",
+        "empresa": "SABESP",
+        "tempo_s": 11.05,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruaboavista",
+          "numero": "1336",
+          "bairro": "Ithquera",
+          "cep": "06230-731",
+          "uf": null
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": false
+        }
+      },
+      {
+        "arquivo": "sabesp_04.png",
+        "empresa": "SABESP",
+        "tempo_s": 11.16,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruadospalhares",
+          "numero": "3227",
+          "bairro": "Caphoredondo",
+          "cep": "04092-760",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "sabesp_05.png",
+        "empresa": "SABESP",
+        "tempo_s": 11.1,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruaboavista",
+          "numero": "2379",
+          "bairro": "Grajau",
+          "cep": "04063-108",
+          "uf": null
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": false
+        }
+      },
+      {
+        "arquivo": "claro_01.png",
+        "empresa": "CLARO",
+        "tempo_s": 10.71,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": null,
+          "numero": "3489",
+          "bairro": "Grajau",
+          "cep": "01535-303",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_02.png",
+        "empresa": "CLARO",
+        "tempo_s": 10.23,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": null,
+          "numero": "763",
+          "bairro": "Itfouera",
+          "cep": "09221-411",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_03.png",
+        "empresa": "CLARO",
+        "tempo_s": 10.22,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": null,
+          "numero": "68",
+          "bairro": "Grajau",
+          "cep": "07903-815",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_04.png",
+        "empresa": "CLARO",
+        "tempo_s": 10.35,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": null,
+          "numero": "1477",
+          "bairro": "Grajau",
+          "cep": "08396-159",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_05.png",
+        "empresa": "CLARO",
+        "tempo_s": 11.21,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": "Rua Avenida Principal",
+          "numero": "2720",
+          "bairro": "Grajau",
+          "cep": "09854-312",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": true,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      }
+    ],
+    "foto": [
+      {
+        "arquivo": "enel_01.png",
+        "empresa": "ENEL",
+        "tempo_s": 12.35,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": null,
+          "numero": "1895",
+          "bairro": "Itaquera",
+          "cep": "06685-434",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_02.png",
+        "empresa": "ENEL",
+        "tempo_s": 11.73,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Rua Boavsta",
+          "numero": "2",
+          "bairro": "Caphoredondo",
+          "cep": "01929-465",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": false,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_03.png",
+        "empresa": "ENEL",
+        "tempo_s": 11.19,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Avenida Principal",
+          "numero": "3087",
+          "bairro": null,
+          "cep": "07189-712",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": true,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_04.png",
+        "empresa": "ENEL",
+        "tempo_s": 10.12,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": "Rua Rua Dasflores",
+          "numero": "2692",
+          "bairro": "Brasilandia",
+          "cep": "07825-441",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": false,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "enel_05.png",
+        "empresa": "ENEL",
+        "tempo_s": 11.01,
+        "lido": {
+          "empresa": "ENEL",
+          "logradouro": null,
+          "numero": null,
+          "bairro": "Ithquera",
+          "cep": "09624-902",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": false,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "sabesp_01.png",
+        "empresa": "SABESP",
+        "tempo_s": 11.55,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Rua Boavsta",
+          "numero": "738",
+          "bairro": null,
+          "cep": "06942-714",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "sabesp_02.png",
+        "empresa": "SABESP",
+        "tempo_s": 10.85,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruadospalmares",
+          "numero": "141",
+          "bairro": "Grajau",
+          "cep": "07657-532",
+          "uf": null
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": false
+        }
+      },
+      {
+        "arquivo": "sabesp_03.png",
+        "empresa": "SABESP",
+        "tempo_s": 11.31,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Rua Boavsta",
+          "numero": "1336",
+          "bairro": "Itaquera",
+          "cep": "06230-731",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "sabesp_04.png",
+        "empresa": "SABESP",
+        "tempo_s": 10.38,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Ruadospalmares",
+          "numero": "3227",
+          "bairro": "Caphoredondo",
+          "cep": "04092-760",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": false,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "sabesp_05.png",
+        "empresa": "SABESP",
+        "tempo_s": 12.13,
+        "lido": {
+          "empresa": "SABESP",
+          "logradouro": "Avenida Rua Boavista",
+          "numero": "2379",
+          "bairro": "Grajau",
+          "cep": "04063-108",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_01.png",
+        "empresa": "CLARO",
+        "tempo_s": 11.09,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": "Rua Ruaboavista",
+          "numero": "3489",
+          "bairro": "Grajau",
+          "cep": "01535-303",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_02.png",
+        "empresa": "CLARO",
+        "tempo_s": 9.8,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": "Avenida Dasnaies Unidas",
+          "numero": "14401",
+          "bairro": "Itaquera",
+          "cep": "09221-411",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": false,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_03.png",
+        "empresa": "CLARO",
+        "tempo_s": 10.46,
+        "lido": {
+          "empresa": null,
+          "logradouro": "Rua Ruadospalmares",
+          "numero": "68",
+          "bairro": "Grajau",
+          "cep": "07903-815",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": false,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_04.png",
+        "empresa": "CLARO",
+        "tempo_s": 10.83,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": null,
+          "numero": "1477",
+          "bairro": "Grajau",
+          "cep": "08396-159",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      },
+      {
+        "arquivo": "claro_05.png",
+        "empresa": "CLARO",
+        "tempo_s": 13.99,
+        "lido": {
+          "empresa": "CLARO",
+          "logradouro": null,
+          "numero": "2720",
+          "bairro": "Grajau",
+          "cep": "09854-312",
+          "uf": "SP"
+        },
+        "acertos": {
+          "empresa": true,
+          "logradouro": false,
+          "numero": true,
+          "bairro": true,
+          "cep": true,
+          "uf": true
+        }
+      }
+    ]
+  }
+}

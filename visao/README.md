@@ -15,22 +15,26 @@
 - **Edson Leonardo** — RM 553737
 - **Eduardo Mazelli** — RM 553236
 
-**Projeto Integrado:** EduConecta Periferia (Apoio Escolar e Inclusão Digital)
+**MVP integrado:** Apoio Escolar Periférico · https://app-apoioescolar-mvp-6e7462.azurewebsites.net
+**Repositório:** https://github.com/GiantMazelliWasHere/apoio-escolar-periferico (esta pasta: `visao/`)
+**Entrega no portal:** o link do repositório e o PDF [`Relatorio_Tecnico_Visao_Computacional_BitsNBytes.pdf`](Relatorio_Tecnico_Visao_Computacional_BitsNBytes.pdf)
 **ODS Vinculados:** **ODS 4** (Educação de Qualidade) e **ODS 10** (Redução das Desigualdades)
 
 ---
 
 ## 1. Conceito da Atividade & Papel no MVP
 
-No projeto **EduConecta Periferia**, o acesso a bolsas de estudo gratuitas, aulas de reforço e mentorias voluntárias é prioritário para estudantes de escolas públicas residentes em comunidades periféricas.
+O **Apoio Escolar Periférico** conecta estudantes de escolas públicas da periferia a monitorias voluntárias. No cadastro, o estudante pode informar bairro e CEP.
 
-Para eliminar burocracias de comprovação de renda e zoneamento escolar, a equipe desenvolveu este componente de **Visão Computacional** que processa fotografias de comprovantes de residência de **três concessionárias diferentes**:
+Para o estudante não precisar digitar o endereço no celular, a equipe desenvolveu este componente de **Visão Computacional** que processa fotografias de comprovantes de residência de **três concessionárias diferentes**:
 
 1. **ENEL** (Energia Elétrica)
 2. **SABESP** (Saneamento Básico)
 3. **CLARO** (Telecomunicações)
 
-O pipeline extrai automaticamente os dados de endereço e CEP do titular, **distinguindo-os dos demais endereços corporativos da fatura**, e preenche o cadastro no MVP para validação e confirmação pelo estudante.
+O pipeline extrai automaticamente os dados de endereço e CEP do titular, **distinguindo-os dos demais endereços corporativos da fatura**, e preenche o cadastro no MVP para o estudante conferir e corrigir. No MVP, o pipeline roda em [`mvp/app/visao.py`](../mvp/app/visao.py) e é chamado por `POST /api/v1/visao/endereco` (contrato em [docs/INTEGRACAO.md](../docs/INTEGRACAO.md)).
+
+**Métricas medidas com EasyOCR real** (15 contas sintéticas e 15 fotos simuladas, contra o gabarito): [`resultados/metricas.md`](resultados/metricas.md).
 
 ---
 
@@ -96,11 +100,22 @@ py -3.11 generate_dataset.py
 
 *Gera 15 faturas sintéticas (5 Enel, 5 Sabesp, 5 Claro) e o arquivo `ground_truth.json`.*
 
-### 4. Executar os testes automatizados de acurácia:
+### 4. Executar os testes automatizados:
 
 ```bash
-py -3.11 -m pytest test_cv.py -v
+py -3.11 -m pytest test_cv.py -v       # geometria, empresa e regex desta pasta
 ```
+
+Os testes do pipeline integrado (regras de extração, perspectiva e API, com OCR simulado) ficam em `mvp/tests/test_visao.py` e rodam no CI.
+
+### 4b. Medir o acerto com OCR real (gera fotos simuladas e as métricas):
+
+```bash
+# na raiz do repositório, com o venv do MVP e mvp/requirements-visao.txt instalado
+mvp/.venv/Scripts/python visao/avaliar_dataset.py
+```
+
+*Grava `dataset_sintetico/fotos_simuladas/` e `resultados/metricas.json` / `metricas.md`. O PDF é refeito com `python generate_pdf_report.py` (lê as métricas desse JSON).*
 
 ### 5. Processar via Linha de Comando (CLI):
 

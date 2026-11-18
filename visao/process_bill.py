@@ -67,7 +67,7 @@ def main():
     print(f"🗺️  UF:              {resultado.get('uf') or 'SP'}")
     
     if resultado.get("cep") and resultado.get("empresa_detectada") != "DESCONHECIDA":
-        print("✅ Status da Validação: COMPROVANTE ACEITO! Aluno elegível para o EduConecta.")
+        print("✅ Status da Validação: COMPROVANTE ACEITO! Aluno elegível para o Apoio Escolar.")
     else:
         print("⚠️ Status da Validação: Necessário reenvio ou auxílio pela AI Bits no suporte.")
     print("=" * 65)

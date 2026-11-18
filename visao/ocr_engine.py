@@ -280,9 +280,9 @@ def process_image_buffer_zero_storage(file_bytes: bytes, filename: str):
     }
     parsed["empresa_formal"] = empresa_nomes.get(empresa, empresa)
     
-    # Validação e status para o EduConecta
+    # Validação e status para o Apoio Escolar
     if parsed.get("cep") and parsed.get("logradouro"):
-        parsed["status"] = "Comprovante residencial validado com sucesso. Aluno elegível para o programa EduConecta Periferia."
+        parsed["status"] = "Comprovante residencial validado com sucesso. Aluno elegível para o programa Apoio Escolar Periférico."
         parsed["elegivel"] = True
     else:
         parsed["status"] = "Documento em análise: Por favor, confira e complete os campos necessários."
