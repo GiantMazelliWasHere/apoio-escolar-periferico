@@ -226,6 +226,6 @@ Legendem o vídeo. A plataforma de vídeo pode gerar legendas automáticas, mas 
 - [ ] Nenhum número inventado; projeções e metas estão rotuladas como tal
 - [ ] Nenhum dado pessoal real aparece na tela
 - [ ] Legendas revisadas
-- [ ] Vídeo publicado no **YouTube como "não listado"** (link público, decisão do time)
+- [x] Vídeo publicado no **YouTube como "não listado"**: https://youtu.be/bXGTEOwcj2w
 - [ ] Link testado numa janela anônima
-- [ ] Link colado no PDF único de Business
+- [x] Link colado no PDF único de Business
