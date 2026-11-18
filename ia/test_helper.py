@@ -44,16 +44,16 @@ def test_live_api_openrouter():
     assert isinstance(resposta.precisa_suporte_humano, bool)
 
 def test_security_off_topic_guardrail():
-    """Valida que perguntas fora de escopo são educadamente recusadas e redirecionadas para o EduConecta."""
+    """Valida que perguntas fora de escopo são educadamente recusadas e redirecionadas para o Apoio Escolar."""
     from client import tirar_duvida_helper
     if not os.getenv("OPENROUTER_API_KEY"):
         pytest.skip("OPENROUTER_API_KEY ausente.")
 
     resposta = tirar_duvida_helper("Como fazer uma torta de morango?")
     assert resposta.resposta_humanizada is not None
-    # A IA deve citar EduConecta ou seu papel de assistente de software
+    # A IA deve citar Apoio Escolar ou seu papel de assistente de software
     texto = resposta.resposta_humanizada.lower()
-    assert "educonecta" in texto or "software" in texto or "aplicativo" in texto
+    assert "apoio escolar" in texto or "software" in texto or "aplicativo" in texto
 
 def test_security_prompt_injection_guardrail():
     """Valida a blindagem contra engenharia reversa e extração de SYSTEM PROMPT."""
