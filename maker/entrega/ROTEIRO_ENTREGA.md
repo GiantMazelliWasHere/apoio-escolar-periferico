@@ -8,8 +8,8 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 | 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ✅ PETG, Creality Ender 3, 5 h, 90 g |
 | 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ✅ [publicado](https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code) |
 | 3 | Pasta de arquivos com link público | Equipe | — | ✅ repositório público, `maker/` organizada |
-| 4 | PDF único no portal | Vinicius | 10 min | ⚠️ falta: fotos e croqui do original (passo 5); depois, enviar no portal |
-| 5 | Original: fotos do impresso e croqui com medidas (Diagnóstico, 2 pt) | colega | 30 min | ⏳ colega vai mandar as fotos do original impresso |
+| 4 | PDF único no portal | Vinicius | 10 min | ✅ completo; falta enviar no portal |
+| 5 | Original: fotos no local e croqui com medidas (Diagnóstico, 2 pt) | equipe | — | ✅ fotos no local + croqui tirado dos arquivos do original |
 | 6 | Marcar a publicação do MakerWorld como **Remix** do [original](https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand) | Vinicius | 5 min | ⏳ |
 | 7 | Peça a laser (parte de Fabricação, 3 pt) | equipe | — | ❌ ainda não tem: a rev. C é só 3D |
 
@@ -29,14 +29,9 @@ Salvem em `maker/imagens/fotos/` com esses nomes e adicionem a legenda em `LEGEN
 
 > A etiqueta definitiva já está pronta: `maker/fabricacao/etiqueta_qr_30mm.svg`, gerada no MVP publicado e apontando para `https://app-apoioescolar-mvp-6e7462.azurewebsites.net/qr`. Imprima em 100% (sem "ajustar à página") em papel adesivo e confira com a câmera do celular antes de colar.
 
-## Original (Diagnóstico e CAD lado a lado)
+## Original (Diagnóstico e CAD lado a lado) ✅
 
-O PDF já traz o diagnóstico do original, as capturas do CAD dele (`maker/imagens/original/`, tiradas da publicação no MakerWorld) e a comparação lado a lado com a rev. C. Ainda faltam, e saem em amarelo no PDF até chegarem:
-
-- **fotos do original impresso**, de preferência em uso numa mesa de estudo: em `maker/imagens/original/fotos/`
-- **croqui com as medidas** tiradas do original impresso (altura e largura das chapas, ângulo, profundidade da aba), podendo ser à mão e fotografado: em `maker/imagens/original/croqui/`
-
-Depois de colocar os arquivos, rode `python maker/entrega/gerar_entrega.py` de novo.
+O PDF traz o diagnóstico do original, com as capturas do CAD dele (`maker/imagens/original/`), as fotos no local de estudo e o croqui cotado (`maker/imagens/original/croqui/croqui_original.svg`). As medidas do croqui saíram dos arquivos publicados (STEP, 3MF e DXF): duas chapas de 3 mm e 220 × 140 mm, sendo a traseira cortada a laser e a frontal impressa com uma aba em cunha a 45°. Também traz a comparação lado a lado com a rev. C.
 
 ## 1. Dados reais da impressão
 

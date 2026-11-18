@@ -39,7 +39,8 @@ A peça física do Apoio Escolar Periférico: um suporte para o estudante apoiar
 | [`imagens/`](imagens/) | Renders gerados do STL por [`entrega/renderizar_stl.py`](entrega/renderizar_stl.py) |
 | [`imagens/modelo/`](imagens/modelo/) | Capturas do modelo 3D no CAD (perspectiva, frente, lateral, de cima e perfil 2D) |
 | [`imagens/fotos/`](imagens/fotos/) | Fotos da impressão do protótipo |
-| [`imagens/original/`](imagens/original/) | Capturas do CAD do [modelo original](https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand) que a rev. C redesenha (user_1365996764, domínio público) |
+| [`imagens/original/`](imagens/original/) | Capturas do CAD do [modelo original](https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand) que a rev. C redesenha (user_1365996764, domínio público) e `croqui/` com as medidas dele |
+| [`cad/original/`](cad/original/) | Arquivos do modelo original (.step, .3mf e o .dxf da chapa a laser), em domínio público |
 
 **Orientação de impressão:** os arquivos já vêm com o perfil dobrado deitado na mesa e os 110 mm de largura na altura. Assim as dobras saem sem suporte e as janelas em losango ficam com bordas a 45°. Recomendado: camada de 0,2 mm, 5 perímetros (parede maciça), **brim de 5 mm** (a base é só o contorno fino da chapa) e sem suporte.
 

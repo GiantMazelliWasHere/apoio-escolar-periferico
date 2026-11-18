@@ -8,8 +8,8 @@ Antes de gerar a versão final:
   1. preencha LINKS abaixo (MakerWorld e pasta/repositório);
   2. coloque as fotos reais do protótipo em maker/imagens/fotos/ (jpg ou png; a ordem é a do nome);
   3. preencha IMPRESSAO e CREDITO_BONUS;
-  4. coloque as fotos do original impresso em maker/imagens/original/fotos/ e o croqui com
-     as medidas em maker/imagens/original/croqui/.
+  4. o croqui do original fica em maker/imagens/original/croqui/ (fotos do original impresso,
+     se houver, em maker/imagens/original/fotos/; sem elas, o PDF usa as fotos no local).
 Campos vazios saem em destaque amarelo no PDF, para ninguém enviar sem perceber.
 Os renders de maker/imagens/ saem de renderizar_stl.py (rode de novo se o STL mudar).
 """
@@ -52,6 +52,7 @@ CREDITO_BONUS = ORIGINAL_URL
 # Legendas pelo nome do arquivo (sem extensão). Arquivo sem legenda aqui sai com uma genérica.
 LEGENDAS = {
     "07_peca_pronta": "Protótipo pronto, fora da mesa e sem o brim: encaixe da base, painel de leitura com a janela em losango e, ao fundo, a perna traseira",
+    "croqui_original": "Croqui do original com as medidas tiradas dos arquivos publicados (STEP, 3MF e DXF)",
     "08_uso_mesa_redonda": "Em uso no local: o suporte numa mesa de um espaço de convivência e estudo",
     "09_uso_mesa_quadrada": "Na mesa de estudo: a peça ocupa pouco espaço e deixa a frente livre para o caderno",
     "10_frente_de_perto": "De perto: painel de leitura, janela em losango e o encaixe da base",
@@ -72,9 +73,9 @@ LEGENDAS = {
     "03_cad_lateral": "Vista lateral: perfil em A com o encaixe à esquerda",
     "04_cad_de_cima": "Vista de cima: orientação de impressão, perfil deitado na mesa",
     "05_cad_perfil_e_frente_2d": "Desenho 2D: perfil da chapa dobrada e vista frontal com a janela",
-    "01_original_perspectiva": "Original: duas chapas maciças em V invertido, com uma aba estreita na frente",
-    "02_original_perfil": "Original, de perfil: chapas quase na vertical, ângulo fixo e apoio só na aresta",
-    "03_original_frente": "Original, de frente: painel liso e maciço, sem janelas",
+    "01_original_perspectiva": "Original: o painel frontal com a aba (3D) e a chapa traseira (laser), maciços",
+    "02_original_perfil": "Original, de perfil: as duas chapas de 3 mm soltas, sem dobradiça entre elas",
+    "03_original_frente": "Original, de frente: chapas lisas de 220 × 140 mm, sem janelas",
 }
 
 DISCIPLINA = "Project-Based Maker Lab"
@@ -108,7 +109,7 @@ def figura(caminho: Path, legenda: str) -> str:
 
 
 def imagens_de(pasta: Path) -> list[Path]:
-    return sorted(p for p in pasta.glob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}) if pasta.exists() else []
+    return sorted(p for p in pasta.glob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp", ".svg"}) if pasta.exists() else []
 
 
 def galeria_de(arquivos: list[Path], generica: str, classe: str = "duas") -> str:
@@ -198,19 +199,21 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 <h3>Quem é afetado</h3>
 <p>O estudante de escola pública da periferia faz a monitoria online do Apoio Escolar Periférico pelo celular ou por um tablet emprestado, em casa, na biblioteca ou no espaço comunitário onde estuda. Sem apoio, ele segura o aparelho com uma mão ou o encosta em pilhas de livros, e fica sem as mãos livres para escrever no caderno, que é justamente o que a monitoria pede.</p>
 <h3>O objeto original</h3>
-<p>O ponto de partida é o suporte de tablet em "V" invertido publicado no MakerWorld como <a href="{html.escape(ORIGINAL_URL)}">Modular Ergonomic Tablet Stand</a>, de {html.escape(ORIGINAL_AUTOR)} (licença Creative Commons Domínio Público). É o mesmo formato dos suportes de acrílico dobrado usados em bibliotecas e espaços públicos de estudo. A própria publicação lista as falhas desse formato no uso diário:</p>
+<p>O ponto de partida é o suporte de tablet publicado no MakerWorld como <a href="{html.escape(ORIGINAL_URL)}">Modular Ergonomic Tablet Stand</a>, de {html.escape(ORIGINAL_AUTOR)} (licença Creative Commons Domínio Público). Ele tem duas peças: uma <strong>chapa traseira cortada a laser</strong> em MDF ou acrílico de 3 mm e um <strong>painel frontal impresso em 3D</strong> com uma aba de apoio na base, as duas com 220 × 140 mm. A publicação promete ajuste de ângulo por catraca, base larga, dobradiças e clipes impressos e um recorte para o cabo de carga.</p>
+<p>Abrimos os arquivos publicados (STEP, 3MF e DXF) e medimos as peças. Foi isto que encontramos:</p>
 <table><tbody>
-<tr><th>Ângulo fixo</th><td>Uma só inclinação, quase vertical: reflexo na tela e o pescoço curvado para ler</td></tr>
-<tr><th>Base estreita</th><td>O apoio fica só na aresta das chapas, então o suporte escorrega e tomba quando o estudante toca na tela</td></tr>
-<tr><th>Dobra frágil</th><td>No acrílico dobrado a quente, a dobra é o ponto que quebra com o manuseio</td></tr>
-<tr><th>Material</th><td>Chapas maciças, sem janelas: mais material e mais peso do que o apoio precisa</td></tr>
+<tr><th>Peças soltas</th><td>Os arquivos trazem só as duas chapas lisas. A dobradiça, a catraca de ângulo, os clipes e o recorte para o cabo descritos na publicação não estão neles. Sem nada que una as peças, o ângulo e a estabilidade dependem de como o estudante as apoia</td></tr>
+<tr><th>Aba que não segura</th><td>A aba de apoio é uma cunha a 45° que termina em ponta, sem borda: nada impede o tablet com capa de escorregar para fora</td></tr>
+<tr><th>Tamanho</th><td>As chapas de 220 × 140 mm ocupam boa parte de uma mesa pequena, que já divide espaço com o caderno</td></tr>
+<tr><th>Material</th><td>Chapas maciças de 3 mm: cerca de 99 cm³ impressos mais 92 cm³ de chapa a laser (calculado do 3MF e do DXF)</td></tr>
+<tr><th>Fabricação</th><td>Precisa de duas máquinas (cortadora a laser e impressora 3D) e de montagem</td></tr>
 </tbody></table>
 <div class="tres">
   {"".join(figura(p, LEGENDAS.get(p.stem, "Modelo original")) for p in original)}
 </div>
 <p class="fonte">Capturas do CAD do modelo original, reproduzidas da publicação no MakerWorld (domínio público).</p>
 <h3>O local e as medidas</h3>
-<p>As fotos foram tiradas no espaço de convivência e estudo onde a peça foi testada: mesas pequenas, redondas ou quadradas, divididas entre o aparelho, o caderno e o material. Numa mesa assim não sobra espaço para uma base larga, e um suporte de apoio estreito, como o original, fica instável quando o estudante toca na tela. Nas fotos já aparece a rev. C, testada no mesmo lugar.</p>
+<p>As fotos foram tiradas no espaço de convivência e estudo onde a peça foi testada: mesas pequenas, redondas ou quadradas, divididas entre o aparelho, o caderno e o material. Numa mesa assim, as duas chapas soltas de 220 × 140 mm do original ocupam espaço e não ficam firmes quando o estudante toca na tela. Nas fotos já aparece a rev. C, testada no mesmo lugar.</p>
 {fotos_original}
 {croqui}
 
@@ -226,18 +229,19 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 
 <h2 class="nova-pagina">3. Original × redesign, lado a lado</h2>
 <div class="duas lado">
-  {figura(ORIGINAL / '02_original_perfil.jpg', 'Antes: perfil do original, duas chapas quase verticais')}
+  {figura(ORIGINAL / '02_original_perfil.jpg', 'Antes: perfil do original, duas chapas de 3 mm soltas')}
   {figura(IMAGENS / 'render_lateral.png', 'Depois: perfil da rev. C, painel a 65° e perna a 80°')}
-  {figura(ORIGINAL / '03_original_frente.jpg', 'Antes: frente do original, painel liso e maciço')}
+  {figura(ORIGINAL / '03_original_frente.jpg', 'Antes: frente do original, chapas lisas de 220 × 140 mm')}
   {figura(IMAGENS / 'render_frontal.png', 'Depois: frente da rev. C, janela em losango de 80 × 80 mm')}
 </div>
 <table class="compara"><thead><tr><th></th><th>Original</th><th>Redesign rev. C (da equipe)</th></tr></thead><tbody>
-<tr><th>Forma</th><td>Duas chapas planas em "V" invertido, com uma aba estreita na frente</td><td>Uma chapa única de 2 mm dobrada em "A", com encaixe de 15 mm na base</td></tr>
-<tr><th>Inclinação</th><td>Fixa e quase vertical</td><td>Painel de leitura a 65°, inclinação de leitura confortável</td></tr>
-<tr><th>Estabilidade</th><td>Apoio só na aresta, tomba ao tocar na tela</td><td>Perna traseira a 80° e pegada de 104 × 125 mm na mesa</td></tr>
-<tr><th>Fixação do aparelho</th><td>Aba rasa</td><td>Encaixe de 15 mm: segura o tablet mesmo com capa (até ~14 mm)</td></tr>
-<tr><th>Material</th><td>Chapas maciças</td><td>Janelas em losango de 80 × 80 mm nos dois painéis: 90 g de PETG com brim</td></tr>
-<tr><th>Fabricação</th><td>Chapa dobrada a quente, ponto frágil na dobra</td><td>Impressa de uma vez, sem suporte, dobras com raio (R3 int. / R5 ext.)</td></tr>
+<tr><th>Forma</th><td>Duas peças planas de 3 mm: chapa traseira (laser) e painel frontal com aba (3D)</td><td>Uma chapa única de 2 mm dobrada em "A", com encaixe de 15 mm na base</td></tr>
+<tr><th>Tamanho</th><td>220 × 140 mm</td><td>110 × 125 × 104 mm</td></tr>
+<tr><th>Inclinação</th><td>Não definida nos arquivos: não há dobradiça nem trava entre as peças</td><td>Painel de leitura a 65°, fixo pela própria dobra</td></tr>
+<tr><th>Estabilidade</th><td>Depende de como as duas peças soltas são apoiadas</td><td>Perna traseira a 80° e pegada de 104 × 125 mm na mesa</td></tr>
+<tr><th>Fixação do aparelho</th><td>Aba em cunha a 45° que termina em ponta, sem borda</td><td>Encaixe de 15 mm: segura o tablet mesmo com capa (até ~14 mm)</td></tr>
+<tr><th>Material</th><td>Maciço: ~99 cm³ impressos + ~92 cm³ de chapa a laser</td><td>51 cm³, com janelas em losango de 80 × 80 mm (90 g de PETG com brim)</td></tr>
+<tr><th>Fabricação</th><td>Corte a laser, impressão 3D e montagem</td><td>Uma impressão, sem suporte e sem montagem, dobras com raio (R3 int. / R5 ext.)</td></tr>
 <tr><th>Ligação com o cidadão</th><td>Nenhuma</td><td>Etiqueta QR que leva para a plataforma de monitorias gratuitas</td></tr>
 </tbody></table>
 
@@ -266,14 +270,14 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 
 <h2 class="nova-pagina">7. Antes e depois, e os ODS</h2>
 <div class="duas lado">
-  {figura(ORIGINAL / '03_original_frente.jpg', 'Antes: o original em "V", chapas maciças quase verticais')}
+  {figura(ORIGINAL / '03_original_frente.jpg', 'Antes: o original, duas chapas maciças soltas')}
   {figura(FOTOS / '12_tablet_em_pe_frente.jpg', 'Depois: a rev. C impressa, segurando o tablet com capa')}
 </div>
 <table class="compara"><thead><tr><th></th><th>Antes</th><th>Depois</th></tr></thead><tbody>
-<tr><th>O que falhava</th><td>O aparelho na mão ou num suporte em "V" que tomba, com a tela quase vertical</td><td>O aparelho fica parado a 65°, preso pelo encaixe, mesmo quando o estudante toca na tela</td></tr>
-<tr><th>O que mudou</th><td>Duas chapas maciças, dobra frágil, ângulo fixo</td><td>Uma peça única com dobras de raio, perna a 80°, janelas que economizam material, sem montagem</td></tr>
+<tr><th>O que falhava</th><td>O aparelho na mão ou encostado em livros. O original promete ajuste de ângulo, mas os arquivos só trazem duas chapas soltas e uma aba que não segura a capa</td><td>O aparelho fica parado a 65°, preso pelo encaixe, mesmo quando o estudante toca na tela</td></tr>
+<tr><th>O que mudou</th><td>Duas peças maciças de 3 mm, 220 × 140 mm, ângulo indefinido</td><td>Uma peça única com dobras de raio, perna a 80°, janelas que economizam material, sem montagem</td></tr>
 <tr><th>Ganho para o cidadão</th><td>Uma mão ocupada segurando o aparelho e a postura ruim durante a aula</td><td>As duas mãos livres para escrever no caderno durante a monitoria, e um QR que leva direto para a plataforma gratuita</td></tr>
-<tr><th>Quem consegue fabricar</th><td>Suporte comercial comprado pronto</td><td>Qualquer Fab Lab ou escola com uma impressora 3D de mesa: 5 h e 90 g de filamento, arquivos abertos no MakerWorld</td></tr>
+<tr><th>Quem consegue fabricar</th><td>Quem tem cortadora a laser e impressora 3D e monta as peças</td><td>Qualquer Fab Lab ou escola com uma impressora 3D de mesa: 5 h e 90 g de filamento, arquivos abertos no MakerWorld</td></tr>
 </tbody></table>
 <h3>ODS conectados</h3>
 <table><tbody>
@@ -292,7 +296,7 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 
 <h2>9. Arquivos</h2>
 <table><tbody>
-<tr><th>Original</th><td><code>maker/imagens/original/</code>: capturas do CAD do modelo original e <code>fotos/</code> do original impresso. Arquivos-fonte no <a href="{html.escape(ORIGINAL_URL)}">MakerWorld</a></td></tr>
+<tr><th>Original</th><td><code>maker/imagens/original/</code>: capturas do CAD do modelo original e <code>croqui/</code> com as medidas; <code>maker/cad/original/</code>: os arquivos do original (.step, .3mf e o .dxf da chapa a laser), em domínio público. Arquivos-fonte no <a href="{html.escape(ORIGINAL_URL)}">MakerWorld</a></td></tr>
 <tr><th>CAD e desenho</th><td><code>maker/cad/</code>: .step · desenho técnico .pdf · desenho 2D .dxf</td></tr>
 <tr><th>Fabricação</th><td><code>maker/fabricacao/</code>: .3mf · .stl · etiqueta QR de 30 mm (.svg)</td></tr>
 <tr><th>Imagens</th><td><code>maker/imagens/</code>: renders gerados do STL, <code>modelo/</code> (capturas do CAD) e <code>fotos/</code> (impressão do protótipo)</td></tr>
