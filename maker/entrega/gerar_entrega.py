@@ -52,6 +52,15 @@ CREDITO_BONUS = ORIGINAL_URL
 # Legendas pelo nome do arquivo (sem extensão). Arquivo sem legenda aqui sai com uma genérica.
 LEGENDAS = {
     "07_peca_pronta": "Protótipo pronto, fora da mesa e sem o brim: encaixe da base, painel de leitura com a janela em losango e, ao fundo, a perna traseira",
+    "08_uso_mesa_redonda": "Em uso no local: o suporte numa mesa de um espaço de convivência e estudo",
+    "09_uso_mesa_quadrada": "Na mesa de estudo: a peça ocupa pouco espaço e deixa a frente livre para o caderno",
+    "10_frente_de_perto": "De perto: painel de leitura, janela em losango e o encaixe da base",
+    "11_na_bancada": "Numa bancada de trabalho: a mesma peça serve em qualquer mesa",
+    "12_tablet_em_pe_frente": "Com o tablet em pé (Galaxy Tab com capa emborrachada): o encaixe segura a capa",
+    "13_tablet_em_pe_lateral": "De lado: a perna traseira a 80° apoia o tablet sem tombar",
+    "14_tablet_em_pe_tras": "Por trás: o tablet apoiado no painel de 65°",
+    "15_tablet_deitado_lateral": "Tablet deitado: o mesmo suporte funciona na horizontal",
+    "16_tablet_deitado_frente": "Tablet deitado, de frente: tela na altura de leitura e as mãos livres",
     "01_perfil_na_mesa": "Impressão em andamento: o perfil em A deitado na mesa, com encaixe, painel a 65° e perna a 80°",
     "02_vista_de_cima": "Vista de cima da mesa de 220 × 220 mm: a peça cabe com folga",
     "03_encaixe": "Encaixe de 15 mm da base, já com as primeiras camadas",
@@ -102,8 +111,8 @@ def imagens_de(pasta: Path) -> list[Path]:
     return sorted(p for p in pasta.glob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}) if pasta.exists() else []
 
 
-def galeria_de(arquivos: list[Path], generica: str) -> str:
-    return '<div class="duas">' + "".join(
+def galeria_de(arquivos: list[Path], generica: str, classe: str = "duas") -> str:
+    return f'<div class="{classe}">' + "".join(
         figura(p, LEGENDAS.get(p.stem, f"{generica} ({i}/{len(arquivos)})")) for i, p in enumerate(arquivos, 1)
     ) + "</div>"
 
@@ -122,8 +131,13 @@ def montar_html() -> str:
         f"<tr><td>{html.escape(n)}</td><td>RM {rm}</td><td>{'Responsável pela disciplina' if n == RESPONSAVEL else ''}</td></tr>" for n, rm in EQUIPE
     )
     links = "".join(f'<div class="link"><p class="rotulo">{html.escape(k)}</p><p class="url">{link_ou_pendente(v)}</p></div>' for k, v in LINKS.items())
+    def numero(p: Path) -> int:
+        return int(p.stem.split("_")[0]) if p.stem.split("_")[0].isdigit() else 0
+    fotos_impressao = [p for p in fotos if numero(p) <= 7]
+    fotos_uso = [p for p in fotos if numero(p) >= 8]
     if fotos:
-        galeria = galeria_de(fotos, "Protótipo")
+        galeria = galeria_de(fotos_impressao, "Protótipo") + (
+            ('<h3>A peça em uso, com o tablet</h3>' + galeria_de(fotos_uso, "Em uso", "tres uso")) if fotos_uso else "")
     else:
         galeria = f'<p>{pendente("[PREENCHER: colocar as fotos reais do protótipo em maker/imagens/fotos/ e gerar de novo]")}</p>'
     impressao = html.escape(IMPRESSAO) if IMPRESSAO else pendente("[PREENCHER: material, impressora, camada, tempo e peso reais]")
@@ -154,6 +168,7 @@ figcaption {{ font-size: 9pt; color: #5a5750; margin-top: 1mm; }}
 .duas {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }}
 .tres {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }}
 .tres figure img {{ max-height: 60mm; }}
+.uso figure img {{ height: 68mm; width: 100%; object-fit: cover; }}
 .fonte {{ font-size: 8.5pt; color: #5a5750; margin-top: 0; }}
 .compara th {{ width: 32mm; }}
 .compara thead th {{ width: auto; color: #0b6e4f; }}
@@ -247,7 +262,11 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 <p>Impressão do protótipo em PETG numa Creality Ender 3 (mesa de 220 × 220 mm), em 5 horas, na orientação dos arquivos: perfil deitado, sem suporte, com brim.</p>
 {galeria}
 
-<h2>7. Antes e depois, e os ODS</h2>
+<h2 class="nova-pagina">7. Antes e depois, e os ODS</h2>
+<div class="duas lado">
+  {figura(ORIGINAL / '03_original_frente.jpg', 'Antes: o original em "V", chapas maciças quase verticais')}
+  {figura(FOTOS / '12_tablet_em_pe_frente.jpg', 'Depois: a rev. C impressa, segurando o tablet com capa')}
+</div>
 <table class="compara"><thead><tr><th></th><th>Antes</th><th>Depois</th></tr></thead><tbody>
 <tr><th>O que falhava</th><td>O aparelho na mão ou num suporte em "V" que tomba, com a tela quase vertical</td><td>O aparelho fica parado a 65°, preso pelo encaixe, mesmo quando o estudante toca na tela</td></tr>
 <tr><th>O que mudou</th><td>Duas chapas maciças, dobra frágil, ângulo fixo</td><td>Uma peça única com dobras de raio, perna a 80°, janelas que economizam material, sem montagem</td></tr>

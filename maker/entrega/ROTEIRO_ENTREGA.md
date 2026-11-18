@@ -4,7 +4,7 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 
 | # | Passo | Quem | Tempo | Pronto? |
 |---|---|---|---|---|
-| 0 | Imprimir e fotografar o protótipo | Vinicius | — | ✅ 6 fotos da impressão + peça pronta (`07_peca_pronta.jpg`); foto com tablet e QR é opcional |
+| 0 | Imprimir e fotografar o protótipo | Vinicius | — | ✅ 6 fotos da impressão, a peça pronta (`07`) e 9 fotos em uso, com e sem tablet (`08` a `16`) |
 | 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ✅ PETG, Creality Ender 3, 5 h, 90 g |
 | 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ✅ [publicado](https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code) |
 | 3 | Pasta de arquivos com link público | Equipe | — | ✅ repositório público, `maker/` organizada |
@@ -22,8 +22,8 @@ A impressão já está fotografada (Creality, mesa de 220 × 220 mm, perfil deit
 Falta **uma ou duas fotos da peça pronta**, que valem mais que as da impressão, principalmente para a capa do MakerWorld:
 
 - ✅ `07_peca_pronta.jpg`: a peça fora da mesa, sem o brim
-- (opcional) `08_com_tablet.jpg`: com um tablet ou celular apoiado, de frente
-- (opcional) `09_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
+- ✅ `08` a `16`: a peça em uso, em pé e deitada, com o Galaxy Tab de capa (boas para a galeria do MakerWorld)
+- (opcional) `17_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
 
 Salvem em `maker/imagens/fotos/` com esses nomes e adicionem a legenda em `LEGENDAS` no topo de `gerar_entrega.py`. Sem legenda, a foto sai com uma genérica.
 
