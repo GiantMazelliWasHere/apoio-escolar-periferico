@@ -12,6 +12,12 @@ updates:
     directory: /dados
     schedule:
       interval: weekly
+    # A DAG e o docker-compose são do Airflow 2 (imports e CLI mudam no 3).
+    ignore:
+      - dependency-name: apache-airflow
+        update-types: ["version-update:semver-major"]
+      - dependency-name: pandas
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
