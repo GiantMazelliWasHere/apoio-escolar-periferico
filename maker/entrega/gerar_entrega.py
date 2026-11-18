@@ -20,6 +20,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
@@ -42,6 +43,7 @@ LINKS = {
     "Plataforma (MVP publicado)": "https://app-apoioescolar-mvp-6e7462.azurewebsites.net/",
     "Pasta do repositório (arquivos brutos)": "https://github.com/GiantMazelliWasHere/apoio-escolar-periferico/tree/main/maker",
     "Modelo original redesenhado (MakerWorld, crédito)": ORIGINAL_URL,
+    "Vídeo da peça, até 2 min (bônus)": "https://www.youtube.com/shorts/Tv9ENceZyYM",
 }
 # Como o protótipo foi impresso de verdade.
 IMPRESSAO = "PETG, Creality Ender 3 (mesa 220 × 220 mm), perfil deitado, sem suporte, com brim: 5 horas e 90 g de filamento"
@@ -317,14 +319,28 @@ def navegador() -> str:
 
 
 def main() -> None:
-    with tempfile.TemporaryDirectory() as tmp:
+    # Perfil próprio do navegador: sem ele, o Edge pode entregar o trabalho a outra instância
+    # e sair sem gravar o PDF. Ele também pode terminar de gravar depois de sair, por isso a espera.
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
         pagina = Path(tmp) / "entrega_maker.html"
         pagina.write_text(montar_html(), encoding="utf8")
+        provisorio = Path(tmp) / "entrega_maker.pdf"
         subprocess.run(
             [navegador(), "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-             "--allow-file-access-from-files", f"--print-to-pdf={SAIDA_PDF}", pagina.as_uri()],
+             f"--user-data-dir={Path(tmp) / 'perfil'}", "--allow-file-access-from-files",
+             f"--print-to-pdf={provisorio}", pagina.as_uri()],
             check=True, timeout=120,
         )
+        for _ in range(120):
+            if provisorio.exists() and provisorio.stat().st_size > 0:
+                tamanho = provisorio.stat().st_size
+                time.sleep(1)
+                if provisorio.stat().st_size == tamanho:
+                    break
+            time.sleep(0.5)
+        else:
+            sys.exit("O navegador não gravou o PDF.")
+        shutil.copyfile(provisorio, SAIDA_PDF)
     print("PDF:", SAIDA_PDF.relative_to(MAKER.parent))
     faltando = [k for k, v in LINKS.items() if not v]
     if not IMPRESSAO:
