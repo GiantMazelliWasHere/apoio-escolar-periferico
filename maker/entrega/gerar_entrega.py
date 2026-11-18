@@ -123,9 +123,8 @@ def montar_html() -> str:
     modelo = imagens_de(MODELO)
     original = imagens_de(ORIGINAL)
     fotos_orig = imagens_de(ORIGINAL_FOTOS)
-    # Sem o original impresso, as fotos no local são as do espaço de estudo onde a peça foi testada.
-    fotos_local = fotos_orig or [FOTOS / "08_uso_mesa_redonda.jpg", FOTOS / "09_uso_mesa_quadrada.jpg"]
-    fotos_original = galeria_de([p for p in fotos_local if p.exists()], "No local")
+    # Só entram aqui fotos do original. As fotos da rev. C ficam na seção 6.
+    fotos_original = galeria_de(fotos_orig, "Original") if fotos_orig else ""
     croquis = imagens_de(CROQUI)
     croqui = "".join(figura(p, LEGENDAS.get(p.stem, "Croqui do original com as medidas")) for p in croquis) if croquis else (
         f'<p>{pendente("[PREENCHER: croqui com as medidas do original (altura, largura, ângulo, aba), em maker/imagens/original/croqui/]")}</p>')
@@ -213,7 +212,7 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
 </div>
 <p class="fonte">Capturas do CAD do modelo original, reproduzidas da publicação no MakerWorld (domínio público).</p>
 <h3>O local e as medidas</h3>
-<p>As fotos foram tiradas no espaço de convivência e estudo onde a peça foi testada: mesas pequenas, redondas ou quadradas, divididas entre o aparelho, o caderno e o material. Numa mesa assim, as duas chapas soltas de 220 × 140 mm do original ocupam espaço e não ficam firmes quando o estudante toca na tela. Nas fotos já aparece a rev. C, testada no mesmo lugar.</p>
+<p>O local de uso é o espaço de convivência e estudo onde a equipe testou a peça: mesas pequenas, redondas ou quadradas, divididas entre o aparelho, o caderno e o material. Numa mesa assim, as duas chapas soltas de 220 × 140 mm do original ocupam espaço e não ficam firmes quando o estudante toca na tela. O croqui abaixo traz as medidas do original, tiradas dos arquivos publicados. As fotos desse espaço, já com o redesign, estão na seção 6.</p>
 {fotos_original}
 {croqui}
 
