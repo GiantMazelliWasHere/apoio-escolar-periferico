@@ -1,6 +1,6 @@
 """
 Hub Web Interativo — Extração Automática de Endereços por Visão Computacional
-Projeto: EduConecta Periferia (FIAP Global Solution 2026.2 - Bits N’ Bytes - 4ESPR)
+Projeto: Apoio Escolar Periférico (FIAP Global Solution 2026.2 - Bits N’ Bytes - 4ESPR)
 Disciplina: Applied Computer Vision (Prof. Wilians Douglas Conde Souza)
 
 Arquitetura Zero-Storage:
@@ -68,7 +68,7 @@ def health_check():
     """Endpoint de checagem de integridade do pipeline."""
     return jsonify({
         "status": "healthy",
-        "service": "EduConecta Vision Hub",
+        "service": "Apoio Escolar Vision Hub",
         "version": "1.0.0",
         "supported_companies": ["ENEL", "SABESP", "CLARO"],
         "lgpd_compliance": "Zero-Storage in-memory processing"

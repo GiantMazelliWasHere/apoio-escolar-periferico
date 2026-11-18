@@ -11,3 +11,6 @@ enel-boleto.pdf
 *boleto*.pdf
 *fatura_real*.pdf
 
+
+# Fotos simuladas: geradas por avaliar_dataset.py (determinísticas, ~25 MB)
+dataset_sintetico/fotos_simuladas/

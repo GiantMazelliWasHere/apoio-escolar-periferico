@@ -1,5 +1,5 @@
 # Instruções de Agente — Repositório Applied-Computer-Vision
-## Projeto: EduConecta Periferia — Extração Automática de Endereços
+## Projeto: Apoio Escolar Periférico — Extração Automática de Endereços
 ### Equipe: Bits N’ Bytes (4ESPR - FIAP 2026.2)
 
 ---
