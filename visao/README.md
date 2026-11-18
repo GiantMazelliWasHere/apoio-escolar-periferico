@@ -115,7 +115,7 @@ Os testes do pipeline integrado (regras de extração, perspectiva e API, com OC
 mvp/.venv/Scripts/python visao/avaliar_dataset.py
 ```
 
-*Grava `dataset_sintetico/fotos_simuladas/` e `resultados/metricas.json` / `metricas.md`. O PDF é refeito com `python generate_pdf_report.py` (lê as métricas desse JSON).*
+*Gera as 15 fotos simuladas em `dataset_sintetico/fotos_simuladas/` (sempre iguais, semente fixa; fora do git por tamanho) e grava `resultados/metricas.json` / `metricas.md`. O PDF é refeito com `python generate_pdf_report.py` (lê as métricas desse JSON).*
 
 ### 5. Processar via Linha de Comando (CLI):
 

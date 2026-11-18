@@ -152,8 +152,9 @@ def build_pdf():
         "<b>15 contas sintéticas</b> (5 Enel, 5 Sabesp, 5 Claro) geradas por <font face='Courier'>generate_dataset.py</font>, com nomes e endereços "
         "fictícios (Faker), em <font face='Courier'>visao/dataset_sintetico/</font>.",
         "<b>Gabarito:</b> <font face='Courier'>ground_truth.json</font> com empresa, logradouro, número, bairro, cidade, UF e CEP de cada conta.",
-        "<b>15 fotos simuladas</b> em <font face='Courier'>dataset_sintetico/fotos_simuladas/</font>, geradas por <font face='Courier'>avaliar_dataset.py</font>: "
-        "a mesma conta em resolução de celular, inclinada sobre uma mesa escura, com sombra lateral, desfoque, ruído e compressão JPEG.",
+        "<b>15 fotos simuladas</b>, geradas por <font face='Courier'>avaliar_dataset.py</font> em <font face='Courier'>dataset_sintetico/fotos_simuladas/</font> "
+        "(sempre iguais, com semente fixa; fora do git por tamanho): a mesma conta em resolução de celular, inclinada sobre uma mesa "
+        "escura, com sombra lateral, desfoque, ruído e compressão JPEG.",
         "<b>Sem dados reais:</b> nenhuma conta real está no repositório (o <font face='Courier'>.gitignore</font> bloqueia boletos e faturas reais), e "
         "o MVP não grava a imagem: só o bairro e o CEP que o estudante confirmar.",
     ]:
