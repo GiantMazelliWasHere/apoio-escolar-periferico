@@ -14,7 +14,7 @@ HTML_PAGE = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Bits — EduConecta Periferia</title>
+  <title>AI Bits — Apoio Escolar Periférico</title>
   
   <!-- Favicons Oficiais -->
   <link rel="icon" type="image/png" sizes="32x32" href="/img/icon/favicon-32x32.png">
@@ -67,15 +67,15 @@ HTML_PAGE = """<!DOCTYPE html>
           <h1 class="font-bold text-lg leading-tight text-white" id="header-title">
             AI Bits
           </h1>
-          <p class="text-xs text-slate-400" id="header-team">Suporte EduConecta Periferia</p>
+          <p class="text-xs text-slate-400" id="header-team">Suporte Apoio Escolar Periférico</p>
         </div>
       </div>
 
-      <!-- Controls: EduConecta à Direita & Theme Toggle (Sem o Online) -->
+      <!-- Controls: Apoio Escolar à Direita & Theme Toggle (Sem o Online) -->
       <div class="flex items-center gap-2.5">
-        <!-- Badge EduConecta posicionado à Direita -->
+        <!-- Badge Apoio Escolar posicionado à Direita -->
         <span id="educonecta-badge" class="text-xs font-semibold px-3 py-1 rounded-full border transition-colors shadow-sm bg-emerald-950/80 text-emerald-300 border-emerald-700/50 tracking-wide">
-          EduConecta
+          Apoio Escolar
         </span>
 
         <!-- Theme Toggle Button -->
@@ -104,7 +104,7 @@ HTML_PAGE = """<!DOCTYPE html>
         </div>
         <div class="rounded-2xl rounded-tl-sm p-4 max-w-[88%] shadow-md transition-colors message-ai-box">
           <p class="text-sm leading-relaxed">
-            👋 Olá! Eu sou a <strong>AI Bits</strong>, assistente de inteligência artificial oficial do <strong>EduConecta Periferia</strong>!
+            👋 Olá! Eu sou a <strong>AI Bits</strong>, assistente de inteligência artificial oficial do <strong>Apoio Escolar Periférico</strong>!
           </p>
           <p class="text-xs mt-2 opacity-85">
             Estou aqui para tirar dúvidas sobre como usar o aplicativo, como agendar aulas de reforço ou como resolver eventuais problemas na leitura da sua conta de luz ou água (<strong>Enel, Sabesp ou Claro</strong>).
@@ -118,8 +118,8 @@ HTML_PAGE = """<!DOCTYPE html>
             <button onclick="quickAsk('Como faço para marcar aula de reforço de matemática?')" class="text-xs font-medium px-3 py-1.5 rounded-lg border transition quick-btn">
               📚 Agendar aula de matemática
             </button>
-            <button onclick="quickAsk('O que é o projeto EduConecta Periferia?')" class="text-xs font-medium px-3 py-1.5 rounded-lg border transition quick-btn">
-              💡 O que é o EduConecta?
+            <button onclick="quickAsk('O que é o projeto Apoio Escolar Periférico?')" class="text-xs font-medium px-3 py-1.5 rounded-lg border transition quick-btn">
+              💡 O que é o Apoio Escolar?
             </button>
           </div>
         </div>
@@ -150,7 +150,7 @@ HTML_PAGE = """<!DOCTYPE html>
 
   <!-- Footer -->
   <footer id="main-footer" class="text-center py-2.5 text-xs border-t transition-colors text-slate-500 border-slate-800 bg-slate-900/60">
-    EduConecta Periferia - Inclusão Digital e Apoio Escolar (ODS 4 & 10)
+    Apoio Escolar Periférico - Inclusão Digital e Apoio Escolar (ODS 4 & 10)
   </footer>
 
   <script>
@@ -470,7 +470,7 @@ def run():
     url = f"http://localhost:{PORT}"
     print("=" * 65)
     print(f"🚀 AI Bits Web App rodando em: {url}")
-    print(f"🎨 Identidade Visual: AI Bits - EduConecta Periferia")
+    print(f"🎨 Identidade Visual: AI Bits - Apoio Escolar Periférico")
     print(f"🌓 Temas: Modo Claro (Verde Marca) & Modo Escuro (Preto/Verde)")
     print("Pressione Ctrl+C para encerrar o servidor.")
     print("=" * 65)

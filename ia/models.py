@@ -2,7 +2,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 class EduConectaHelperOutput(BaseModel):
-    """Esquema de saída estruturada para o EduConecta Helper Bot."""
+    """Esquema de saída estruturada para o Apoio Escolar Helper Bot."""
     protocolo_atendimento: str = Field(
         description="Identificador único da interação de suporte"
     )
