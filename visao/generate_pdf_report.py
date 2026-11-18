@@ -26,6 +26,21 @@ URL_MVP = "https://app-apoioescolar-mvp-6e7462.azurewebsites.net"
 CAMPOS = [("empresa", "Empresa (concessionária)"), ("cep", "CEP"), ("numero", "Número"),
           ("bairro", "Bairro"), ("logradouro", "Logradouro"), ("uf", "UF")]
 EMPRESAS = ("ENEL", "SABESP", "CLARO")
+COR_LINK = "#2B6CB0"
+
+
+def link(url: str, texto: str | None = None) -> str:
+    return f"<link href='{url}' color='{COR_LINK}'><u>{texto or url}</u></link>"
+
+
+def links(*caminhos) -> str:
+    """Caminhos do repositório como links clicáveis para o GitHub (arquivo: blob; pasta: tree)."""
+    partes = []
+    for c in caminhos:
+        caminho, texto = c if isinstance(c, tuple) else (c, c)
+        tipo = "blob" if "." in caminho.rsplit("/", 1)[-1] else "tree"
+        partes.append(link(f"{URL_REPOSITORIO}/{tipo}/main/{caminho}", texto))
+    return "<br/>".join(partes)
 
 
 def build_pdf():
@@ -81,7 +96,7 @@ def build_pdf():
 
     info = Table([[
         Paragraph("<b>Professor:</b> Wilians Douglas Conde Souza<br/><b>Turma:</b> Engenharia de Software 4ESPR<br/>"
-                  f"<b>MVP:</b> {URL_MVP}<br/><b>Repositório:</b> {URL_REPOSITORIO} (pasta <font face='Courier'>visao/</font>)", body_style),
+                  f"<b>MVP:</b> {link(URL_MVP)}<br/><b>Repositório:</b> {link(URL_REPOSITORIO)} (pasta <font face='Courier'>visao/</font>)", body_style),
         Paragraph("<b>Equipe: Bits N’ Bytes</b><br/>• Jó Sales — RM 552679<br/>• Miguel Garcez de Carvalho — RM 553768<br/>• Vinicius Souza e Silva — RM 552781<br/>• Edson Leonardo — RM 553737<br/>• Eduardo Mazelli — RM 553236", body_style),
     ]], colWidths=[10 * cm, 7 * cm])
     info.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), light_bg), ('BOX', (0, 0), (-1, -1), 1, colors.HexColor("#CBD5E0")),
@@ -102,17 +117,20 @@ def build_pdf():
     # 2. Rubrica → onde está
     story.append(Paragraph("2. Rubrica (14 pontos) e onde cada item está no repositório", h1_style))
     story.append(tabela([
-        ["Critério", "Pts", "O que foi feito", "Onde está"],
+        ["Critério", "Pts", "O que foi feito", "Onde está (links para o GitHub)"],
         ["Processamento", "3", "Cantos do papel (Canny + aproximação poligonal), correção de perspectiva (warpPerspective), "
-         "ampliação para OCR, recorte de regiões, filtro bilateral + Otsu como 2ª tentativa.", "mvp/app/visao.py, visao/scanner.py"],
+         "ampliação para OCR, recorte de regiões, filtro bilateral + Otsu como 2ª tentativa.",
+         links("mvp/app/visao.py", "visao/scanner.py")],
         ["Extração", "4", "Identificação da concessionária, OCR (EasyOCR) e regras que descartam o endereço e o CEP das sedes.",
-         "mvp/app/visao.py, visao/ocr_engine.py"],
+         links("mvp/app/visao.py", "visao/ocr_engine.py")],
         ["Integração", "3", "API POST /api/v1/visao/endereco chamada pela tela de cadastro, que pré-preenche bairro e CEP para conferência.",
-         "mvp/app/main.py, cadastro_estudante.html"],
+         links("mvp/app/main.py", ("mvp/app/templates/cadastro_estudante.html", "cadastro_estudante.html"))],
         ["Testes", "3", "Gabarito das 15 contas, 15 fotos simuladas, medição com OCR real (seção 6) e testes automáticos no CI.",
-         "visao/avaliar_dataset.py, mvp/tests/test_visao.py, visao/test_cv.py"],
-        ["Documentação", "1", "Este relatório, o README de visao/ e o contrato em docs/INTEGRACAO.md.", "visao/README.md"],
-    ], [2.6 * cm, 1 * cm, 8.6 * cm, 4.8 * cm]))
+         links("visao/avaliar_dataset.py", ("visao/resultados/metricas.md", "visao/resultados/metricas.md"),
+               "mvp/tests/test_visao.py", "visao/test_cv.py", ("visao/dataset_sintetico", "visao/dataset_sintetico/"))],
+        ["Documentação", "1", "Este relatório, o README de visao/ e o contrato em docs/INTEGRACAO.md.",
+         links("visao/README.md", "docs/INTEGRACAO.md")],
+    ], [2.6 * cm, 1 * cm, 8.2 * cm, 5.2 * cm]))
 
     # 3. Pipeline
     story.append(Paragraph("3. Técnicas: o pipeline", h1_style))
@@ -225,7 +243,7 @@ def build_pdf():
 
     story.append(Spacer(1, 10))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#CBD5E0"), spaceAfter=6))
-    story.append(Paragraph(f"FIAP 2026.2 — Global Solution CitizenTech | Equipe Bits N’ Bytes (4ESPR) | {URL_REPOSITORIO}",
+    story.append(Paragraph(f"FIAP 2026.2 — Global Solution CitizenTech | Equipe Bits N’ Bytes (4ESPR) | {link(URL_REPOSITORIO)}",
                            ParagraphStyle('FooterText', fontName='Helvetica-Oblique', fontSize=7.5, textColor=colors.gray, alignment=1)))
 
     doc.build(story)
