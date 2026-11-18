@@ -4,11 +4,14 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 
 | # | Passo | Quem | Tempo | Pronto? |
 |---|---|---|---|---|
-| 0 | Imprimir e fotografar o protótipo | Vinicius | — | ✅ 6 fotos da impressão + peça pronta (`07_peca_pronta.jpg`); foto com tablet e QR é opcional |
+| 0 | Imprimir e fotografar o protótipo | Vinicius | — | ✅ 6 fotos da impressão, a peça pronta (`07`) e 9 fotos em uso, com e sem tablet (`08` a `16`) |
 | 1 | Anotar os dados reais da impressão | Vinicius | 5 min | ✅ PETG, Creality Ender 3, 5 h, 90 g |
 | 2 | Publicar no MakerWorld (1,5 pt) | Vinicius | 20 min | ✅ [publicado](https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code) |
 | 3 | Pasta de arquivos com link público | Equipe | — | ✅ repositório público, `maker/` organizada |
-| 4 | PDF único no portal | Vinicius | 10 min | ✅ completo (crédito do bônus: não se aplica); falta enviar no portal |
+| 4 | PDF único no portal | Vinicius | 10 min | ✅ completo; falta enviar no portal |
+| 5 | Original: fotos no local e croqui com medidas (Diagnóstico, 2 pt) | equipe | — | ✅ fotos no local + croqui tirado dos arquivos do original |
+| 6 | Marcar a publicação do MakerWorld como **Remix** do [original](https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand) | Vinicius | 5 min | ⏳ |
+| 7 | Peça a laser (parte de Fabricação, 3 pt) | equipe | — | ❌ ainda não tem: a rev. C é só 3D |
 
 ---
 
@@ -19,12 +22,16 @@ A impressão já está fotografada (Creality, mesa de 220 × 220 mm, perfil deit
 Falta **uma ou duas fotos da peça pronta**, que valem mais que as da impressão, principalmente para a capa do MakerWorld:
 
 - ✅ `07_peca_pronta.jpg`: a peça fora da mesa, sem o brim
-- (opcional) `08_com_tablet.jpg`: com um tablet ou celular apoiado, de frente
-- (opcional) `09_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
+- ✅ `08` a `16`: a peça em uso, em pé e deitada, com o Galaxy Tab de capa (boas para a galeria do MakerWorld)
+- (opcional) `17_qr.jpg`: a etiqueta QR definitiva de 30 mm (`maker/fabricacao/etiqueta_qr_30mm.svg`), colada no canto inferior da face de trás da perna traseira
 
 Salvem em `maker/imagens/fotos/` com esses nomes e adicionem a legenda em `LEGENDAS` no topo de `gerar_entrega.py`. Sem legenda, a foto sai com uma genérica.
 
 > A etiqueta definitiva já está pronta: `maker/fabricacao/etiqueta_qr_30mm.svg`, gerada no MVP publicado e apontando para `https://app-apoioescolar-mvp-6e7462.azurewebsites.net/qr`. Imprima em 100% (sem "ajustar à página") em papel adesivo e confira com a câmera do celular antes de colar.
+
+## Original (Diagnóstico e CAD lado a lado) ✅
+
+O PDF traz o diagnóstico do original, com as capturas do CAD dele (`maker/imagens/original/`), as fotos no local de estudo e o croqui cotado (`maker/imagens/original/croqui/croqui_original.svg`). As medidas do croqui saíram dos arquivos publicados (STEP, 3MF e DXF): duas chapas de 3 mm e 220 × 140 mm, sendo a traseira cortada a laser e a frontal impressa com uma aba em cunha a 45°. Também traz a comparação lado a lado com a rev. C.
 
 ## 1. Dados reais da impressão
 
@@ -53,7 +60,7 @@ Os parâmetros recomendados, para quem for imprimir de novo:
 4. **Título, descrição, categoria e tags:** copie os blocos abaixo.
 5. **Lista de materiais (BOM):** bloco abaixo.
 6. **Licença:** CC BY (ou a que o professor pedir).
-7. **Remix / crédito (bônus):** se partiram de alguma peça baixada, marque como **Remix** e cole o link original.
+7. **Remix / crédito (bônus):** a rev. C é o redesign do [Modular Ergonomic Tablet Stand](https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand) (user_1365996764, domínio público). Marque a publicação como **Remix** e cole esse link. Se ela já estiver publicada, edite e acrescente o remix.
 8. Publique como **público**, abra o link numa janela anônima e copie a URL (algo como `https://makerworld.com/pt/models/123456`).
 
 ### Título
@@ -84,6 +91,8 @@ Na face de trás vai uma etiqueta com QR code que leva para a plataforma de moni
 Como imprimir
 O arquivo já vem na orientação certa: o perfil dobrado deitado na mesa. Não precisa de suporte.
 PETG (usado no protótipo) ou PLA, camada 0,2 mm, 5 paredes, brim de 5 mm. O protótipo levou 5 horas e 90 g de PETG numa Creality Ender 3.
+
+Redesign do Modular Ergonomic Tablet Stand de user_1365996764 (domínio público): https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand
 
 Projeto da Global Solution FIAP 2026.2 (CitizenTech), disciplina Project-Based Maker Lab, Engenharia de Software, turma 4ESPR. Desenho técnico 3DP-2026-004 rev. C nos anexos.
 ```
@@ -118,7 +127,7 @@ Ordem do PDF: capa (disciplina, título, integrantes) → **links clicáveis em 
 1. Abra `maker/entrega/gerar_entrega.py` e preencha no topo:
    - `LINKS["Publicação no MakerWorld"]`: link do passo 2
    - `IMPRESSAO`: ✅ já preenchido (PETG, Ender 3, 5 h, 90 g)
-   - `CREDITO_BONUS`: ✅ `"não se aplica"` (a peça é projeto próprio)
+   - `CREDITO_BONUS`: ✅ link do modelo original (a rev. C é o redesign dele)
 2. Fotos em `maker/imagens/fotos/`.
 3. Rode (só precisa do Python e do Edge):
 
