@@ -122,8 +122,9 @@ def montar_html() -> str:
     modelo = imagens_de(MODELO)
     original = imagens_de(ORIGINAL)
     fotos_orig = imagens_de(ORIGINAL_FOTOS)
-    fotos_original = galeria_de(fotos_orig, "Original impresso") if fotos_orig else (
-        f'<p>{pendente("[PREENCHER: fotos do original impresso, no local de estudo, em maker/imagens/original/fotos/]")}</p>')
+    # Sem o original impresso, as fotos no local são as do espaço de estudo onde a peça foi testada.
+    fotos_local = fotos_orig or [FOTOS / "08_uso_mesa_redonda.jpg", FOTOS / "09_uso_mesa_quadrada.jpg"]
+    fotos_original = galeria_de([p for p in fotos_local if p.exists()], "No local")
     croquis = imagens_de(CROQUI)
     croqui = "".join(figura(p, LEGENDAS.get(p.stem, "Croqui do original com as medidas")) for p in croquis) if croquis else (
         f'<p>{pendente("[PREENCHER: croqui com as medidas do original (altura, largura, ângulo, aba), em maker/imagens/original/croqui/]")}</p>')
@@ -208,7 +209,8 @@ code {{ font-family: Consolas, monospace; font-size: 9.5pt; }}
   {"".join(figura(p, LEGENDAS.get(p.stem, "Modelo original")) for p in original)}
 </div>
 <p class="fonte">Capturas do CAD do modelo original, reproduzidas da publicação no MakerWorld (domínio público).</p>
-<h3>O original impresso e medido</h3>
+<h3>O local e as medidas</h3>
+<p>As fotos foram tiradas no espaço de convivência e estudo onde a peça foi testada: mesas pequenas, redondas ou quadradas, divididas entre o aparelho, o caderno e o material. Numa mesa assim não sobra espaço para uma base larga, e um suporte de apoio estreito, como o original, fica instável quando o estudante toca na tela. Nas fotos já aparece a rev. C, testada no mesmo lugar.</p>
 {fotos_original}
 {croqui}
 
@@ -328,8 +330,6 @@ def main() -> None:
         faltando.append("CREDITO_BONUS")
     if not (FOTOS.exists() and any(FOTOS.iterdir())):
         faltando.append("fotos em maker/imagens/fotos/")
-    if not imagens_de(ORIGINAL_FOTOS):
-        faltando.append("fotos do original impresso em maker/imagens/original/fotos/")
     if not imagens_de(CROQUI):
         faltando.append("croqui do original em maker/imagens/original/croqui/")
     if faltando:
