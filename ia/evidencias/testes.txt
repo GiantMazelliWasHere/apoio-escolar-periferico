@@ -1,0 +1,27 @@
+# ia/test_helper.py com OPENROUTER_API_KEY definida (3 testes chamam o modelo de verdade) — 2026-11-18
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 
+rootdir: F:\Documents\GS_Citizen\.claude\worktrees\bigdata-doc\ia
+plugins: anyio-4.16.0
+collecting ... collected 5 items
+
+test_helper.py::test_pydantic_schema_validacao PASSED                    [ 20%]
+test_helper.py::test_pydantic_schema_campo_obrigatorio PASSED            [ 40%]
+test_helper.py::test_live_api_openrouter PASSED                          [ 60%]
+test_helper.py::test_security_off_topic_guardrail PASSED                 [ 80%]
+test_helper.py::test_security_prompt_injection_guardrail PASSED          [100%]
+
+============================== 5 passed in 7.45s ==============================
+
+# mvp/tests/test_assistente.py (modelo simulado; roda no CI a cada pull request)
+tests/test_assistente.py::test_pagina_ajuda_tem_faq_e_link_no_menu PASSED
+tests/test_assistente.py::test_resposta_do_modelo_vira_contrato_do_nucleo PASSED
+tests/test_assistente.py::test_acao_desconhecida_nao_vira_link PASSED
+tests/test_assistente.py::test_json_invalido_cai_no_fallback_apos_tentar_de_novo PASSED
+tests/test_assistente.py::test_falha_do_modelo_nao_vaza_detalhes PASSED
+tests/test_assistente.py::test_sem_chave_configurada_responde_com_fallback PASSED
+tests/test_assistente.py::test_exige_csrf PASSED
+tests/test_assistente.py::test_pergunta_vazia_ou_longa_demais PASSED
+tests/test_assistente.py::test_limite_de_uso_por_cliente PASSED
+tests/test_assistente.py::test_pergunta_fica_delimitada_e_nao_fecha_a_tag PASSED
+======================== 10 passed, 1 warning in 4.62s ========================
