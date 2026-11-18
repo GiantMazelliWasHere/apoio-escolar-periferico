@@ -477,15 +477,15 @@ A ficha (slide 20) está em um arquivo separado, pronta para abrir o README do r
 | 5 | Métricas-chave + "a conta fecha" (equilíbrio e capital de ponte) | Modelo 2,5 | ✅ §5, §6 |
 | 6 | Custo de nuvem igual ao do PDF de DevOps | Coerência | ✅ ~US$ 13/mês em §4.1 e no [DEVOPS.md](../DEVOPS.md) |
 | 6b | Enquadramento fiscal e jurídico, com aviso de "gerado por IA / simulado" | Modelo 2,5 | ✅ §3.5 (sem revisão de contador) |
-| 7 | Pitch com começo, meio e fim, ≤ 5:00, **5 integrantes falando** | Narrativa 2,5 | ✅ [roteiro](Roteiro_Video_Pitch.md) · ⬜ gravar e cronometrar |
+| 7 | Pitch com começo, meio e fim, ≤ 5:00, **5 integrantes falando** | Narrativa 2,5 | ✅ [roteiro](Roteiro_Video_Pitch.md) · ✅ [vídeo publicado](https://youtu.be/bXGTEOwcj2w) |
 | 8 | Dado do problema verificado com fonte (bloco 1) | Narrativa | ✅ QEdu, Saeb 2023 (§7.3) |
-| 9 | Demo **na URL pública**, fluxo do primeiro clique ao resultado, sem telas falsas | Demo 3,5 | ⬜ depende do MVP |
+| 9 | Demo **na URL pública**, fluxo do primeiro clique ao resultado, sem telas falsas | Demo 3,5 | ✅ gravada na URL pública |
 | 10 | Falas da demo ajustadas ao que existe | Demo 3,5 | ✅ bloco 3 do [roteiro](Roteiro_Video_Pitch.md) (consentimento, RPA, painel) |
 | 11 | Evidência: teste documentado ou métrica antes/depois | Valor 3,5 | 🟡 §9.2: teste com 5 estudantes documentado · ✅ §9.2: 5 estudantes + 2 voluntários, com tempos e notas · planilha anexa ao PDF |
 | 12 | ODS identificados e contribuição explicada | Slide 14 (obrigatório) | ✅ roteiro bloco 5, ficha técnica |
 | 13 | LGPD e acessibilidade mencionadas (menores, consentimento, legendas) | Slide 21 | ✅ §1.2, §4, ficha técnica, roteiro; implementada no MVP ([seguranca-lgpd.md](../seguranca-lgpd.md)) |
 | 14 | Ficha Técnica do MVP no README | Entregável | ✅ ficha no README e em [arquivo próprio](../FICHA_TECNICA_MVP.md), com o repositório e a URL do MVP |
-| 15 | **PDF único** com Lean Canvas + modelo + links clicáveis (vídeo, MVP, repo) | Formato | ⬜ |
+| 15 | **PDF único** com Lean Canvas + modelo + links clicáveis (vídeo, MVP, repo) | Formato | ✅ |
 | 16 | Links públicos funcionando durante a correção (até 1 semana após 19/11) | Regras da GS | ⬜ |
 | 17 | Envio por **um** integrante no portal até 19/11, 23h55 | Regras da GS | ⬜ envio de Business: Eduardo Mazelli |
 

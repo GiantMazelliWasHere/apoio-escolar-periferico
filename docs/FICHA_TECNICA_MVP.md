@@ -116,5 +116,5 @@ Fundo off-white e texto quase preto (sem preto ou branco puros) reduzem o brilho
 | MVP (URL pública) | https://app-apoioescolar-mvp-6e7462.azurewebsites.net |
 | Repositório principal | https://github.com/GiantMazelliWasHere/apoio-escolar-periferico |
 | Repositório de Visão Computacional | https://github.com/EdLeo0708/Applied-Computer-Vision |
-| Vídeo-pitch | [PREENCHER] |
+| Vídeo-pitch (YouTube, não listado) | https://youtu.be/bXGTEOwcj2w |
 | Projeto no MakerWorld | https://makerworld.com/en/models/3634500-tablet-stand-for-studying-with-qr-code |
