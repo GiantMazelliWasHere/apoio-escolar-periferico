@@ -7,6 +7,11 @@ Edite os .md, ajuste LINKS abaixo e rode de novo:
     python -m pip install -r docs/business/pdf/requirements.txt
     python docs/business/pdf/gerar_pdf.py
 
+Gera duas versões:
+- Business_Apoio_Escolar_Periferico.pdf (entrega): sem a legenda "Como ler este
+  documento" e sem a nota "o que foi validado" do Lean Canvas.
+- Business_Apoio_Escolar_Periferico_Documentacao.pdf: completo, com as duas notas.
+
 Requer o Microsoft Edge (ou Chrome) instalado para imprimir o HTML em PDF.
 """
 from __future__ import annotations
@@ -33,8 +38,14 @@ LINKS = {
     "Ficha Técnica do MVP": f"{REPO_URL}/blob/main/docs/FICHA_TECNICA_MVP.md",
 }
 
-SAIDA_HTML = AQUI / "Business_Apoio_Escolar_Periferico.html"
-SAIDA_PDF = AQUI / "Business_Apoio_Escolar_Periferico.pdf"
+VERSOES = {
+    # nome do arquivo (sem extensão): manter as notas de leitura e de validação?
+    "Business_Apoio_Escolar_Periferico": False,
+    "Business_Apoio_Escolar_Periferico_Documentacao": True,
+}
+
+COMO_LER = re.compile(r"(?m)^> \*\*Como ler este documento\.\*\*.*\n(?:>.*\n?)*")
+NOTA_VALIDADO = re.compile(r'(?m)^> \*\*Nota sobre "o que foi validado".*\n?')
 
 
 def secoes(texto: str) -> tuple[str, dict[str, str]]:
@@ -61,8 +72,10 @@ def limpar_secao(md: str) -> str:
     return md
 
 
-def montar_markdown() -> str:
+def montar_markdown(com_notas: bool) -> str:
     entrega = (BUSINESS / "Entrega_Business_Apoio_Escolar_Periferico.md").read_text(encoding="utf-8")
+    if not com_notas:
+        entrega = NOTA_VALIDADO.sub("", COMO_LER.sub("", entrega))
     roteiro = (BUSINESS / "Roteiro_Entrevistas_Validacao.md").read_text(encoding="utf-8")
 
     cab, sec = secoes(entrega)
@@ -158,13 +171,16 @@ def navegador() -> str:
 
 
 def main() -> None:
-    SAIDA_HTML.write_text(gerar_html(montar_markdown()), encoding="utf-8")
-    subprocess.run(
-        [navegador(), "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-         f"--print-to-pdf={SAIDA_PDF}", SAIDA_HTML.as_uri()],
-        check=True, capture_output=True, timeout=120,
-    )
-    print(f"HTML: {SAIDA_HTML}\nPDF:  {SAIDA_PDF}")
+    nav = navegador()
+    for nome, com_notas in VERSOES.items():
+        html, pdf = AQUI / f"{nome}.html", AQUI / f"{nome}.pdf"
+        html.write_text(gerar_html(montar_markdown(com_notas)), encoding="utf-8")
+        subprocess.run(
+            [nav, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+             f"--print-to-pdf={pdf}", html.as_uri()],
+            check=True, capture_output=True, timeout=120,
+        )
+        print(f"HTML: {html}\nPDF:  {pdf}")
 
 
 if __name__ == "__main__":
