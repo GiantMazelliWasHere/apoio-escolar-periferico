@@ -12,6 +12,7 @@ Responsável: Vinicius Souza e Silva. Peça: **suporte de tablet 3DP-2026-004 re
 | 5 | Original: fotos no local e croqui com medidas (Diagnóstico, 2 pt) | equipe | — | ✅ fotos no local + croqui tirado dos arquivos do original |
 | 6 | Marcar a publicação do MakerWorld como **Remix** do [original](https://makerworld.com/en/models/3631249-modular-ergonomic-tablet-stand) | Vinicius | 5 min | ⏳ |
 | 7 | Peça a laser (parte de Fabricação, 3 pt) | equipe | — | ❌ ainda não tem: a rev. C é só 3D |
+| 8 | Vídeo de até 2 min (bônus +0,5) | equipe | — | ✅ [no YouTube](https://www.youtube.com/shorts/Tv9ENceZyYM), com o link no PDF |
 
 ---
 
