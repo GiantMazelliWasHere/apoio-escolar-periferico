@@ -1,4 +1,4 @@
 # Airflow 2.10 (o mesmo da imagem do docker-compose.yml e das evidências).
 # Instale com o arquivo de constraints do Airflow (ver README, opção C).
-apache-airflow>=2.10.5,<3
+apache-airflow>=2.11.2,<3
 pandas>=2.1
