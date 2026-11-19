@@ -3,7 +3,8 @@
 Entrada: o PDF original do Jó (dados/Entrega_BigData_ApoioEscolar.pdf), sem alterar.
 Saída:   dados/Entrega_BigData_ApoioEscolar_com_evidencias.pdf
 
-- As duas caixas "Substitua esta caixa..." da página 2 passam a apontar para os anexos.
+- As duas caixas "Substitua esta caixa..." da página 2: a do diagrama recebe o próprio
+  diagrama (Figura 1), e a seção 4 (evidências) passa para o topo da página 3.
 - Anexos novos: A (diagrama de arquitetura) e B (prints da execução no Airflow e
   do resultado no MVP), a partir das imagens em evidencias/recortes/.
 - O rodapé "Page X of Y" é refeito com o novo total de páginas.
@@ -49,6 +50,8 @@ CINZA = (0x64 / 255, 0x74 / 255, 0x8B / 255)
 ESCURO = (0x0F / 255, 0x17 / 255, 0x2A / 255)
 FUNDO_CAIXA = (0.9725, 0.9804, 0.9882)
 MARGEM = 51
+# Onde começa o dicionário de dados na página 2, logo abaixo do diagrama (Figura 1).
+INICIO_DICIONARIO = 318
 LARGURA = 595 - 2 * MARGEM
 
 
@@ -151,11 +154,8 @@ def corrigir_pagina2(p2: fitz.Page) -> None:
         + "<p class='nota'>Modelo-alvo para os microdados reais do INEP/IBGE: dimensão <code>dim_municipios_ibge</code> "
         "(cod_municipio_ibge, nome_municipio, uf) e fato <code>fact_escolas_vulnerabilidade</code>, ligadas pelo código "
         "do município. Ainda não implementado no protótipo.</p>"
-        "<h2 style='margin-top:10px'>4. Evidências de Execução</h2>"
-        "<p>O pipeline rodou de ponta a ponta no Airflow e os dados carregados aparecem no painel <code>/impacto</code> "
-        "do MVP. Prints da DAG, dos logs e do painel no Anexo B (páginas 3 e 4).</p>"
     )
-    reescrever(p2, fitz.Rect(51, 234, 545, 790), html, apagar_graficos=True)
+    reescrever(p2, fitz.Rect(51, INICIO_DICIONARIO, 545, 790), html, apagar_graficos=True)
 
 
 def main() -> None:
@@ -165,16 +165,26 @@ def main() -> None:
     W, H = p2.rect.width, p2.rect.height
     corrigir_pagina2(p2)
 
-    caixa_diagrama = fitz.Rect(51, 164, 544, 227)
-    substituir_caixa(p2, caixa_diagrama, "")
-    p2.insert_textbox(centralizar_vertical(caixa_diagrama, 2) + (10, 0, -10, 0),
-                      "Diagrama de Arquitetura do Pipeline: ver Anexo A (página 3).\n"
-                      "Origem INEP/IBGE -> Airflow (extract -> transform -> load) -> API do MVP -> painel /impacto",
-                      fontname="helv", fontsize=10, color=CINZA, align=fitz.TEXT_ALIGN_CENTER)
+    # A caixa tracejada do original vira o próprio diagrama, em vez de só apontar para o anexo.
+    p2.add_redact_annot(fitz.Rect(51, 160, 545, INICIO_DICIONARIO), fill=(1, 1, 1))
+    p2.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE, graphics=fitz.PDF_REDACT_LINE_ART_REMOVE_IF_COVERED)
+    y = imagem(p2, 164, "00_diagrama_pipeline.png",
+               "Figura 1. Diagrama de arquitetura do pipeline: Origem INEP/IBGE -> Airflow (extract -> transform -> "
+               "load) -> API do MVP -> painel /impacto. Detalhes no Anexo A (página 3).")
+    if y > INICIO_DICIONARIO + 2:
+        raise RuntimeError(f"O diagrama da página 2 invadiu o dicionário (y = {y:.0f})")
 
-    # Anexo A + início do Anexo B
+    # Seção 4, Anexo A e início do Anexo B
     p3 = doc.new_page(width=W, height=H)
-    y = titulo(p3, 50, "Anexo A. Diagrama de Arquitetura do Pipeline")
+    sobra, _ = p3.insert_htmlbox(
+        fitz.Rect(MARGEM, 50, MARGEM + LARGURA, 130),
+        "<h2>4. Evidências de Execução</h2>"
+        "<p>O pipeline rodou de ponta a ponta no Airflow e os dados carregados aparecem no painel <code>/impacto</code> "
+        "do MVP. Prints da DAG, dos logs e do painel no Anexo B (páginas 3 e 4).</p>",
+        css=CSS, scale_low=1)
+    if sobra < 0:
+        raise RuntimeError("A seção 4 não coube no topo da página 3")
+    y = titulo(p3, 130 - sobra + 8, "Anexo A. Diagrama de Arquitetura do Pipeline")
     y = imagem(p3, y, "00_diagrama_pipeline.png",
                "Fluxo de ponta a ponta: a DAG roda diariamente no Airflow, grava as camadas Raw e Trusted em CSV e "
                "envia a priorização ao núcleo do MVP pela API (PUT /api/v1/escolas/prioridade, com X-API-Key).")
