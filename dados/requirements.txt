@@ -2,4 +2,4 @@
 # Instale com o arquivo de constraints do Airflow (ver README, opção C).
 # O constraints do Airflow 2 fixa pandas==2.1.4: não subir o pandas para 3.
 apache-airflow>=2.10.5,<3
-pandas>=2.1,<3
+pandas>=3.1.1,<4
