@@ -13,9 +13,11 @@ updates:
     schedule:
       interval: weekly
     # A DAG e o docker-compose são do Airflow 2 (imports e CLI mudam no 3).
+    # O Airflow fica no 2.10.5 da imagem do docker-compose.yml e das evidências,
+    # e o constraints dele fixa o pandas em 2.x.
     ignore:
       - dependency-name: apache-airflow
-        update-types: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
       - dependency-name: pandas
         update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
