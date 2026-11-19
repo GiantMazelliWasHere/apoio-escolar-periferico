@@ -9,7 +9,7 @@ Um único produto atravessa as sete disciplinas (slide 18 do PDF oficial). O **n
 | `mvp/` | Núcleo (front + API + banco) | Equipe | ✅ fluxo central funcionando localmente, com testes |
 | `dados/` | Big Data Architecture & Data Integration | Jó Sales | ✅ entrega copiada e integrada ao núcleo: a DAG grava a prioridade das escolas pela API e o painel `/impacto` mostra o resultado |
 | `ia/` | Generative AI for Engineering | Edson Leonardo | ✅ entrega copiada e integrada ao núcleo (tela "Ajuda"), testada com a chave real do OpenRouter |
-| `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada ([EdLeo0708/Applied-Computer-Vision](https://github.com/EdLeo0708/Applied-Computer-Vision)) e integrada ao cadastro do núcleo; testada com EasyOCR real |
+| `visao/` | Applied Computer Vision | Edson Leonardo | ✅ entrega copiada (do repositório da disciplina, `EdLeo0708/Applied-Computer-Vision`) e integrada ao cadastro do núcleo; testada com EasyOCR real |
 | `rpa/` | Robotic Process Automation | Miguel Garcez | 🟡 relatório copiado e contrato do robô implementado no núcleo (`POST /api/v1/integracao/voluntarios`); ⬜ copiar o projeto UiPath para `rpa/` |
 | `.github/workflows/` + `infra/` | Secure DevOps Tools & Cloud Computing | Miguel Garcez | ✅ no ar em https://app-apoioescolar-mvp-6e7462.azurewebsites.net, publicado pelo pipeline (qualidade, gitleaks, deploy OIDC com smoke test); detalhes em [DEVOPS.md](DEVOPS.md) |
 | `maker/` | Project-Based Maker Lab | Vinicius Souza | ✅ entrega copiada (suporte de tablet: CAD, 3MF e DXF) e integrada ao núcleo pelo QR code: `/qr` marca a origem, o cadastro grava e o `/impacto` conta |
